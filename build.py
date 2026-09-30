@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Ottano - script di build.
 
-Prende il sorgente (src/ottano.template.html) e ci incorpora i dati MIMIT,
-producendo un unico file autonomo: dist/ottano.html
+Prende il sorgente (ottano.template.html) e ci incorpora i dati MIMIT,
+producendo un unico file autonomo: ottano.html
 
 Uso:
   python3 build.py --scarica                      # scarica i CSV di oggi dal sito MIMIT
@@ -103,14 +103,14 @@ def main():
         if "</script" in s.lower():
             sys.exit("Lo snapshot %s contiene '</script': va ripulito prima di incorporarlo" % nome)
 
-    html = (QUI / "src" / "ottano.template.html").read_text(encoding="utf-8")
-    basemap = (QUI / "src" / "basemap.json").read_text(encoding="utf-8").strip()
+    html = (QUI / "ottano.template.html").read_text(encoding="utf-8")
+    basemap = (QUI / "basemap.json").read_text(encoding="utf-8").strip()
     for segnaposto, valore in (("/*BASEMAP*/", basemap), ("/*NAT_A*/", gz64(naz_a)), ("/*NAT_P*/", gz64(naz_p)),
                                ("/*SNAP_A*/", loc_a), ("/*SNAP_P*/", loc_p)):
         if html.count(segnaposto) != 1:
             sys.exit("Segnaposto %s non trovato nel template" % segnaposto)
         html = html.replace(segnaposto, valore)
-    dest = QUI / "dist" / "ottano.html"
+    dest = QUI / "ottano.html"
     dest.parent.mkdir(exist_ok=True)
     dest.write_text(html, encoding="utf-8")
     print("Fatto: %s (%.1f MB), dati del %s, %d impianti"
