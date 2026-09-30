@@ -1,5 +1,0 @@
-# CSV MIMIT scaricati in locale (si rigenerano con build.py --scarica)
-*.csv
-*.csv.gz
-__pycache__/
-.DS_Store
