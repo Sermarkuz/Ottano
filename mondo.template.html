@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#20282D">
+<meta name="author" content="Marco Pugliese">
+<link rel="icon" href="/*FAVICON*/">
+<title>Ottano Mondo — prezzi dei carburanti nel mondo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --asfalto:#20282D; --asfalto2:#2C363C; --carta:#F1F4F0; --foglio:#FFFFFF; --riga:#D5DBD6;
+  --ink:#1B2429; --muto:#5B676D; --statale:#0F4C9A; --statale-t:#E4ECF7; --led:#FFD23F;
+  --cond:"Barlow Condensed","Roboto Condensed","Avenir Next Condensed","HelveticaNeue-CondensedBold","Arial Narrow",sans-serif-condensed,system-ui,sans-serif;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font-family:var(--body);color:var(--ink);background:var(--carta);font-size:15px;line-height:1.4;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--statale);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+.bar{background:var(--asfalto);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--cond);font-weight:700;font-size:26px;letter-spacing:.02em;line-height:1}
+.brand .bn{display:flex;flex-direction:column;white-space:nowrap}
+.brand em{font-style:normal;color:var(--led)}
+.brand small{font-family:var(--body);font-weight:400;font-size:11.5px;letter-spacing:0;color:#C9D1CD;margin-top:3px}
+.brand .logo{width:46px;height:46px;flex:none;margin:-6px -2px -6px -6px}
+.status{margin-left:auto;background:var(--asfalto2);border:1px solid #46525A;color:#E8ECEA;border-radius:6px;padding:6px 10px;font-size:12.5px;text-align:left;line-height:1.25;white-space:nowrap}
+.status b{display:block;font-weight:600;color:#fff}
+
+.ctrl{display:flex;gap:8px;overflow-x:auto;padding:8px 14px;background:var(--asfalto);position:sticky;top:0;z-index:20;scrollbar-width:none}
+.ctrl::-webkit-scrollbar{display:none}
+.tog{display:flex;flex:none;border:1px solid #4A565D;border-radius:4px;overflow:hidden}
+.tog button{border:0;background:transparent;color:#D9DFDC;padding:7px 11px;font-family:var(--cond);font-size:17px;font-weight:600;letter-spacing:.02em;white-space:nowrap;border-left:1px solid #4A565D}
+.tog button:first-child{border-left:0}
+.tog button[aria-pressed="true"]{background:var(--led);color:#1d1a05}
+
+.layout{display:flex;flex-direction:column}
+.mapwrap{position:relative;height:46vh;min-height:280px;isolation:isolate;background:#DDE3DE}
+#map{position:absolute;inset:0}
+.leaflet-tile-pane{filter:saturate(.5) contrast(.96)}
+.leaflet-container{font-family:var(--body);background:#DDE3DE}
+.maptools{position:absolute;z-index:500;left:10px;bottom:10px;display:flex;gap:8px}
+.maptools button{background:#fff;border:1px solid #B9C2BC;border-radius:6px;padding:8px 12px;font-weight:600;font-size:13.5px;box-shadow:0 2px 0 rgba(32,40,45,.18)}
+.maptools button[aria-pressed="true"]{background:var(--statale);border-color:var(--statale);color:#fff}
+.pillw{width:0!important;height:0!important}
+.pill{position:absolute;transform:translate(-50%,-50%);background:var(--k);color:#fff;font-family:var(--cond);font-weight:700;font-size:14px;line-height:1;padding:4px 6px;border-radius:4px;white-space:nowrap;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4);font-variant-numeric:tabular-nums}
+.pill small{font-family:var(--body);font-weight:600;font-size:10px;opacity:.9;margin-right:4px}
+.pill.dark{color:#1d1a05}
+.pill.sel{outline:3px solid var(--statale)}
+
+.side{padding-bottom:60px}
+.totem{background:var(--asfalto);color:#fff;padding:12px 14px 14px}
+.totem .where{font-size:13px;color:#C9D1CD;margin-bottom:8px}
+.totem .where b{color:#fff;font-weight:600}
+.cells{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#414C53;border:1px solid #414C53;border-radius:6px;overflow:hidden}
+.cell{background:#151B1F;padding:8px 8px 9px;min-width:0}
+.cell span{display:block;font-size:11px;color:#AEB8B3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.price{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em;line-height:1;white-space:nowrap}
+.price sup{font-size:.55em;vertical-align:.62em;margin-left:1px;line-height:0}
+.cell .price{font-size:27px;color:var(--led);margin-top:4px;display:block}
+.cell.lo .price{color:#6FE3A1}.cell.hi .price{color:#FF8A7A}.cell.it .price{color:#fff}
+
+.box{margin:12px 14px 0;background:var(--foglio);border:1px solid var(--riga);border-radius:6px}
+.box summary{padding:11px 12px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;gap:10px;list-style:none}
+.box summary::-webkit-details-marker{display:none}
+.box summary em{font-style:normal;font-weight:400;color:var(--muto);font-size:13px;text-align:right}
+.box .in{padding:12px;border-top:1px solid var(--riga)}
+.box .in>p{margin:0 0 10px;font-size:14px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0;padding-top:10px}
+.f label{font-size:12.5px;color:var(--muto)}
+.f output{font-weight:600;color:var(--ink)}
+.f select,.f input[type=number],.f input[type=text],.f input[type=date]{padding:8px;border:1px solid #AEB8B1;border-radius:5px;background:#fff;width:100%;font-size:15px}
+.f input[type=range]{width:100%;accent-color:var(--statale);margin:2px 0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;align-items:end}
+.g2 .wide{grid-column:1/-1}
+.seg{display:flex;border:1px solid #AEB8B1;border-radius:5px;overflow:hidden}
+.seg button{flex:1;border:0;background:#fff;padding:8px 4px;font-size:13.5px;border-left:1px solid #D5DBD6}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--statale);color:#fff;font-weight:600}
+.rinfo{font-size:13px;color:var(--muto);margin:8px 0 0}
+.link{background:none;border:0;padding:0;color:var(--statale);text-decoration:underline;font-size:13px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid #AEB8B1;background:#fff;border-radius:6px;padding:10px 14px;font-weight:600;font-size:14px;color:var(--ink)}
+.btn.primary{background:var(--statale);border-color:var(--statale);color:#fff}
+.acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+.lhead{display:flex;align-items:center;gap:8px;margin:16px 14px 6px;flex-wrap:wrap}
+.lhead h2{font-family:var(--cond);font-size:22px;margin:0;font-weight:700;flex:1;line-height:1.1;min-width:150px}
+.lhead .seg{flex:none}
+.lhead .seg button{padding:7px 10px}
+#list{list-style:none;margin:0;padding:0 14px;counter-reset:n}
+#list li{counter-increment:n;background:var(--foglio);border:1px solid var(--riga);border-left:6px solid var(--k,#999);border-radius:6px;margin-bottom:7px;padding:9px 12px;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:center}
+#list li.me{background:#FFFBE8}
+#list li.sel{outline:2px solid var(--statale)}
+#list .price{font-size:28px;grid-row:1/3;grid-column:1;min-width:92px}
+#list .price small{font-family:var(--body);font-size:11px;font-weight:400;color:var(--muto);margin-left:3px}
+#list .nm{grid-column:2;grid-row:1;font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#list .nm::before{content:counter(n) ". ";color:var(--muto);font-weight:400}
+#list .meta{grid-column:2;grid-row:2;font-size:12.5px;color:var(--muto);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#list .dv{grid-column:3;grid-row:1/3;text-align:right;font-family:var(--cond);font-size:18px;font-weight:600;white-space:nowrap}
+#list .dv small{display:block;font-family:var(--body);font-weight:400;font-size:11.5px;color:var(--muto)}
+.up{color:#B3261E}.down{color:#0A6B42}
+.foot{margin:18px 14px 0;font-size:12px;color:var(--muto);line-height:1.5}
+.foot a{color:var(--statale)}
+
+.sheet{position:fixed;z-index:1000;left:0;right:0;bottom:0;background:#fff;border-top:4px solid var(--k,#999);box-shadow:0 -6px 24px rgba(32,40,45,.22);padding:12px 14px max(14px,env(safe-area-inset-bottom));max-height:72vh;overflow:auto;transform:translateY(105%);transition:transform .22s ease}
+.sheet.on{transform:none}
+.sheet h3{margin:0;font-family:var(--cond);font-size:24px;line-height:1.1;padding-right:40px}
+.sheet .addr{color:var(--muto);font-size:13.5px;margin:3px 0 10px}
+.sheet .x{position:absolute;right:8px;top:8px;width:36px;height:36px;border:0;background:#EEF1EE;border-radius:50%;font-size:20px;line-height:1}
+.ptab{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.ptab th{font-weight:400;color:var(--muto);font-size:12px;text-align:right;padding:2px 0 4px}
+.ptab th:first-child,.ptab td:first-child{text-align:left}
+.ptab td{padding:6px 0;border-top:1px solid #E6EAE6;text-align:right}
+.ptab .price{font-size:19px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.lg{display:flex;gap:14px;font-size:12px;color:var(--muto);margin-top:4px;flex-wrap:wrap}
+.lg i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.rank{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;margin-top:10px}
+.rank th{font-weight:400;color:var(--muto);font-size:12px;text-align:right;padding-bottom:4px}
+.rank th:first-child,.rank td:first-child{text-align:left}
+.rank td{padding:6px 0 6px 6px;border-top:1px solid #E6EAE6;text-align:right;white-space:nowrap}
+.rank td:first-child{padding-left:0;white-space:normal}
+.scen .big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px}
+.dlist{list-style:none;margin:10px 0 0;padding:0;font-size:13.5px}
+.dlist li{display:flex;gap:8px;align-items:center;padding:7px 0;border-top:1px solid #E6EAE6}
+.dlist li span{flex:1;min-width:0}
+.dlist button{border:0;background:#EEF1EE;border-radius:50%;width:30px;height:30px;font-size:16px;flex:none}
+.toast{position:fixed;z-index:2000;left:50%;top:70px;transform:translateX(-50%);background:rgba(32,40,45,.94);color:#fff;font-size:13.5px;padding:9px 14px;border-radius:6px;max-width:min(92vw,440px);display:none}
+.toast.on{display:block}
+
+@media (max-width:420px){.brand{font-size:22px}.brand small{font-size:11px}.bar{padding-left:12px;padding-right:12px;gap:8px}.cell .price{font-size:23px}}
+@media (min-width:900px){
+  body{overflow:hidden;display:flex;flex-direction:column;height:100vh}
+  .layout{display:grid;grid-template-columns:450px 1fr;flex:1;min-height:0}
+  .side{grid-column:1;overflow:auto;padding-bottom:30px;border-right:1px solid var(--riga)}
+  .mapwrap{grid-column:2;grid-row:1;height:auto}
+  .sheet{left:auto;right:16px;bottom:16px;width:410px;border-radius:8px;transform:translateY(120%)}
+  .ctrl{position:static}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="brand">/*LOGO*/<span class="bn"><span>Ottano <em>Mondo</em></span><small>Sviluppata da Marco Pugliese</small></span></div>
+  <div class="status"><b id="stT"></b><span id="stS"></span></div>
+</header>
+
+<nav class="ctrl" aria-label="Cosa mostrare">
+  <div class="tog" id="tFuel" role="group" aria-label="Carburante"><button type="button" data-v="b">Benzina</button><button type="button" data-v="d">Gasolio</button></div>
+  <div class="tog" id="tCur" role="group" aria-label="Valuta"><button type="button" data-v="EUR">€</button><button type="button" data-v="USD">$</button><button type="button" data-v="LOC">Valuta locale</button></div>
+  <div class="tog" id="tUnit" role="group" aria-label="Unità"><button type="button" data-v="L">al litro</button><button type="button" data-v="G">al gallone USA</button></div>
+</nav>
+
+<main class="layout">
+  <section class="mapwrap" aria-label="Mappa dei prezzi per Paese">
+    <div id="map"></div>
+    <div class="maptools" id="mapView"><button type="button" data-v="eu">Europa</button><button type="button" data-v="w">Mondo</button></div>
+  </section>
+
+  <section class="side">
+    <div class="totem" aria-live="polite">
+      <div class="where" id="where"></div>
+      <div class="cells">
+        <div class="cell it"><span>Italia</span><b class="price" id="cIt">–</b></div>
+        <div class="cell"><span>Media UE</span><b class="price" id="cEu">–</b></div>
+        <div class="cell lo"><span id="cLoN">Più basso</span><b class="price" id="cLo">–</b></div>
+        <div class="cell hi"><span id="cHiN">Più alto</span><b class="price" id="cHi">–</b></div>
+      </div>
+    </div>
+
+    <details class="box" id="bxPieno" open>
+      <summary>Quanto costa il pieno <em id="pienoSum"></em></summary>
+      <div class="in">
+        <div class="g2">
+          <div class="f"><label for="nLitri">Litri</label><input id="nLitri" type="number" inputmode="decimal" min="1" max="500" step="1"></div>
+          <div class="f"><label for="nCons">Consumo (L/100 km)</label><input id="nCons" type="number" inputmode="decimal" min="1" max="40" step="0.1"></div>
+        </div>
+        <p class="rinfo" id="pienoOut" style="color:var(--ink);font-size:14px"></p>
+      </div>
+    </details>
+
+    <details class="box" id="bxTrend">
+      <summary>Andamento in Europa <em>11 settimane</em></summary>
+      <div class="in">
+        <div class="f" style="padding-top:0"><label for="sTrend">Paese da confrontare con Italia e media UE</label><select id="sTrend"></select></div>
+        <div class="chart" id="trend" style="margin-top:12px"></div>
+      </div>
+    </details>
+
+    <details class="box" id="bxBrent">
+      <summary>Dal Brent alla pompa <em>scenari per Paese</em></summary>
+      <div class="in">
+        <p>Se il Brent cambia, il costo del greggio al litro cambia allo stesso modo per tutti; alla pompa la variazione cresce con l'IVA di ogni Paese. Accise e margini restano fermi.</p>
+        <div class="g2">
+          <div class="f"><label for="bBrent">Brent oggi ($ al barile)</label><input id="bBrent" type="number" inputmode="decimal" min="10" max="300" step="0.1"></div>
+          <div class="f"><label for="bFx">Cambio euro/dollaro</label><input id="bFx" type="number" inputmode="decimal" min="0.5" max="2" step="0.0001"></div>
+        </div>
+        <div class="f"><label for="bSim">Se il Brent andasse a <output id="oSim"></output></label><input id="bSim" type="range" min="40" max="180" step="1"></div>
+        <p class="rinfo" id="brHead" style="color:var(--ink);font-size:14px"></p>
+        <table class="rank"><thead><tr><th>Paese</th><th>IVA</th><th>Oggi</th><th>Stima</th></tr></thead><tbody id="brRows"></tbody></table>
+        <p class="rinfo">Stima di prima approssimazione, in euro al litro: i listini seguono i prodotti raffinati più che il greggio e si adeguano con ritardo. Esclusi i Paesi con prezzi amministrati (Malta, India) e quelli senza dato. IVA: aliquote ordinarie; Stati Uniti e Brasile tassano in misura fissa al litro.</p>
+      </div>
+    </details>
+
+    <details class="box" id="bxAdd">
+      <summary>Aggiungi o correggi un Paese <em id="addSum"></em></summary>
+      <div class="in">
+        <p>I dati incorporati coprono i Paesi con una fonte ufficiale verificata. Qui puoi aggiungerne altri, o aggiornare un prezzo, con i valori che trovi tu: restano salvati nel browser.</p>
+        <div class="g2">
+          <div class="f wide"><label for="aC">Paese</label><select id="aC"></select></div>
+          <div class="f"><label for="aB">Benzina, al litro</label><input id="aB" type="number" inputmode="decimal" min="0" step="0.001"></div>
+          <div class="f"><label for="aD">Gasolio, al litro</label><input id="aD" type="number" inputmode="decimal" min="0" step="0.001"></div>
+          <div class="f"><label for="aCur">Valuta dei prezzi</label><select id="aCur"></select></div>
+          <div class="f"><label for="aPer">Data o periodo</label><input id="aPer" type="text" maxlength="40" placeholder="es. settembre 2026"></div>
+          <div class="f wide"><label for="aSrc">Fonte</label><input id="aSrc" type="text" maxlength="120" placeholder="ente o sito da cui viene il prezzo"></div>
+        </div>
+        <div class="acts"><button type="button" class="btn primary" id="aAdd">Salva il Paese</button></div>
+        <p class="rinfo" id="aMsg"></p>
+        <ul class="dlist" id="aList"></ul>
+      </div>
+    </details>
+
+    <div class="lhead">
+      <h2 id="lTitle">Classifica</h2>
+      <div class="seg" id="sArea" role="group" aria-label="Area"><button type="button" data-v="all">Tutti</button><button type="button" data-v="eu">UE</button><button type="button" data-v="x">Extra UE</button></div>
+    </div>
+    <ol id="list"></ol>
+    <div style="padding:0 14px"><button type="button" class="link" id="btnCsv">Scarica la tabella in CSV</button></div>
+    <p class="foot">Fonti: Commissione europea, Weekly Oil Bulletin (27 Paesi UE, prezzi medi nazionali tasse incluse, settimana del 14/09/2026, serie storica via fuel-prices.eu); per gli altri Paesi l'ente nazionale indicato in ogni scheda, ciascuno con il proprio periodo. I valori con ≈ sono convertiti da dollari al gallone. Cambi: BCE, <span id="fxNote"></span>. Benzina: Euro-super 95 o il grado più vicino. I periodi non coincidono tra Paesi: il confronto è indicativo.<br><b>Sviluppata da Marco Pugliese</b> · SerMarkuz Lab.</p>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+<aside class="sheet" id="sheet" aria-label="Scheda Paese"></aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const DATA=/*DATA*/;
+(function(){
+const $=id=>document.getElementById(id);
+const COLORS=['#0A7A4B','#6BA53A','#F2B705','#E5781E','#C62F2B'],GAL=3.785411784,BBL=158.987;
+const DEF={fuel:'b',cur:'EUR',unit:'L',area:'all',view:'eu',litri:50,consumo:6.5,brent:102,eurusd:1.16,brentSim:102,trend:'DE'};
+let S=Object.assign({},DEF),CUSTOM=[],FX=Object.assign({},DATA.fx),fxDate=DATA.fxDate,SEL=null,map=null,layer=null,ROWS=[],ST=null;
+
+const mem={
+  async get(k){try{if(window.storage){const r=await window.storage.get(k,false);return r?JSON.parse(r.value):null;}const v=window['local'+'Storage'].getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}},
+  async set(k,v){try{if(window.storage){await window.storage.set(k,JSON.stringify(v),false);return;}window['local'+'Storage'].setItem(k,JSON.stringify(v));}catch(e){}}
+};
+let saveT;function save(){clearTimeout(saveT);saveT=setTimeout(()=>mem.set('ottano-mondo',S),300);}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const flag=c=>String.fromCodePoint(...[...c].map(ch=>0x1F1E6+ch.charCodeAt(0)-65));
+const dIt=d=>d.slice(8,10)+'/'+d.slice(5,7);
+let toastT;function toast(m){const e=$('toast');e.textContent=m;e.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('on'),4500);}
+
+/* cambi: unità di valuta per 1 euro; valute ancorate al dollaro ricavate dal cambio USD */
+function rate(c){if(c==='AED')return FX.USD*3.6725;if(c==='SAR')return FX.USD*3.75;if(c==='QAR')return FX.USD*3.64;return FX[c]||null;}
+function toEur(v,c){const r=rate(c);return v!=null&&r?v/r:null;}
+const SYM={EUR:'€',USD:'$',GBP:'£',JPY:'¥',INR:'₹',BRL:'R$',CAD:'C$',AED:'Dh',CHF:'CHF',PLN:'zł',CZK:'Kč',SEK:'kr',DKK:'kr',NOK:'kr',HUF:'Ft',RON:'lei',TRY:'₺',CNY:'¥',AUD:'A$'};
+function countries(){
+  const m=new Map();DATA.countries.forEach(c=>m.set(c.c,Object.assign({},c)));
+  CUSTOM.forEach(x=>{const base=m.get(x.c)||Object.assign({c:x.c,eu:0,reg:0,vat:null},DATA.more[x.c]||{});
+    m.set(x.c,Object.assign(base,{cur:x.cur,loc:base.loc||x.cur,b:x.b,d:x.d,per:x.per||'dato inserito a mano',src:x.src||'inserito a mano',custom:1,dApprox:0,hb:null,hd:null}));});
+  return [...m.values()].filter(c=>c.lat!=null);
+}
+/* prezzo nella valuta e unità scelte */
+function shown(c,fuel){
+  const v=c[fuel];if(v==null)return null;const e=toEur(v,c.cur);if(e==null)return null;
+  let cur=S.cur==='LOC'?(c.loc||c.cur):S.cur,val=e*(rate(cur)||1);if(!rate(cur)){cur='EUR';val=e;}
+  if(S.unit==='G')val*=GAL;
+  return {val,cur,eur:e};
+}
+function fmtV(v,cur){const big=v>=100;return (big?v.toFixed(v>=1000?0:1):v.toFixed(3)).replace('.',',');}
+function priceHTML(v,cur){const s=fmtV(v,cur);if(v>=100)return s;return s.slice(0,-1)+'<sup>'+s.slice(-1)+'</sup>';}
+const sym=c=>SYM[c]||c;
+const eur2=v=>'€ '+v.toFixed(2).replace('.',',');
+function band(e){if(!ST||ST.max-ST.min<1e-6)return 0;let i=0;while(i<4&&e>ST.cuts[i])i++;return i;}
+
+function compute(){
+  const all=countries().map(c=>({c,s:shown(c,S.fuel)})).filter(r=>r.s);
+  ROWS=all.filter(r=>S.area==='all'||(S.area==='eu')===!!r.c.eu).sort((a,b)=>a.s.eur-b.s.eur);
+  const v=ROWS.map(r=>r.s.eur),n=v.length,q=f=>v[Math.min(n-1,Math.floor(f*n))];
+  ST=n?{n,min:v[0],max:v[n-1],cuts:[q(.2),q(.4),q(.6),q(.8)]}:null;
+  return all;
+}
+function sync(){
+  [['tFuel','fuel'],['tCur','cur'],['tUnit','unit'],['sArea','area'],['mapView','view']].forEach(x=>document.querySelectorAll('#'+x[0]+' button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S[x[1]])));
+  $('nLitri').value=S.litri;$('nCons').value=S.consumo;
+}
+function refresh(){
+  sync();save();const all=compute(),fn=S.fuel==='b'?'benzina':'gasolio';
+  const it=all.find(r=>r.c.c==='IT'),eu=all.filter(r=>r.c.eu),euAvg=eu.length?eu.reduce((a,r)=>a+r.s.eur,0)/eu.length:null;
+  const conv=e=>{const cur=S.cur==='LOC'?'EUR':S.cur;return {v:e*(rate(cur)||1)*(S.unit==='G'?GAL:1),cur};};
+  $('where').innerHTML='<b>'+ROWS.length+'</b> Paesi, <b>'+fn+'</b>, '+(S.cur==='LOC'?'valuta locale (riepilogo in €)':S.cur==='USD'?'dollari':'euro')+' '+(S.unit==='G'?'al gallone USA':'al litro');
+  const put=(id,e)=>{if(e==null){$(id).textContent='–';return;}const x=conv(e);$(id).innerHTML=priceHTML(x.v,x.cur);};
+  put('cIt',it?it.s.eur:null);put('cEu',euAvg);
+  if(ST){put('cLo',ST.min);put('cHi',ST.max);$('cLoN').textContent=ROWS[0].c.n;$('cHiN').textContent=ROWS[ROWS.length-1].c.n;}
+  $('stT').textContent='UE: dati '+dIt(DATA.dates[0]);$('stS').textContent=countries().length+' Paesi';
+  $('fxNote').textContent='riferimento del '+fxDate.split('-').reverse().join('/');
+  renderList(it);renderPieno(it,euAvg);renderTrend();renderBrent();renderCustom();drawMap();
+  if(SEL)openSheet(SEL,true);
+}
+function renderList(it){
+  $('lTitle').textContent='Dal meno caro al più caro';
+  $('list').innerHTML=ROWS.map(r=>{const c=r.c,df=it&&c.c!=='IT'?(r.s.eur/it.s.eur-1)*100:null,ap=S.fuel==='d'&&c.dApprox;
+    return '<li data-c="'+c.c+'" style="--k:'+COLORS[band(r.s.eur)]+'" class="'+(c.c==='IT'?'me ':'')+(SEL===c.c?'sel':'')+'">'+
+      '<b class="price">'+(ap?'≈':'')+priceHTML(r.s.val,r.s.cur)+'<small>'+esc(sym(r.s.cur))+'</small></b>'+
+      '<span class="nm">'+flag(c.c)+' '+esc(c.n)+'</span>'+
+      '<span class="meta">'+eur2(r.s.eur*S.litri)+' per '+S.litri+' L · '+esc(c.per)+(c.custom?' · inserito a mano':'')+'</span>'+
+      '<span class="dv '+(df==null?'':df>0.05?'up':df<-0.05?'down':'')+'">'+(df==null?'Italia':(df>0?'+':'−')+Math.abs(df).toFixed(0)+'%')+'<small>'+(df==null?'riferimento':'rispetto all\'Italia')+'</small></span></li>';}).join('')
+    ||'<li style="display:block;cursor:default;border-left-width:1px">Nessun Paese con questo dato.</li>';
+}
+function renderPieno(it,euAvg){
+  $('pienoSum').textContent=S.litri+' L';
+  if(!ST||!it){$('pienoOut').textContent='';return;}
+  const lo=ROWS[0],hi=ROWS[ROWS.length-1],L=S.litri,km=Math.round(L/S.consumo*100);
+  $('pienoOut').innerHTML=L+' litri di '+(S.fuel==='b'?'benzina':'gasolio')+' ('+km+' km circa): <b>'+eur2(it.s.eur*L)+'</b> in Italia, '+eur2(euAvg*L)+' alla media UE, <b class="down">'+eur2(lo.s.eur*L)+'</b> in '+esc(lo.c.n)+', <b class="up">'+eur2(hi.s.eur*L)+'</b> in '+esc(hi.c.n)+'. Ogni 100 km: '+eur2(it.s.eur*S.consumo)+' in Italia, '+eur2(lo.s.eur*S.consumo)+' nel Paese meno caro.';
+}
+
+/* grafico */
+function lineChart(series,w,h){
+  let lo=1e9,hi=-1e9;series.forEach(s=>s.v.forEach(x=>{if(x!=null){lo=Math.min(lo,x);hi=Math.max(hi,x);}}));
+  const pad=(hi-lo)*0.08||0.01;lo-=pad;hi+=pad;const n=series[0].v.length,X=i=>i/(n-1)*w,Y=v=>h-(v-lo)/(hi-lo)*h;
+  return {lo,hi,svg:series.map(s=>'<path d="'+s.v.map((x,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(x).toFixed(1)).join(' ')+'" fill="none" stroke="'+s.col+'" stroke-width="'+(s.w||2.2)+'" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"'+(s.dash?' stroke-dasharray="5 4"':'')+'/>').join('')};
+}
+function renderTrend(){
+  if(!$('bxTrend').open)return;
+  const k=S.fuel==='b'?'hb':'hd',eu=DATA.countries.filter(c=>c.eu),rev=a=>a.slice().reverse();
+  const avg=DATA.dates.map((_,i)=>eu.reduce((a,c)=>a+c[k][i],0)/eu.length),it=eu.find(c=>c.c==='IT'),o=eu.find(c=>c.c===S.trend)||eu.find(c=>c.c==='DE');
+  const ser=[{v:rev(avg),col:'#5B676D',dash:1,n:'media UE'},{v:rev(it[k]),col:'#C62F2B',n:'Italia'}];if(o.c!=='IT')ser.push({v:rev(o[k]),col:'#0F4C9A',n:o.n});
+  const c=lineChart(ser,320,110),d0=DATA.dates[DATA.dates.length-1],d1=DATA.dates[0],ch=a=>((a[0]/a[a.length-1]-1)*100);
+  $('trend').innerHTML='<p style="margin:0 0 8px;font-size:14px">'+(S.fuel==='b'?'Benzina':'Gasolio')+' dal '+dIt(d0)+' al '+dIt(d1)+': Italia <b>'+(ch(it[k])>0?'+':'')+ch(it[k]).toFixed(1).replace('.',',')+'%</b>, media UE '+(ch(avg)>0?'+':'')+ch(avg).toFixed(1).replace('.',',')+'%'+(o.c!=='IT'?', '+esc(o.n)+' '+(ch(o[k])>0?'+':'')+ch(o[k]).toFixed(1).replace('.',',')+'%':'')+'.</p>'+
+    '<svg viewBox="-4 -6 368 126" role="img" aria-label="Andamento settimanale dei prezzi in euro al litro"><line x1="0" x2="320" y1="110" y2="110" stroke="#D5DBD6"/>'+c.svg+'<text x="326" y="6" fill="#5B676D" font-size="10">'+c.hi.toFixed(2).replace('.',',')+'</text><text x="326" y="112" fill="#5B676D" font-size="10">'+c.lo.toFixed(2).replace('.',',')+'</text></svg>'+
+    '<div class="lg">'+ser.map(s=>'<span><i style="background:'+s.col+'"></i>'+esc(s.n)+'</span>').join('')+'<span>€ al litro, tasse incluse</span></div>';
+}
+function renderBrent(){
+  if(!$('bxBrent').open)return;
+  if(document.activeElement!==$('bBrent'))$('bBrent').value=S.brent;
+  if(document.activeElement!==$('bFx'))$('bFx').value=S.eurusd;
+  $('bSim').value=S.brentSim;$('oSim').textContent=S.brentSim+' $';
+  const dC=(S.brentSim-S.brent)/BBL/S.eurusd,crude=S.brent/BBL/S.eurusd;
+  $('brHead').innerHTML='Oggi il greggio pesa <b>'+crude.toFixed(3).replace('.',',')+' €</b> su ogni litro. Con il Brent a '+S.brentSim+' $ la materia prima '+(Math.abs(dC)<0.0005?'non cambia':(dC>0?'sale':'scende')+' di <b>'+Math.abs(dC).toFixed(3).replace('.',',')+' €</b> al litro')+', prima dell\'IVA.';
+  const rows=countries().filter(c=>!c.reg&&c.vat!=null&&c[S.fuel]!=null).map(c=>{const e=toEur(c[S.fuel],c.cur);return {c,e,n:e+dC*(1+c.vat/100)};}).sort((a,b)=>a.n-b.n);
+  $('brRows').innerHTML=rows.map(r=>'<tr'+(r.c.c==='IT'?' style="font-weight:700"':'')+'><td>'+flag(r.c.c)+' '+esc(r.c.n)+'</td><td>'+String(r.c.vat).replace('.',',')+'%</td><td>'+r.e.toFixed(3).replace('.',',')+'</td><td class="'+(dC>0.0005?'up':dC<-0.0005?'down':'')+'">'+Math.max(0,r.n).toFixed(3).replace('.',',')+'</td></tr>').join('');
+}
+
+/* mappa */
+function initMap(){
+  if(typeof L==='undefined')return;
+  map=L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:1}).setView([50,12],4);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:8,subdomains:'abcd',attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> © <a href="https://carto.com/attributions" target="_blank">CARTO</a>'}).addTo(map);
+  layer=L.layerGroup().addTo(map);fit();
+}
+function fit(){if(!map)return;if(S.view==='eu')map.fitBounds([[35,-10],[66,32]],{animate:false});else map.fitBounds([[-40,-125],[66,145]],{animate:false});}
+function drawMap(){
+  if(!map)return;layer.clearLayers();
+  ROWS.forEach(r=>{const i=band(r.s.eur),sel=SEL===r.c.c;
+    L.marker([r.c.lat,r.c.lon],{zIndexOffset:sel?5000:0,title:r.c.n,icon:L.divIcon({className:'pillw',html:'<span class="pill'+(i===2?' dark':'')+(sel?' sel':'')+'" style="--k:'+COLORS[i]+'"><small>'+r.c.c+'</small>'+fmtV(r.s.val,r.s.cur)+'</span>'})}).on('click',()=>openSheet(r.c.c)).addTo(layer);});
+}
+
+/* scheda */
+function openSheet(code,quiet){
+  const c=countries().find(x=>x.c===code);if(!c){closeSheet();return;}SEL=code;
+  const it=countries().find(x=>x.c==='IT'),row=(f,nm)=>{const s=shown(c,f);if(!s)return '<tr><td>'+nm+'</td><td>–</td><td>–</td><td>–</td></tr>';const loc=c[f],ap=f==='d'&&c.dApprox,ie=toEur(it[f],'EUR'),df=(s.eur/ie-1)*100;
+    return '<tr><td>'+nm+'</td><td>'+(ap?'≈ ':'')+(c.cur==='EUR'?'':fmtV(loc,c.cur)+' '+esc(sym(c.cur)))+'</td><td><span class="price">'+priceHTML(s.eur,'EUR')+'</span> €</td><td class="'+(c.c==='IT'?'':df>0?'up':'down')+'">'+(c.c==='IT'?'':(df>0?'+':'−')+Math.abs(df).toFixed(0)+'%')+'</td></tr>';};
+  const sb=shown(c,S.fuel);let sp='';
+  if(c.hb){const k=S.fuel==='b'?'hb':'hd',v=c[k].slice().reverse(),ch=lineChart([{v,col:'#0F4C9A'}],300,40),d=(v[v.length-1]/v[0]-1)*100;
+    sp='<div class="addr" style="margin:10px 0 0;border-top:1px solid #E6EAE6;padding-top:8px">Da '+dIt(DATA.dates[DATA.dates.length-1])+': <b style="color:var(--ink)">'+v[0].toFixed(3).replace('.',',')+' → '+v[v.length-1].toFixed(3).replace('.',',')+' ('+(d>0?'+':'')+d.toFixed(1).replace('.',',')+'%)</b><svg viewBox="-3 -5 306 50" preserveAspectRatio="none" style="display:block;width:100%;height:50px;margin-top:4px" role="img" aria-label="Andamento in 11 settimane">'+ch.svg+'</svg></div>';}
+  $('sheet').style.setProperty('--k',sb?COLORS[band(sb.eur)]:'#999');
+  $('sheet').innerHTML='<button class="x" type="button" aria-label="Chiudi la scheda">×</button><h3>'+flag(c.c)+' '+esc(c.n)+'</h3>'+
+    '<div class="addr">'+esc(c.per)+' · '+esc(c.src)+(c.reg?' · prezzi amministrati':'')+(c.vat!=null?' · IVA '+String(c.vat).replace('.',',')+'%':'')+'</div>'+
+    '<table class="ptab"><thead><tr><th>Al litro</th><th>Valuta locale</th><th>In euro</th><th>Su Italia</th></tr></thead><tbody>'+row('b','Benzina')+row('d','Gasolio')+'</tbody></table>'+
+    (sb?'<div class="addr" style="margin:8px 0 0">'+S.litri+' L di '+(S.fuel==='b'?'benzina':'gasolio')+': <b style="color:var(--ink)">'+eur2(sb.eur*S.litri)+'</b> · '+eur2(sb.eur*S.consumo)+' ogni 100 km</div>':'')+sp+
+    (c.eu&&c.c!=='IT'?'<div class="acts"><button type="button" class="btn" data-trend="'+c.c+'">Confronta l\'andamento con l\'Italia</button></div>':'');
+  $('sheet').classList.add('on');document.querySelectorAll('#list li').forEach(li=>li.classList.toggle('sel',li.dataset.c===code));
+  if(!quiet&&map){if(!map.getBounds().pad(-0.15).contains([c.lat,c.lon]))map.panTo([c.lat,c.lon]);drawMap();}
+}
+function closeSheet(){if(!SEL)return;SEL=null;$('sheet').classList.remove('on');document.querySelectorAll('#list li.sel').forEach(li=>li.classList.remove('sel'));drawMap();}
+
+/* Paesi inseriti a mano */
+function renderCustom(){
+  $('addSum').textContent=CUSTOM.length?CUSTOM.length+(CUSTOM.length===1?' inserito':' inseriti'):'';
+  $('aList').innerHTML=CUSTOM.map((x,i)=>{const m=DATA.more[x.c]||DATA.countries.find(c=>c.c===x.c)||{n:x.c};return '<li><span>'+flag(x.c)+' <b>'+esc(m.n)+'</b> · benzina '+(x.b??'–')+', gasolio '+(x.d??'–')+' '+esc(x.cur)+'</span><button type="button" data-del="'+i+'" aria-label="Elimina '+esc(m.n)+'">×</button></li>';}).join('');
+}
+function addCustom(){
+  const num=id=>{const v=parseFloat(String($(id).value).replace(',','.'));return isFinite(v)&&v>0?v:null;},c=$('aC').value,b=num('aB'),d=num('aD');
+  if(!c||(b==null&&d==null)){$('aMsg').textContent='Scegli il Paese e indica almeno un prezzo.';return;}
+  CUSTOM=CUSTOM.filter(x=>x.c!==c);CUSTOM.push({c,b,d,cur:$('aCur').value,per:$('aPer').value.trim(),src:$('aSrc').value.trim()});
+  mem.set('ottano-mondo-paesi',CUSTOM);['aB','aD','aPer','aSrc'].forEach(i=>$(i).value='');$('aMsg').textContent='Salvato.';refresh();
+}
+function exportCsv(){
+  const rows=[['posizione','paese','codice','benzina_eur_litro','gasolio_eur_litro','valuta_locale','benzina_locale','gasolio_locale','periodo','fonte']];
+  ROWS.forEach((r,i)=>{const c=r.c,e=f=>{const x=toEur(c[f],c.cur);return x==null?'':x.toFixed(3).replace('.',',');};rows.push([i+1,c.n,c.c,e('b'),e('d'),c.cur,c.b??'',c.d??'',c.per,c.src]);});
+  const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='ottano-mondo_'+DATA.dates[0]+'.csv';document.body.appendChild(a);a.click();a.remove();
+}
+async function liveFx(){
+  try{const r=await fetch('https://api.frankfurter.dev/v1/latest?base=EUR');if(!r.ok)return;const j=await r.json();if(!j.rates||!j.rates.USD)return;
+    Object.keys(j.rates).forEach(k=>{if(j.rates[k]>0)FX[k]=j.rates[k];});fxDate=j.date||fxDate;if(S.eurusd===DEF.eurusd)S.eurusd=Math.round(j.rates.USD*10000)/10000;refresh();}catch(e){}
+}
+
+function bind(){
+  [['tFuel','fuel'],['tCur','cur'],['tUnit','unit'],['sArea','area']].forEach(x=>$(x[0]).addEventListener('click',e=>{const b=e.target.closest('button');if(b){S[x[1]]=b.dataset.v;refresh();}}));
+  $('mapView').addEventListener('click',e=>{const b=e.target.closest('button');if(b){S.view=b.dataset.v;sync();save();fit();}});
+  const num=(id,key,lo,hi)=>$(id).addEventListener('change',e=>{const v=parseFloat(String(e.target.value).replace(',','.'));S[key]=Math.min(hi,Math.max(lo,isFinite(v)?v:DEF[key]));refresh();});
+  num('nLitri','litri',1,500);num('nCons','consumo',1,40);num('bBrent','brent',10,300);num('bFx','eurusd',0.5,2);
+  $('bSim').addEventListener('input',e=>{S.brentSim=+e.target.value;save();renderBrent();});
+  ['bxTrend','bxBrent'].forEach(id=>$(id).addEventListener('toggle',()=>{renderTrend();renderBrent();}));
+  $('sTrend').addEventListener('change',e=>{S.trend=e.target.value;save();renderTrend();});
+  $('list').addEventListener('click',e=>{const li=e.target.closest('li[data-c]');if(li)openSheet(li.dataset.c);});
+  $('sheet').addEventListener('click',e=>{if(e.target.closest('.x')){closeSheet();return;}const t=e.target.closest('[data-trend]');if(t){S.trend=t.dataset.trend;$('sTrend').value=S.trend;$('bxTrend').open=true;closeSheet();renderTrend();$('bxTrend').scrollIntoView({block:'start'});}});
+  $('aAdd').addEventListener('click',addCustom);
+  $('aC').addEventListener('change',()=>{const m=DATA.more[$('aC').value]||DATA.countries.find(c=>c.c===$('aC').value);if(m)$('aCur').value=m.cur;});
+  $('aList').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;CUSTOM.splice(+b.dataset.del,1);mem.set('ottano-mondo-paesi',CUSTOM);refresh();});
+  $('btnCsv').addEventListener('click',exportCsv);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();});
+}
+(async function start(){
+  const byName=(a,b)=>a[1].localeCompare(b[1],'it');
+  $('sTrend').innerHTML=DATA.countries.filter(c=>c.eu).map(c=>[c.c,c.n]).sort(byName).map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('');
+  $('aC').innerHTML='<option value="">Scegli…</option>'+Object.keys(DATA.more).map(k=>[k,DATA.more[k].n]).concat(DATA.countries.map(c=>[c.c,c.n+' (correggi)'])).sort(byName).map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('');
+  $('aCur').innerHTML=Object.keys(DATA.fx).concat(['AED','SAR','QAR']).sort().map(k=>'<option>'+k+'</option>').join('');$('aCur').value='USD';
+  bind();
+  const s=await mem.get('ottano-mondo');if(s&&typeof s==='object')S=Object.assign(S,s);
+  const cu=await mem.get('ottano-mondo-paesi');if(Array.isArray(cu))CUSTOM=cu.filter(x=>x&&x.c);
+  $('sTrend').value=S.trend;initMap();refresh();liveFx();
+})();
+})();
+</script>
+</body>
+</html>

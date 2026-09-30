@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#20282D">
+<meta name="author" content="Marco Pugliese">
+<meta name="description" content="Prezzi dei carburanti sulla mappa di tutta Italia, percorso A→B, simulazione del rifornimento, elettrico. Open data MIMIT.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Ottano">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-6 -6 132 132%22 role=%22img%22 aria-label=%22Ottano, la pompa di benzina sorridente%22%3E%3Cg fill=%22%23fff%22 stroke=%22%23fff%22 stroke-width=%2211%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M28 68C16 68 12 76 15 84%22 fill=%22none%22/%3E%3Ccircle cx=%2215%22 cy=%2286%22 r=%225%22/%3E%3Cpath d=%22M82 66C100 66 106 54 101 40%22 fill=%22none%22/%3E%3Cpath d=%22M97 22L84 12%22 fill=%22none%22 stroke-width=%2212%22/%3E%3Crect x=%2291%22 y=%2220%22 width=%2218%22 height=%2222%22 rx=%226%22 transform=%22rotate(-14 100 31)%22/%3E%3Crect x=%2238%22 y=%2210%22 width=%2232%22 height=%2218%22 rx=%227%22/%3E%3Crect x=%2226%22 y=%2222%22 width=%2258%22 height=%2284%22 rx=%2216%22/%3E%3Crect x=%2220%22 y=%22100%22 width=%2270%22 height=%2212%22 rx=%226%22/%3E%3Cpath d=%22M76 2C80 7 82 10 82 13a6 6 0 0 1-12 0c0-3 2-6 6-11z%22 stroke-width=%229%22 transform=%22translate(-2 -1) scale(.8) translate(18 0)%22/%3E%3C/g%3E%3Cg stroke=%22%2320282D%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M28 68C16 68 12 76 15 84%22 fill=%22none%22 stroke-width=%225%22/%3E%3Ccircle cx=%2215%22 cy=%2286%22 r=%225%22 fill=%22%23FFD23F%22/%3E%3Cpath d=%22M82 66C100 66 106 54 101 40%22 fill=%22none%22 stroke-width=%225%22/%3E%3Cpath d=%22M97 22L84 12%22 fill=%22none%22 stroke-width=%226%22/%3E%3Crect x=%2291%22 y=%2220%22 width=%2218%22 height=%2222%22 rx=%226%22 fill=%22%23E5482F%22 transform=%22rotate(-14 100 31)%22/%3E%3Cpath d=%22M96 27l7-2%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%222.5%22 opacity=%22.7%22/%3E%3Crect x=%2238%22 y=%2210%22 width=%2232%22 height=%2218%22 rx=%227%22 fill=%22%23F2B705%22/%3E%3Crect x=%2226%22 y=%2222%22 width=%2258%22 height=%2284%22 rx=%2216%22 fill=%22%23FFD23F%22/%3E%3Crect x=%2220%22 y=%22100%22 width=%2270%22 height=%2212%22 rx=%226%22 fill=%22%2320282D%22/%3E%3Crect x=%2234%22 y=%2232%22 width=%2242%22 height=%2234%22 rx=%2211%22 fill=%22%23FFFDF2%22/%3E%3C/g%3E%3Ccircle cx=%2240.5%22 cy=%2256%22 r=%223.2%22 fill=%22%23FF9E8A%22/%3E%3Ccircle cx=%2269.5%22 cy=%2256%22 r=%223.2%22 fill=%22%23FF9E8A%22/%3E%3Ccircle cx=%2246.5%22 cy=%2246%22 r=%225.6%22 fill=%22%2320282D%22/%3E%3Ccircle cx=%2263.5%22 cy=%2246%22 r=%225.6%22 fill=%22%2320282D%22/%3E%3Ccircle cx=%2248.4%22 cy=%2244%22 r=%222%22 fill=%22%23fff%22/%3E%3Ccircle cx=%2265.4%22 cy=%2244%22 r=%222%22 fill=%22%23fff%22/%3E%3Cpath d=%22M48 55.5Q55 63 62 55.5%22 fill=%22none%22 stroke=%22%2320282D%22 stroke-width=%223.2%22 stroke-linecap=%22round%22/%3E%3Crect x=%2241%22 y=%2274%22 width=%2228%22 height=%2216%22 rx=%225%22 fill=%22%2320282D%22/%3E%3Ctext x=%2255%22 y=%2286.4%22 text-anchor=%22middle%22 font-family=%22'Arial Narrow',Arial,Helvetica,sans-serif%22 font-weight=%22700%22 font-size=%2212.5%22 fill=%22%23FFD23F%22 letter-spacing=%22.5%22%3E95%3C/text%3E%3Cpath d=%22M76 2C80 7 82 10 82 13a6 6 0 0 1-12 0c0-3 2-6 6-11z%22 fill=%22%236FE3A1%22 stroke=%22%2320282D%22 stroke-width=%223%22 stroke-linejoin=%22round%22 transform=%22translate(-2 -1) scale(.8) translate(18 0)%22/%3E%3Cpath d=%22M30.5 40v52%22 stroke=%22%23fff%22 stroke-width=%222.5%22 stroke-linecap=%22round%22 opacity=%22.55%22/%3E%3C/svg%3E">
+<title>Ottano Gold — prezzi carburanti sulla mappa OpenStreetMap</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --asfalto:#20282D; --asfalto2:#2C363C; --carta:#F1F4F0; --foglio:#FFFFFF; --riga:#D5DBD6;
+  --ink:#1B2429; --muto:#5B676D; --statale:#0F4C9A; --statale-t:#E4ECF7;
+  --c0:#0A7A4B; --c1:#6BA53A; --c2:#F2B705; --c3:#E5781E; --c4:#C62F2B; --led:#FFD23F;
+  --cond:"Barlow Condensed","Roboto Condensed","Avenir Next Condensed","HelveticaNeue-CondensedBold","Arial Narrow",sans-serif-condensed,system-ui,sans-serif;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font-family:var(--body);color:var(--ink);background:var(--carta);font-size:15px;line-height:1.4;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--statale);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* testata */
+.bar{background:var(--asfalto);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--cond);font-weight:700;font-size:28px;letter-spacing:.02em;line-height:1}
+.brand .bn{display:flex;flex-direction:column;white-space:nowrap}
+.brand em{font-style:normal;color:#E8B923;background:linear-gradient(90deg,#F7D774,#C9962B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{font-family:var(--body);font-weight:400;font-size:11.5px;letter-spacing:0;color:#C9D1CD;margin-top:3px;white-space:nowrap}
+.brand .logo{width:46px;height:46px;flex:none;margin:-6px -2px -6px -6px}
+.status{margin-left:auto;background:var(--asfalto2);border:1px solid #46525A;color:#E8ECEA;border-radius:6px;padding:6px 10px;font-size:12.5px;text-align:left;max-width:50%;line-height:1.25}
+.status{white-space:nowrap}
+.status b{display:block;font-weight:600;color:#fff}
+.status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c2);margin-right:6px;vertical-align:1px}
+.status.ok .dot{background:#4FD08A}.status.load .dot{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* carburanti */
+.fuels{display:flex;gap:6px;overflow-x:auto;padding:8px 14px;background:var(--asfalto);scrollbar-width:none;position:sticky;top:0;z-index:20}
+.fuels::-webkit-scrollbar{display:none}
+.fuels button{flex:none;border:1px solid #4A565D;background:transparent;color:#D9DFDC;border-radius:4px;padding:7px 12px;font-family:var(--cond);font-size:17px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.fuels button[aria-pressed="true"]{background:var(--led);border-color:var(--led);color:#1d1a05}
+.fuels button small{font-family:var(--body);font-weight:400;font-size:11px;opacity:.75;margin-left:5px}
+
+/* impaginazione */
+.layout{display:flex;flex-direction:column}
+.mapwrap{position:relative;height:50vh;min-height:280px;isolation:isolate;background:#DDE3DE}
+#map{position:absolute;inset:0}
+.leaflet-tile-pane{filter:saturate(.55) contrast(.96)}
+.leaflet-container{font-family:var(--body);background:#DDE3DE}
+.maptools{position:absolute;z-index:500;left:10px;right:10px;bottom:10px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none}
+.maptools button{pointer-events:auto;background:#fff;border:1px solid #B9C2BC;border-radius:6px;padding:8px 12px;font-weight:600;font-size:13.5px;box-shadow:0 2px 0 rgba(32,40,45,.18)}
+.maptools .primary{background:var(--statale);border-color:var(--statale);color:#fff}
+.mapmsg{position:absolute;z-index:400;top:10px;left:54px;right:60px;background:rgba(32,40,45,.88);color:#fff;font-size:12.5px;padding:6px 10px;border-radius:6px;display:none}
+.mapmsg.on{display:block}
+
+.side{padding:0 0 90px}
+.pad{padding:0 14px}
+
+/* totem */
+.totem{background:var(--asfalto);color:#fff;padding:12px 14px 14px}
+.totem .where{font-size:13px;color:#C9D1CD;margin-bottom:8px}
+.totem .where b{color:#fff;font-weight:600}
+.cells{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#414C53;border:1px solid #414C53;border-radius:6px;overflow:hidden}
+.cell{background:#151B1F;padding:8px 10px 9px}
+.cell span{display:block;font-size:11.5px;color:#AEB8B3}
+.price{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em;line-height:1;white-space:nowrap}
+.price sup{font-size:.55em;vertical-align:.62em;margin-left:1px;line-height:0}
+.cell .price{font-size:34px;color:var(--led);margin-top:4px;display:block}
+.cell.lo .price{color:#6FE3A1}.cell.hi .price{color:#FF8A7A}
+.saving{margin-top:9px;font-size:13px;color:#DDE3E0}
+.saving b{color:var(--led)}
+.histo{display:flex;align-items:flex-end;gap:2px;height:38px;margin-top:10px}
+.histo i{flex:1;min-height:2px;border-radius:1px 1px 0 0;display:block}
+.hax{display:flex;justify-content:space-between;font-size:11px;color:#AEB8B3;margin-top:3px;font-variant-numeric:tabular-nums}
+
+/* ricerca luogo */
+.place{position:relative;margin:12px 14px 0}
+.place input{width:100%;padding:11px 12px;border:1px solid #AEB8B1;border-radius:6px;background:#fff;font-size:16px}
+.sugg{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid #AEB8B1;border-top:0;border-radius:0 0 6px 6px;max-height:260px;overflow:auto;display:none}
+.sugg.on{display:block}
+.sugg button{display:flex;justify-content:space-between;width:100%;border:0;background:none;padding:10px 12px;text-align:left;border-top:1px solid #EDF0ED}
+.sugg button:hover,.sugg button.kb{background:var(--statale-t)}
+.sugg small{color:var(--muto)}
+
+/* modalità e percorso */
+.mode{margin:12px 14px 0}
+.mode button{padding:10px 4px;font-size:14px}
+.routebox{margin:0 14px;padding-bottom:4px}
+.routebox .place{margin:10px 0 0}
+.routebox .place label{display:block;font-size:12.5px;color:var(--muto);margin-bottom:3px}
+.routebox .f{padding-top:12px}
+.routebox .check{margin-top:8px}
+.rinfo{font-size:13px;color:var(--muto);margin:8px 0 0}
+.rinfo.warn{color:#9A5A00}
+.ab{font-style:normal;position:absolute;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:var(--statale);color:#fff;font-family:var(--cond);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+
+/* storico */
+.hist{margin-top:12px;border-top:1px solid #414C53;padding-top:10px}
+.hist .hrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hist button{background:transparent;border:1px solid #5A666D;color:#fff;border-radius:5px;padding:7px 10px;font-size:13px}
+.hist button[aria-pressed="true"]{background:#fff;color:var(--asfalto);border-color:#fff;font-weight:600}
+.hist button:disabled{opacity:.6;cursor:default}
+.hist .hnote{font-size:12.5px;color:#AEB8B3;flex:1;min-width:150px}
+.hist h3{font-size:14px;font-weight:600;margin:0 0 2px;color:#fff}
+.hist p{margin:0 0 6px;font-size:13px;color:#DDE3E0}
+.hist svg{display:block;width:100%;height:auto;overflow:visible}
+.hist .lg{display:flex;gap:14px;font-size:12px;color:#C9D1CD;margin-top:2px}
+.hist .lg i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.spark{margin:10px 0 0;padding-top:8px;border-top:1px solid #E6EAE6;font-size:13px;color:var(--muto)}
+.spark svg{display:block;width:100%;height:46px;margin-top:4px;overflow:visible}
+.spark b{color:var(--ink)}
+
+/* dove */
+.dove{background:var(--carta);padding-bottom:12px}
+.dove .hint{font-size:12.5px;color:var(--muto);margin:6px 14px 0}
+.sugg button.geo{color:var(--statale);font-weight:600}
+/* simulazione */
+.sim{margin:12px 14px 0;background:var(--foglio);border:1px solid var(--riga);border-radius:6px;padding:12px}
+.sim h2{font-family:var(--cond);font-size:22px;margin:0 0 10px;line-height:1.1}
+.simgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.sim .chips{margin-top:10px}
+.sim .check{margin-top:12px}
+.simtab{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px;font-variant-numeric:tabular-nums}
+.simtab th{font-weight:400;color:var(--muto);font-size:12px;text-align:right;padding:0 0 4px 6px;vertical-align:bottom;line-height:1.2}
+.simtab th:first-child,.simtab td:first-child{text-align:left;padding-left:0}
+.simtab td{padding:7px 0 7px 6px;border-top:1px solid #E6EAE6;text-align:right;white-space:nowrap}
+.simtab td:first-child{white-space:normal}
+.simtab td:first-child i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:var(--k)}
+.simtab td small{display:block;color:var(--muto);font-size:12px}
+.simtab .main{font-family:var(--cond);font-size:20px;font-weight:700}
+.simsum{margin:10px 0 0;font-size:14px;padding:9px 10px;background:#EAF4EE;border-left:4px solid var(--c0);border-radius:3px}
+.simsum b{color:#075C38;white-space:nowrap}
+
+/* elettrico */
+.cells.ev{grid-template-columns:repeat(4,1fr)}
+.cells.ev .cell{cursor:pointer;background:#151B1F;border:0;text-align:left;padding:8px 8px 9px}
+.cells.ev .cell .price{font-size:26px;color:#C9D1CD}
+.cells.ev .cell[aria-pressed="true"]{background:#2A3338}
+.cells.ev .cell[aria-pressed="true"] .price{color:var(--led)}
+.evin{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:10px}
+.evin label{font-size:11.5px;color:#AEB8B3;display:block}
+.evin input{width:100%;padding:6px 8px;border:1px solid #5A666D;border-radius:5px;background:#151B1F;color:#fff;font-size:15px}
+.evnote{font-size:12.5px;color:#C9D1CD;margin-top:10px}
+.evnote a{color:var(--led)}
+.evpin{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:#0F4C9A;color:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:700;font-size:11px;line-height:1}
+.evpin.hpc{background:#6A1B9A}.evpin.dc{background:#0F4C9A}.evpin.ac{background:#0A7A4B}
+.evpin.sel{outline:3px solid var(--led)}
+.evleg{display:flex;gap:10px;font-size:12px;color:var(--muto);margin:6px 14px 0;flex-wrap:wrap}
+.evleg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+/* auto */
+.car{margin:12px 14px 0;background:var(--foglio);border:1px solid var(--riga);border-radius:6px;padding:12px}
+.car h2{font-family:var(--cond);font-size:22px;margin:0 0 4px;line-height:1.1}
+.car .g{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;align-items:end}
+.car select{padding:8px;border:1px solid #AEB8B1;border-radius:5px;background:#fff;width:100%;font-size:15px}
+.vs{margin-top:12px;border-top:1px solid #E6EAE6;padding-top:10px;font-size:13.5px}
+.vs table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;margin-top:6px;font-size:13.5px}
+.vs td{padding:5px 0 5px 10px;border-top:1px solid #EEF1EE;text-align:right;white-space:nowrap}
+.vs td:first-child{text-align:left;white-space:normal}
+.vs tr.me td{font-weight:700}
+
+/* dal Brent alla pompa */
+.stack{display:flex;height:34px;border-radius:5px;overflow:hidden;margin:12px 0 6px;border:1px solid var(--riga)}
+.stack span{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;min-width:0;overflow:hidden;white-space:nowrap}
+.leg{list-style:none;margin:0;padding:0;font-size:13.5px;font-variant-numeric:tabular-nums}
+.leg li{display:flex;gap:8px;align-items:baseline;padding:5px 0;border-top:1px solid #E6EAE6}
+.leg li:first-child{border-top:0}
+.leg i{width:10px;height:10px;border-radius:2px;flex:none;align-self:center}
+.leg span{flex:1}
+.leg small{color:var(--muto);margin-left:4px}
+.scen{margin-top:14px;padding-top:4px;border-top:2px solid var(--asfalto)}
+.scen .big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px}
+.scen .big .price{font-size:38px}
+.scen .big em{font-style:normal;font-weight:600}
+.up{color:#B3261E}.down{color:#0A6B42}
+
+/* analisi e diario */
+.box{margin:12px 14px 0;background:var(--foglio);border:1px solid var(--riga);border-radius:6px}
+.box summary{padding:11px 12px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;gap:10px;list-style:none}
+.box summary::-webkit-details-marker{display:none}
+.box summary em{font-style:normal;font-weight:400;color:var(--muto);font-size:13px;text-align:right}
+.box .in{padding:12px;border-top:1px solid var(--riga)}
+.box .in>p{margin:0 0 10px;font-size:14px}
+.rank{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;margin-top:10px}
+.rank td{padding:6px 0;border-top:1px solid #E6EAE6}
+.rank td:nth-child(2){color:var(--muto);font-size:12.5px;text-align:right;padding-right:10px;white-space:nowrap}
+.rank td:last-child{text-align:right;white-space:nowrap;width:1%}
+.rank .price{font-size:18px}
+.rank i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;background:var(--k)}
+.rank .gap td,.rank .gap td:last-child{border:0;padding:2px 0;color:var(--muto);font-size:12px;text-align:center;white-space:normal;width:auto}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;align-items:end}
+.dgrid .f.wide{grid-column:1/-1}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--riga);border:1px solid var(--riga);border-radius:6px;overflow:hidden;margin:12px 0}
+.kpis div{background:#fff;padding:8px 10px;font-size:12px;color:var(--muto)}
+.kpis b{display:block;font-family:var(--cond);font-size:22px;color:var(--ink);line-height:1.1}
+.dlist{list-style:none;margin:0;padding:0;font-size:13.5px}
+.dlist li{display:flex;gap:8px;align-items:center;padding:7px 0;border-top:1px solid #E6EAE6}
+.dlist li span{flex:1;min-width:0}
+.dlist li small{display:block;color:var(--muto)}
+.dlist button{border:0;background:#EEF1EE;border-radius:50%;width:30px;height:30px;font-size:16px;flex:none}
+
+/* parametri */
+.params{margin:12px 14px 0;background:var(--foglio);border:1px solid var(--riga);border-radius:6px}
+.params summary{padding:11px 12px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;gap:10px;list-style:none}
+.params summary::-webkit-details-marker{display:none}
+.params summary em{font-style:normal;font-weight:400;color:var(--muto);font-size:13px;text-align:right}
+.pgrid{padding:2px 12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;border-top:1px solid var(--riga)}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0;padding-top:10px}
+.f.wide{grid-column:1/-1}
+.f label,.f .lab{font-size:12.5px;color:var(--muto)}
+.f output{font-weight:600;color:var(--ink)}
+.f select,.f input[type=number]{padding:8px;border:1px solid #AEB8B1;border-radius:5px;background:#fff;width:100%;font-size:15px}
+.f input[type=range]{width:100%;accent-color:var(--statale);margin:2px 0}
+.seg{display:flex;border:1px solid #AEB8B1;border-radius:5px;overflow:hidden}
+.seg button{flex:1;border:0;background:#fff;padding:8px 4px;font-size:13.5px;border-left:1px solid #D5DBD6}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--statale);color:#fff;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid #AEB8B1;background:#fff;border-radius:999px;padding:5px 11px;font-size:13px}
+.chips button[aria-pressed="true"]{background:var(--statale-t);border-color:var(--statale);color:var(--statale);font-weight:600}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:13.5px}
+.check input{width:18px;height:18px;margin-top:1px;accent-color:var(--statale);flex:none}
+.link{background:none;border:0;padding:0;color:var(--statale);text-decoration:underline;font-size:13px}
+
+/* elenco */
+.lhead{display:flex;align-items:center;gap:8px;margin:16px 14px 6px}
+.lhead h2{font-family:var(--cond);font-size:22px;margin:0;font-weight:700;flex:1;line-height:1.1}
+.lhead select{padding:7px 8px;border:1px solid #AEB8B1;border-radius:5px;background:#fff;font-size:14px}
+#list{list-style:none;margin:0;padding:0 14px;counter-reset:n}
+#list li{counter-increment:n;background:var(--foglio);border:1px solid var(--riga);border-left:6px solid var(--k,#999);border-radius:6px;margin-bottom:7px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;padding:10px 12px;cursor:pointer;align-items:center}
+#list li.sel{outline:2px solid var(--statale)}
+#list .price{font-size:30px;grid-row:1/3;grid-column:1}
+#list .nm{grid-column:2;grid-row:1;font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#list .nm::before{content:counter(n) ". ";color:var(--muto);font-weight:400}
+#list .meta{font-size:12.5px;color:var(--muto);grid-column:2;grid-row:2;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#list .km{grid-column:3;font-family:var(--cond);font-size:19px;font-weight:600;text-align:right;grid-row:1/3;white-space:nowrap}
+#list .km small{display:block;font-family:var(--body);font-weight:400;font-size:11.5px;color:var(--muto)}
+.old{color:#9A5A00}
+.empty{margin:6px 14px;padding:16px;border:1px dashed #9AA6A0;border-radius:6px;color:var(--muto);font-size:14px;background:#fff}
+.foot{margin:18px 14px 0;font-size:12px;color:var(--muto);line-height:1.5}
+.foot a{color:var(--statale)}
+
+/* scheda impianto */
+.sheet{position:fixed;z-index:1000;left:0;right:0;bottom:0;background:#fff;border-top:4px solid var(--k,#999);box-shadow:0 -6px 24px rgba(32,40,45,.22);padding:12px 14px max(14px,env(safe-area-inset-bottom));max-height:70vh;overflow:auto;transform:translateY(105%);transition:transform .22s ease}
+.sheet.on{transform:none}
+.sheet h3{margin:0;font-family:var(--cond);font-size:24px;line-height:1.1;padding-right:40px}
+.sheet .addr{color:var(--muto);font-size:13.5px;margin:3px 0 10px}
+.sheet .x{position:absolute;right:8px;top:8px;width:36px;height:36px;border:0;background:#EEF1EE;border-radius:50%;font-size:20px;line-height:1}
+.ptab{width:100%;border-collapse:collapse;font-size:14px}
+.ptab th{font-weight:400;color:var(--muto);font-size:12px;text-align:right;padding:2px 0 4px}
+.ptab th:first-child{text-align:left}
+.ptab td{padding:6px 0;border-top:1px solid #E6EAE6;text-align:right;font-variant-numeric:tabular-nums}
+.ptab td:first-child{text-align:left}
+.ptab tr.cur td{font-weight:700}
+.ptab .price{font-size:19px}
+.acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #AEB8B1;background:#fff;border-radius:6px;padding:10px 14px;font-weight:600;font-size:14px;text-decoration:none;color:var(--ink);flex:1;min-width:130px}
+.btn.primary{background:var(--statale);border-color:var(--statale);color:#fff}
+
+/* segnaposto mappa */
+.pillw{width:0!important;height:0!important}
+.pill{position:absolute;transform:translate(-50%,-100%);margin-top:-5px;background:var(--k);color:#fff;font-family:var(--cond);font-weight:700;font-size:15px;line-height:1;padding:4px 6px;border-radius:4px;white-space:nowrap;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4);font-variant-numeric:tabular-nums}
+.pill.dark{color:#1d1a05}
+.pill::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:#fff;border-bottom:0}
+.pill.sel{outline:3px solid var(--statale);z-index:5}
+.agg{position:absolute;transform:translate(-50%,-50%);background:var(--k);color:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--cond);font-weight:700;line-height:1;border:2px solid rgba(255,255,255,.9);box-shadow:0 1px 4px rgba(0,0,0,.35);font-variant-numeric:tabular-nums}
+.agg.dark{color:#1d1a05}
+.agg small{font-family:var(--body);font-weight:400;font-size:9.5px;opacity:.9;margin-top:1px}
+.citylab{position:absolute;transform:translate(-50%,-50%);font-size:10px;color:#5B676D;white-space:nowrap;pointer-events:none;text-shadow:0 0 3px #fff,0 0 3px #fff;display:none}
+.citylab.big{display:block;font-size:11.5px;font-weight:600;color:#1B2429}
+#map.z8 .citylab{display:block}
+.ctr{width:14px;height:14px;border-radius:50%;background:var(--statale);border:3px solid #fff;box-shadow:0 0 0 2px var(--statale);transform:translate(-50%,-50%);position:absolute}
+
+/* avviso */
+.toast{position:fixed;z-index:2000;left:50%;top:70px;transform:translateX(-50%);background:rgba(32,40,45,.94);color:#fff;font-size:13.5px;padding:9px 14px;border-radius:6px;max-width:min(92vw,440px);display:none;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.toast.on{display:block}
+
+/* finestra dati */
+dialog{border:0;border-radius:8px;padding:0;max-width:min(560px,94vw);width:100%;color:var(--ink)}
+dialog::backdrop{background:rgba(32,40,45,.55)}
+.dlg{padding:18px}
+.dlg h2{font-family:var(--cond);font-size:26px;margin:0 0 6px}
+.dlg p{margin:8px 0;font-size:14px}
+.dlg ol{padding-left:20px;font-size:14px;margin:8px 0}
+.dlg li{margin:4px 0}
+.dlg a{color:var(--statale)}
+.dlg .log{background:#F1F4F0;border-radius:5px;padding:8px 10px;font-size:12.5px;color:var(--muto);white-space:pre-wrap;margin-top:10px;max-height:120px;overflow:auto}
+.drop{border:1.5px dashed #8E9A94;border-radius:6px;padding:14px;text-align:center;margin-top:8px;background:#FAFBFA;font-size:14px}
+
+@media (max-width:420px){.brand{font-size:26px}.brand small{font-size:11px}.bar{padding-left:12px;padding-right:12px;gap:8px}}
+@media (min-width:900px){
+  body{overflow:hidden;display:flex;flex-direction:column;height:100vh}
+  .layout{display:grid;grid-template-columns:430px 1fr;grid-template-rows:auto 1fr;flex:1;min-height:0}
+  .dove{grid-column:1;grid-row:1;border-right:1px solid var(--riga);border-bottom:1px solid var(--riga)}
+  .side{grid-column:1;grid-row:2;overflow:auto;padding-bottom:30px;border-right:1px solid var(--riga)}
+  .mapwrap{grid-column:2;grid-row:1/3;height:auto}
+  .sheet{left:auto;right:16px;bottom:16px;width:400px;border-radius:8px;border-top-width:5px;transform:translateY(120%)}
+  .fuels{position:static}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="brand">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 132 132" class="logo" aria-hidden="true"><g fill="#fff" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"><path d="M28 68C16 68 12 76 15 84" fill="none"/><circle cx="15" cy="86" r="5"/><path d="M82 66C100 66 106 54 101 40" fill="none"/><path d="M97 22L84 12" fill="none" stroke-width="12"/><rect x="91" y="20" width="18" height="22" rx="6" transform="rotate(-14 100 31)"/><rect x="38" y="10" width="32" height="18" rx="7"/><rect x="26" y="22" width="58" height="84" rx="16"/><rect x="20" y="100" width="70" height="12" rx="6"/><path d="M76 2C80 7 82 10 82 13a6 6 0 0 1-12 0c0-3 2-6 6-11z" stroke-width="9" transform="translate(-2 -1) scale(.8) translate(18 0)"/></g><g stroke="#20282D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M28 68C16 68 12 76 15 84" fill="none" stroke-width="5"/><circle cx="15" cy="86" r="5" fill="#FFD23F"/><path d="M82 66C100 66 106 54 101 40" fill="none" stroke-width="5"/><path d="M97 22L84 12" fill="none" stroke-width="6"/><rect x="91" y="20" width="18" height="22" rx="6" fill="#E5482F" transform="rotate(-14 100 31)"/><path d="M96 27l7-2" fill="none" stroke="#fff" stroke-width="2.5" opacity=".7"/><rect x="38" y="10" width="32" height="18" rx="7" fill="#F2B705"/><rect x="26" y="22" width="58" height="84" rx="16" fill="#FFD23F"/><rect x="20" y="100" width="70" height="12" rx="6" fill="#20282D"/><rect x="34" y="32" width="42" height="34" rx="11" fill="#FFFDF2"/></g><circle cx="40.5" cy="56" r="3.2" fill="#FF9E8A"/><circle cx="69.5" cy="56" r="3.2" fill="#FF9E8A"/><circle cx="46.5" cy="46" r="5.6" fill="#20282D"/><circle cx="63.5" cy="46" r="5.6" fill="#20282D"/><circle cx="48.4" cy="44" r="2" fill="#fff"/><circle cx="65.4" cy="44" r="2" fill="#fff"/><path d="M48 55.5Q55 63 62 55.5" fill="none" stroke="#20282D" stroke-width="3.2" stroke-linecap="round"/><rect x="41" y="74" width="28" height="16" rx="5" fill="#20282D"/><text x="55" y="86.4" text-anchor="middle" font-family="'Arial Narrow',Arial,Helvetica,sans-serif" font-weight="700" font-size="12.5" fill="#FFD23F" letter-spacing=".5">95</text><path d="M76 2C80 7 82 10 82 13a6 6 0 0 1-12 0c0-3 2-6 6-11z" fill="#6FE3A1" stroke="#20282D" stroke-width="3" stroke-linejoin="round" transform="translate(-2 -1) scale(.8) translate(18 0)"/><path d="M30.5 40v52" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".55"/></svg>
+    <span class="bn"><span>Ottano <em>Gold</em></span><small>Sviluppata da Marco Pugliese</small></span>
+  </div>
+  <button class="status" id="btnDati" type="button" aria-haspopup="dialog"><b><i class="dot"></i><span id="stTitle">Carico i dati…</span></b><span id="stSub"></span></button>
+</header>
+
+<nav class="fuels" id="fuels" aria-label="Carburante"></nav>
+
+<main class="layout">
+  <section class="dove" aria-label="Dove cercare">
+    <div class="seg mode" id="segMode" role="group" aria-label="Dove cercare"><button type="button" data-v="zone">Intorno a un punto</button><button type="button" data-v="route">Lungo un percorso</button></div>
+    <div class="place" id="placeZone">
+      <label class="sr" for="q">Luogo intorno a cui cercare</label>
+      <p class="hint" style="margin:0 0 6px">Scegli un comune dall'elenco oppure cerca una via o un indirizzo. Senza luogo vedi tutta Italia.</p>
+      <input id="q" type="search" autocomplete="off" placeholder="Inserisci un luogo: comune, via, indirizzo…">
+      <div class="sugg" id="sugg" role="listbox"></div>
+    </div>
+    <div class="routebox" id="routeBox" hidden>
+      <div class="place"><label for="qFrom">Partenza</label><input id="qFrom" type="search" autocomplete="off" placeholder="Comune o indirizzo di partenza"><div class="sugg" id="suggFrom" role="listbox"></div></div>
+      <div class="place"><label for="qTo">Arrivo</label><input id="qTo" type="search" autocomplete="off" placeholder="Comune o indirizzo di arrivo"><div class="sugg" id="suggTo" role="listbox"></div></div>
+      <p class="rinfo" id="rInfo"></p>
+    </div>
+  </section>
+
+  <section class="mapwrap" aria-label="Mappa degli impianti">
+    <div id="map"></div>
+    <div class="mapmsg" id="mapmsg"></div>
+    <div class="maptools">
+      <button type="button" id="btnGeo">◎ Vicino a me</button>
+      <button type="button" id="btnHere" class="primary" hidden>Cerca in questa zona</button>
+      <button type="button" id="btnEv" hidden>⚡ Colonnine nella zona</button>
+    </div>
+  </section>
+
+  <section class="side">
+    <div class="totem" aria-live="polite">
+      <div class="where" id="where"></div>
+      <div class="cells ev" id="evCells" hidden></div>
+      <div id="evIn" hidden>
+        <div class="evin">
+          <div><label for="evCasa">A casa (€/kWh)</label><input id="evCasa" type="number" inputmode="decimal" min="0.05" max="2" step="0.01"></div>
+          <div><label for="evAc">Colonnina AC (€/kWh)</label><input id="evAc" type="number" inputmode="decimal" min="0.05" max="2" step="0.01"></div>
+          <div><label for="evDc">Colonnina DC (€/kWh)</label><input id="evDc" type="number" inputmode="decimal" min="0.05" max="2" step="0.01"></div>
+          <div><label for="evHpc">Ultrarapida HPC (€/kWh)</label><input id="evHpc" type="number" inputmode="decimal" min="0.05" max="2" step="0.01"></div>
+        </div>
+        <p class="evnote">Le tariffe pubbliche non hanno un open data come i carburanti: i valori predefiniti sono le medie di luglio 2026 dell'Osservatorio Adiconsum-TariffEV (AC 0,63, DC e HPC 0,74 €/kWh; con app e abbonamenti si scende fino a 0,25–0,47), quello di casa è una stima con le perdite di ricarica. Correggili con la tua tariffa. Colonnine ufficiali: <a href="https://www.piattaformaunicanazionale.it/" target="_blank" rel="noopener">Piattaforma Unica Nazionale</a>.</p>
+      </div>
+      <div class="cells" id="fCells">
+        <div class="cell lo"><span>Più basso</span><b class="price" id="tMin">–</b></div>
+        <div class="cell"><span>Mediana</span><b class="price" id="tMed">–</b></div>
+        <div class="cell hi"><span>Più alto</span><b class="price" id="tMax">–</b></div>
+      </div>
+      <div class="histo" id="histo" aria-hidden="true"></div>
+      <div class="hax" id="hax"></div>
+      <div class="hist" id="hist"></div>
+    </div>
+
+    <section class="car" aria-labelledby="carT">
+      <h2 id="carT">La tua auto</h2>
+      <p class="rinfo" style="margin:0 0 4px">Scegli il modello: consumo WLTP combinato indicativo, da confrontare con il libretto o il computer di bordo. Il diario registra poi quello reale.</p>
+      <div class="g">
+        <div class="f"><label for="sBrand">Marca</label><select id="sBrand"></select></div>
+        <div class="f"><label for="sModel">Modello</label><select id="sModel"></select></div>
+      </div>
+      <p class="rinfo" id="carMsg"></p>
+      <div class="vs" id="vs"></div>
+    </section>
+
+    <section class="sim" aria-labelledby="simT">
+      <h2 id="simT">Simulazione del rifornimento</h2>
+      <div class="seg" id="segSim" role="group" aria-label="Come indicare la quantità"><button type="button" data-v="litri">Litri</button><button type="button" data-v="tank">Serbatoio</button><button type="button" data-v="budget">Importo in €</button></div>
+      <div class="simgrid">
+        <div class="f" data-sim="litri"><label for="nLitri">Quantità da fare (<span class="u">L</span>)</label><input id="nLitri" type="number" inputmode="decimal" min="1" max="500" step="1"></div>
+        <div class="f" data-sim="tank"><label for="nTank">Capacità del serbatoio (<span class="u">L</span>)</label><input id="nTank" type="number" inputmode="decimal" min="5" max="500" step="1"></div>
+        <div class="f" data-sim="tank"><label for="rLevel">Livello attuale: <output id="oLevel"></output></label><input id="rLevel" type="range" min="0" max="95" step="5"></div>
+        <div class="f" data-sim="budget"><label for="nBudget">Importo da spendere (€)</label><input id="nBudget" type="number" inputmode="decimal" min="5" max="1000" step="5"></div>
+        <div class="f"><label for="nCons">Consumo (<span class="u">L</span>/100 km)</label><input id="nCons" type="number" inputmode="decimal" min="1" max="60" step="0.1"></div>
+        <div class="f"><label for="nKm">Km all'anno</label><input id="nKm" type="number" inputmode="numeric" min="0" max="200000" step="1000"></div>
+      </div>
+      <div class="chips" id="quick" data-sim="litri"></div>
+      <label class="check" id="lDetour"><input type="checkbox" id="cDetour"> Conta anche il carburante per andare all'impianto e tornare (linea d'aria × 1,3)</label>
+      <div id="simOut"></div>
+    </section>
+
+    <details class="params" id="params">
+      <summary>Parametri <em id="psum"></em></summary>
+      <div class="pgrid">
+        <div class="f wide" id="fRadius"><label for="rRadius">Raggio di ricerca: <output id="oRadius"></output></label>
+          <input id="rRadius" type="range" min="0" max="60" step="1"></div>
+        <div class="f wide" id="fCorr"><label for="rCorr">Distanza massima dal percorso: <output id="oCorr"></output></label>
+          <input id="rCorr" type="range" min="1" max="15" step="1">
+          <label class="check"><input type="checkbox" id="cNoMw"> Evita le autostrade</label></div>
+        <div class="f wide"><span class="lab">Servizio</span>
+          <div class="seg" id="segServ"><button type="button" data-v="best">Il più conveniente</button><button type="button" data-v="self">Self</button><button type="button" data-v="serv">Servito</button></div></div>
+        <div class="f"><label for="sTipo">Tipo di impianto</label>
+          <select id="sTipo"><option value="all">Tutti</option><option value="Stradale">Solo stradali</option><option value="Autostradale">Solo autostradali</option></select></div>
+        <div class="f"><label for="sFresh">Prezzo comunicato</label>
+          <select id="sFresh"><option value="0">In qualsiasi data</option><option value="2">Negli ultimi 2 giorni</option><option value="7">Negli ultimi 7 giorni</option><option value="30">Negli ultimi 30 giorni</option></select></div>
+        <div class="f"><label for="nMax">Prezzo massimo (€)</label>
+          <input id="nMax" type="number" inputmode="decimal" min="0" max="5" step="0.01" placeholder="nessuno"></div>
+        <div class="f"><span class="lab">Filtri rapidi</span>
+          <label class="check"><input type="checkbox" id="cFav"> Solo preferiti</label></div>
+        <div class="f wide"><span class="lab">Bandiera <button type="button" class="link" id="brandAll">tutte</button></span>
+          <div class="chips" id="brands"></div></div>
+        <div class="f wide">
+          <label class="check"><input type="checkbox" id="cAnom"> Scarta i prezzi anomali (errori di digitazione, valori segnaposto)</label>
+        </div>
+        <div class="f wide"><label for="tKey">Chiave MapTiler per le carte OpenStreetMap (facoltativa)</label>
+          <input id="tKey" type="text" autocomplete="off" spellcheck="false" placeholder="incolla qui la chiave gratuita di maptiler.com" style="padding:8px;border:1px solid #AEB8B1;border-radius:5px;width:100%;font-size:14px;font-family:monospace">
+          <span class="lab">Con la chiave la cartografia OpenStreetMap (stile MapTiler Streets) funziona sempre, anche aprendo il file dal computer: 100.000 tessere al mese gratis. Senza chiave l'app prova i server pubblici OSM ed Esri.</span></div>
+        <div class="f wide"><button type="button" class="link" id="btnReset">Ripristina i parametri</button></div>
+      </div>
+    </details>
+
+    <details class="box" id="boxAn">
+      <summary>Analisi della zona <em>bandiere, province, self e servito</em></summary>
+      <div class="in">
+        <p id="anGap"></p>
+        <div class="seg" id="segAn" role="group" aria-label="Raggruppa per"><button type="button" data-v="band">Per bandiera</button><button type="button" data-v="prov">Per provincia</button></div>
+        <table class="rank"><tbody id="anRows"></tbody></table>
+      </div>
+    </details>
+
+    <details class="box" id="boxBr">
+      <summary>Dal Brent alla pompa <em>scomposizione e scenari</em></summary>
+      <div class="in">
+        <p id="brIntro"></p>
+        <div id="brBody">
+          <div class="dgrid">
+            <div class="f"><label for="bBrent">Brent oggi ($ al barile)</label><input id="bBrent" type="number" inputmode="decimal" min="10" max="300" step="0.1"></div>
+            <div class="f"><label for="bFx">Cambio euro/dollaro</label><input id="bFx" type="number" inputmode="decimal" min="0.5" max="2" step="0.0001"></div>
+            <div class="f wide"><label for="bAcc">Accisa (€ al litro)</label><input id="bAcc" type="number" inputmode="decimal" min="0" max="1.5" step="0.0001">
+              <div class="chips" id="bAccQuick" style="margin-top:6px"></div></div>
+          </div>
+          <div class="stack" id="brStack" aria-hidden="true"></div>
+          <ul class="leg" id="brLeg"></ul>
+          <div class="scen">
+            <div class="f"><label for="bSim">Se il Brent andasse a <output id="oSim"></output></label><input id="bSim" type="range" min="40" max="180" step="1"></div>
+            <div class="f"><label for="bFxSim">con il cambio a <output id="oFxSim"></output></label><input id="bFxSim" type="range" min="0.95" max="1.35" step="0.01"></div>
+            <div class="big" id="brOut"></div>
+            <p class="rinfo" id="brNote"></p>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="box" id="boxDi">
+      <summary>Diario dei rifornimenti <em id="diSum"></em></summary>
+      <div class="in">
+        <div class="dgrid">
+          <div class="f"><label for="dDate">Data</label><input id="dDate" type="date" style="padding:8px;border:1px solid #AEB8B1;border-radius:5px;width:100%;font-size:15px"></div>
+          <div class="f"><label for="dLitri">Quantità</label><input id="dLitri" type="number" inputmode="decimal" min="1" max="500" step="0.01" placeholder="es. 38,5"></div>
+          <div class="f"><label for="dPrezzo">Prezzo pagato (€ per unità)</label><input id="dPrezzo" type="number" inputmode="decimal" min="0.3" max="5" step="0.001" placeholder="es. 2,119"></div>
+          <div class="f"><label for="dKm">Km dal pieno precedente</label><input id="dKm" type="number" inputmode="numeric" min="0" max="3000" step="1" placeholder="facoltativo"></div>
+          <div class="f wide"><label for="dNota">Dove</label><input id="dNota" type="text" maxlength="80" placeholder="impianto o nota, facoltativo" style="padding:8px;border:1px solid #AEB8B1;border-radius:5px;width:100%;font-size:15px"></div>
+        </div>
+        <div class="acts"><button type="button" class="btn primary" id="dAdd">Registra</button></div>
+        <p class="rinfo" id="dMsg"></p>
+        <div id="dStats"></div>
+        <ul class="dlist" id="dList"></ul>
+        <div id="dTools" hidden><button type="button" class="link" id="dUse">Usa il mio consumo reale nella simulazione</button> · <button type="button" class="link" id="dCsv">Scarica il diario in CSV</button></div>
+      </div>
+    </details>
+
+    <div class="lhead">
+      <h2 id="lTitle">Impianti</h2>
+      <label class="sr" for="sSort">Ordina per</label>
+      <select id="sSort"><option value="price">Prezzo</option><option value="cost">Costo reale</option><option value="dist">Distanza</option><option value="along" id="optAlong">Lungo il percorso</option></select>
+    </div>
+    <ol id="list"></ol>
+    <div class="pad"><button type="button" class="link" id="btnCsv">Scarica l'elenco in CSV</button></div>
+    <p class="foot">Dati: Ministero delle Imprese e del Made in Italy, Osservatorio prezzi carburanti (licenza IODL 2.0). Brent e cambio predefiniti: quotazioni del 21/09/2026, da aggiornare a mano. Ricerca dei luoghi: Nominatim; percorsi stradali: OSRM; entrambi su dati OpenStreetMap. I prezzi sono quelli comunicati dai gestori, in vigore alle 8 del giorno di estrazione: alla pompa possono essere cambiati. Metano e GNL sono in €/kg, gli altri in €/litro; l'elettrico usa tariffe medie o tue in €/kWh e le colonnine di OpenStreetMap (ODbL, tramite Overpass).<br><b>Sviluppata da Marco Pugliese</b> · SerMarkuz Lab.</p>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+<aside class="sheet" id="sheet" aria-label="Scheda impianto"></aside>
+
+<dialog id="dlg">
+  <div class="dlg">
+    <h2>Dati sui prezzi</h2>
+    <p id="dlgState"></p>
+    <div class="acts"><button type="button" class="btn primary" id="btnFetch">Scarica i dati più recenti</button><button type="button" class="btn" id="btnClose">Chiudi</button></div>
+    <p><b>Se lo scaricamento automatico non riesce</b> (succede nelle anteprime e quando il sito del Ministero blocca le richieste dal browser), carica i file a mano:</p>
+    <ol>
+      <li>Scarica <a href="https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv" target="_blank" rel="noopener">prezzo_alle_8.csv</a> e <a href="https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv" target="_blank" rel="noopener">anagrafica_impianti_attivi.csv</a> dal sito MIMIT.</li>
+      <li>Selezionali entrambi qui sotto.</li>
+    </ol>
+    <div class="drop"><label for="files"><b>Scegli i due file CSV</b></label><br><input type="file" id="files" multiple accept=".csv,.gz,text/csv"></div>
+    <div class="log" id="log"></div>
+  </div>
+</dialog>
+
+<script type="text/plain" id="basemap">/*BASEMAP*/</script>
+<script type="text/plain" id="natA">/*NAT_A*/</script>
+<script type="text/plain" id="natP">/*NAT_P*/</script>
+<script type="text/plain" id="snapA">/*SNAP_A*/</script>
+<script type="text/plain" id="snapP">/*SNAP_P*/</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>if(typeof L==='undefined'){document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"><script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"><\/script>');}</script>
+<script>
+/* ===== CORE (testabile senza DOM) ===== */
+const CARS=[
+/* [marca, modello, tipo, consumo WLTP combinato: L/100 km, kg/100 km per il metano, kWh/100 km per l'elettrico] valori indicativi */
+["Alfa Romeo","Junior 1.2 ibrida","benzina",5.0],["Alfa Romeo","Junior Elettrica","elettrico",15.6],["Alfa Romeo","Tonale 1.5 ibrida","benzina",5.7],
+["Audi","A3 35 TDI","gasolio",4.7],["Audi","Q4 e-tron 45","elettrico",16.4],
+["BMW","320d","gasolio",4.9],["BMW","X1 sDrive18d","gasolio",5.1],["BMW","iX1 eDrive20","elettrico",16.5],["BMW","i4 eDrive40","elettrico",16.1],
+["BYD","Dolphin","elettrico",15.9],["BYD","Seal U","elettrico",18.5],
+["Citroën","C3 1.2","benzina",5.1],["Citroën","ë-C3","elettrico",16.4],
+["Cupra","Formentor 1.5 TSI","benzina",6.2],["Cupra","Born","elettrico",15.5],
+["Dacia","Sandero 1.0 TCe","benzina",5.3],["Dacia","Sandero ECO-G (GPL)","gpl",7.0],["Dacia","Duster 1.2 TCe ibrida","benzina",5.4],["Dacia","Duster ECO-G (GPL)","gpl",7.4],["Dacia","Jogger ECO-G (GPL)","gpl",7.6],["Dacia","Spring","elettrico",14.6],
+["Fiat","Panda 1.0 ibrida","benzina",5.0],["Fiat","500 1.0 ibrida","benzina",4.9],["Fiat","500e","elettrico",13.0],["Fiat","600 ibrida","benzina",4.9],["Fiat","Grande Panda elettrica","elettrico",15.4],
+["Ford","Puma 1.0 EcoBoost ibrida","benzina",5.4],["Ford","Kuga ibrida","benzina",5.5],["Ford","Explorer EV","elettrico",16.0],
+["Hyundai","i10 1.0","benzina",5.0],["Hyundai","Tucson ibrida","benzina",5.6],["Hyundai","Inster","elettrico",14.3],["Hyundai","Kona Electric 65","elettrico",15.0],
+["Jeep","Avenger 1.2","benzina",5.5],["Jeep","Avenger elettrica","elettrico",15.5],["Jeep","Renegade 1.5 ibrida","benzina",5.7],["Jeep","Compass 1.5 ibrida","benzina",5.9],
+["Kia","Picanto 1.0","benzina",5.0],["Kia","Sportage ibrida","benzina",5.7],["Kia","EV3","elettrico",14.9],["Kia","Niro EV","elettrico",16.2],
+["Lancia","Ypsilon ibrida","benzina",4.6],["Leapmotor","T03","elettrico",14.3],
+["Mercedes","A 200","benzina",6.0],["Mercedes","GLA 200 d","gasolio",5.0],["Mercedes","EQA 250+","elettrico",15.6],
+["MG","MG3 Hybrid+","benzina",4.4],["MG","ZS Hybrid+","benzina",5.4],["MG","MG4 51 kWh","elettrico",16.0],["MG","ZS EV","elettrico",17.3],
+["Mini","Cooper E","elettrico",14.1],["Nissan","Juke ibrida","benzina",5.0],["Nissan","Qashqai e-Power","benzina",5.3],
+["Opel","Corsa 1.2","benzina",5.2],["Opel","Corsa Electric","elettrico",14.6],
+["Peugeot","208 1.2","benzina",5.2],["Peugeot","208 ibrida","benzina",4.5],["Peugeot","e-208","elettrico",14.6],["Peugeot","2008 ibrida","benzina",4.9],["Peugeot","e-2008","elettrico",15.6],["Peugeot","3008 ibrida","benzina",5.5],
+["Renault","Clio 1.0 TCe","benzina",5.3],["Renault","Clio E-Tech ibrida","benzina",4.2],["Renault","Captur E-Tech ibrida","benzina",4.7],["Renault","5 E-Tech 52 kWh","elettrico",15.0],["Renault","Megane E-Tech","elettrico",15.8],["Renault","Scenic E-Tech","elettrico",16.5],
+["Seat","Ibiza 1.0 TGI (metano)","metano",3.5],["Skoda","Fabia 1.0 TSI","benzina",5.2],["Skoda","Octavia 2.0 TDI","gasolio",4.7],["Skoda","Octavia G-TEC (metano)","metano",3.6],["Skoda","Elroq 60","elettrico",15.8],["Skoda","Enyaq 85","elettrico",16.0],
+["Smart","#1","elettrico",16.8],["Suzuki","Swift 1.2 ibrida","benzina",4.4],
+["Tesla","Model 3 RWD","elettrico",13.2],["Tesla","Model Y RWD","elettrico",14.9],
+["Toyota","Yaris 1.5 ibrida","benzina",3.8],["Toyota","Yaris Cross ibrida","benzina",4.4],["Toyota","C-HR ibrida","benzina",4.7],["Toyota","Corolla 1.8 ibrida","benzina",4.5],["Toyota","bZ4X","elettrico",14.4],
+["Volkswagen","Polo 1.0 TSI","benzina",5.3],["Volkswagen","Golf 1.5 TSI","benzina",5.5],["Volkswagen","Golf 2.0 TDI","gasolio",4.6],["Volkswagen","Golf TGI (metano)","metano",3.6],["Volkswagen","T-Roc 1.5 TSI","benzina",6.0],["Volkswagen","Tiguan 2.0 TDI","gasolio",5.3],["Volkswagen","ID.3 Pro","elettrico",15.3],["Volkswagen","ID.4 Pro","elettrico",16.5],
+["Volvo","EX30 Single","elettrico",16.7]
+];
+const FUELS=[
+  {k:'benzina',n:'Benzina'},{k:'gasolio',n:'Gasolio'},{k:'gpl',n:'GPL'},{k:'metano',n:'Metano',u:'kg'},
+  {k:'hvo',n:'HVO'},{k:'benzina_plus',n:'Benzina',s:'speciale'},{k:'gasolio_plus',n:'Gasolio',s:'speciale'},{k:'gnl',n:'GNL',u:'kg'},{k:'elettrico',n:'Elettrico',u:'kWh'}];
+const COLORS=['#0A7A4B','#6BA53A','#F2B705','#E5781E','#C62F2B'];
+function categorize(desc){
+  const d=desc.trim().toLowerCase();
+  if(d==='benzina')return'benzina'; if(d==='gasolio')return'gasolio'; if(d==='gpl')return'gpl';
+  if(d==='metano'||d.includes('gnc'))return'metano'; if(d.includes('gnl'))return'gnl';
+  if(d.includes('hvo'))return'hvo';
+  if(/diesel|gasolio|artico/.test(d))return'gasolio_plus';
+  return'benzina_plus';
+}
+function parseDt(s){
+  const m=/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/.exec(s||''); if(!m)return 0;
+  return Date.UTC(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0));
+}
+function splitFile(text){
+  const lines=text.split(/\r?\n/); let date='',h=-1;
+  for(let i=0;i<Math.min(lines.length,5);i++){
+    const m=/Estrazione del\s+(\d{4}-\d{2}-\d{2})/.exec(lines[i]); if(m)date=m[1];
+    if(/^idImpianto/i.test(lines[i])){h=i;break;}
+  }
+  if(h<0)return null;
+  const head=lines[h], delim=head.includes('|')?'|':';';
+  const kind=/descCarburante/i.test(head)?'prezzi':/Bandiera/i.test(head)?'anagrafica':null;
+  return {date,delim,kind,rows:lines.slice(h+1)};
+}
+function buildDB(textA,textP,source){
+  const A=splitFile(textA),P=splitFile(textP);
+  if(!A||!P||A.kind!=='anagrafica'||P.kind!=='prezzi')throw new Error('I file non sono nel formato MIMIT atteso');
+  const byId=new Map(),stations=[];
+  for(const line of A.rows){
+    if(!line)continue; const f=line.split(A.delim),n=f.length; if(n<10)continue;
+    const lat=parseFloat(f[n-2]),lon=parseFloat(f[n-1]);
+    if(!(lat>35&&lat<47.5&&lon>6&&lon<19))continue;
+    const st={id:f[0],ges:f[1].trim(),band:f[2].trim()||'Senza bandiera',tipo:f[3].trim(),
+      nome:f.slice(4,n-5).join(' ').replace(/\s+/g,' ').trim(),addr:f[n-5].replace(/\s+/g,' ').trim(),
+      com:f[n-4].trim(),prov:f[n-3].trim(),lat,lon,pr:{},all:[],i:stations.length};
+    byId.set(st.id,st);stations.push(st);
+  }
+  for(const line of P.rows){
+    if(!line)continue; const f=line.split(P.delim); if(f.length<5)continue;
+    const st=byId.get(f[0]); if(!st)continue;
+    const p=parseFloat(f[2]); if(!(p>0))continue;
+    const self=f[3].trim()==='1',dt=parseDt(f[4]),d=f[1].trim(),cat=categorize(d);
+    st.all.push({d,p,self,dt,cat});
+    const slot=st.pr[cat]||(st.pr[cat]={}),key=self?'s':'v';
+    if(!slot[key]||p<slot[key].p)slot[key]={p,dt,d,self};
+  }
+  const date=P.date||A.date, dateTs=date?Date.parse(date+'T08:00:00Z'):Date.now();
+  const med={};
+  for(const fu of FUELS){
+    const v=[]; for(const st of stations){const c=st.pr[fu.k]; if(c){const a=c.s&&c.v?Math.min(c.s.p,c.v.p):(c.s||c.v).p; v.push(a);}}
+    v.sort((a,b)=>a-b); med[fu.k]=v.length?v[v.length>>1]:0;
+  }
+  const cm=new Map();
+  for(const st of stations){const k=st.com+'|'+st.prov; let c=cm.get(k); if(!c){c={n:st.com,prov:st.prov,la:0,lo:0,c:0};cm.set(k,c);} c.la+=st.lat;c.lo+=st.lon;c.c++;}
+  const comuni=[...cm.values()].map(c=>({n:c.n,prov:c.prov,lat:c.la/c.c,lon:c.lo/c.c,c:c.c,key:norm(c.n)}));
+  const bc={}; for(const st of stations)bc[st.band]=(bc[st.band]||0)+1;
+  const brands=Object.entries(bc).sort((a,b)=>b[1]-a[1]).map(e=>e[0]);
+  return {date,dateTs,source,stations,byId,med,comuni,brands};
+}
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+function hav(a,b,c,d){const R=6371,r=Math.PI/180,x=(c-a)*r,y=(d-b)*r,s=Math.sin(x/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
+function pickPrice(st,fuel,serv){
+  const c=st.pr[fuel]; if(!c)return null;
+  if(serv==='self')return c.s||null; if(serv==='serv')return c.v||null;
+  return c.s&&c.v?(c.s.p<=c.v.p?c.s:c.v):(c.s||c.v);
+}
+/* percorso: distanza di ogni impianto dalla spezzata e progressiva in km */
+function buildRoute(db,pts,maxKm){
+  const step=Math.ceil(pts.length/1200); if(step>1){const q=[];for(let i=0;i<pts.length;i+=step)q.push(pts[i]);if(q[q.length-1]!==pts[pts.length-1])q.push(pts[pts.length-1]);pts=q;}
+  const n=pts.length,cum=new Float64Array(n); let a0=90,a1=-90,o0=180,o1=-180;
+  for(let i=0;i<n;i++){const p=pts[i];if(i)cum[i]=cum[i-1]+hav(pts[i-1][0],pts[i-1][1],p[0],p[1]);if(p[0]<a0)a0=p[0];if(p[0]>a1)a1=p[0];if(p[1]<o0)o0=p[1];if(p[1]>o1)o1=p[1];}
+  const mLat=maxKm/110.57,near=new Map();
+  for(const st of db.stations){
+    const mLon=maxKm/(111.32*Math.cos(st.lat*Math.PI/180));
+    if(st.lat<a0-mLat||st.lat>a1+mLat||st.lon<o0-mLon||st.lon>o1+mLon)continue;
+    const kx=111.32*Math.cos(st.lat*Math.PI/180),ky=110.57; let best=1e9,al=0;
+    for(let i=1;i<n;i++){
+      const A=pts[i-1],B=pts[i];
+      if((A[0]<st.lat-mLat&&B[0]<st.lat-mLat)||(A[0]>st.lat+mLat&&B[0]>st.lat+mLat)||(A[1]<st.lon-mLon&&B[1]<st.lon-mLon)||(A[1]>st.lon+mLon&&B[1]>st.lon+mLon))continue;
+      const ax=(A[1]-st.lon)*kx,ay=(A[0]-st.lat)*ky,bx=(B[1]-st.lon)*kx,by=(B[0]-st.lat)*ky,dx=bx-ax,dy=by-ay,l2=dx*dx+dy*dy;
+      let u=l2?-(ax*dx+ay*dy)/l2:0; u=u<0?0:u>1?1:u;
+      const px=ax+u*dx,py=ay+u*dy,d=Math.sqrt(px*px+py*py);
+      if(d<best){best=d;al=cum[i-1]+u*(cum[i]-cum[i-1]);}
+    }
+    if(best<=maxKm)near.set(st.id,{d:best,along:al});
+  }
+  return {pts,total:cum[n-1],near,bounds:[[a0,o0],[a1,o1]]};
+}
+/* storico: un giorno = prezzi minimi per categoria e servizio, in millesimi, indicizzati per impianto */
+function parseDay(text,db){
+  const P=splitFile(text); if(!P||P.kind!=='prezzi')return null;
+  const n=db.stations.length,data={}; for(const f of FUELS)data[f.k]={s:new Uint16Array(n),v:new Uint16Array(n)};
+  for(const line of P.rows){
+    if(!line)continue; const f=line.split(P.delim); if(f.length<5)continue;
+    const st=db.byId.get(f[0]); if(!st)continue; const p=Math.round(parseFloat(f[2])*1000); if(!(p>0&&p<65000))continue;
+    const arr=data[categorize(f[1])][f[3].trim()==='1'?'s':'v']; if(!arr[st.i]||p<arr[st.i])arr[st.i]=p;
+  }
+  return {date:P.date,data};
+}
+function dayFromDB(db){
+  const n=db.stations.length,data={}; for(const f of FUELS)data[f.k]={s:new Uint16Array(n),v:new Uint16Array(n)};
+  for(const st of db.stations)for(const k in st.pr){const c=st.pr[k];if(c.s)data[k].s[st.i]=Math.round(c.s.p*1000);if(c.v)data[k].v[st.i]=Math.round(c.v.p*1000);}
+  return {date:db.date,data};
+}
+function dayPrice(day,i,fuel,serv){
+  const d=day.data[fuel],s=d.s[i],v=d.v[i];
+  const p=serv==='self'?s:serv==='serv'?v:(s&&v?Math.min(s,v):(s||v));
+  return p?p/1000:0;
+}
+function zoneSeries(days,db,S,res){
+  const med0=db.med[S.fuel],out=[];
+  for(const day of days){
+    const v=[]; for(const r of res){const p=dayPrice(day,r.st.i,S.fuel,S.serv); if(!p)continue; if(S.anomal&&(p<0.5||p>5||(med0&&Math.abs(p-med0)/med0>0.4)))continue; v.push(p);}
+    if(v.length<1)continue; v.sort((a,b)=>a-b); const n=v.length;
+    out.push({date:day.date,n,min:v[0],med:n%2?v[n>>1]:(v[n/2-1]+v[n/2])/2});
+  }
+  return out;
+}
+function litriFor(S,p){
+  if(S.simMode==='budget')return p>0?S.budget/p:0;
+  if(S.simMode==='tank')return Math.max(0,S.tank*(1-S.level/100));
+  return S.litri;
+}
+function compute(db,S,route){
+  if(S.fuel==='elettrico')return [];
+  const out=[],med=db.med[S.fuel],favs=new Set(S.favs),br=S.brands.length?new Set(S.brands):null;
+  const top=new Set(db.brands.slice(0,7)),mx=parseFloat(S.maxPrice);
+  for(const st of db.stations){
+    const pr=pickPrice(st,S.fuel,S.serv); if(!pr)continue;
+    if(S.anomal&&(pr.p<0.5||pr.p>5||(med&&Math.abs(pr.p-med)/med>0.4)))continue;
+    if(mx>0&&pr.p>mx)continue;
+    if(S.fresh>0&&db.dateTs-pr.dt>S.fresh*864e5)continue;
+    if(S.tipo!=='all'&&st.tipo!==S.tipo)continue;
+    if(br&&!br.has(top.has(st.band)?st.band:'Altre'))continue;
+    if(S.onlyFav&&!favs.has(st.id))continue;
+    let dist,along=0;
+    if(S.mode==='route'){const h=route&&route.near.get(st.id); if(!h||h.d>S.corridor)continue; dist=h.d; along=h.along;}
+    else{dist=hav(S.center.lat,S.center.lon,st.lat,st.lon); if(S.radius>0&&dist>S.radius)continue;}
+    const extra=S.detour?2*dist*1.3*S.consumo/100*pr.p:0;
+    const lt=litriFor(S,pr.p); out.push({st,p:pr.p,pr,dist,along,extra,lt,cost:pr.p*lt+extra});
+  }
+  const s=S.sort;
+  out.sort((a,b)=>s==='along'?a.along-b.along:s==='dist'?a.dist-b.dist:s==='cost'?(a.cost-b.cost||a.dist-b.dist):(a.p-b.p||a.dist-b.dist));
+  return out;
+}
+function stats(res){
+  if(!res.length)return null;
+  const v=res.map(r=>r.p).sort((a,b)=>a-b),n=v.length,q=f=>v[Math.min(n-1,Math.floor(f*n))];
+  return {n,min:v[0],max:v[n-1],med:n%2?v[n>>1]:(v[n/2-1]+v[n/2])/2,mean:v.reduce((a,b)=>a+b,0)/n,cuts:[q(.2),q(.4),q(.6),q(.8)]};
+}
+function band(p,st){ if(!st||st.max-st.min<0.0005)return 0; let i=0; while(i<4&&p>st.cuts[i])i++; return i; }
+if(typeof module!=='undefined'){module.exports={litriFor,buildDB,compute,stats,band,categorize,parseDt,FUELS,buildRoute,parseDay,dayFromDB,zoneSeries,dayPrice};}
+/* ===== /CORE ===== */
+</script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const DEF={mapKey:'',mapPref:'',car:'',evTariff:'casa',evPrices:{casa:0.28,ac:0.63,dc:0.74,hpc:0.74},evKwh:16,brent:102,eurusd:1.16,brentSim:102,eurusdSim:1.16,accB:0.6729,accD:0,fuel:'benzina',serv:'best',radius:0,simMode:'litri',tank:50,level:25,budget:50,kmAnno:12000,center:{lat:46.4983,lon:11.3548,label:'Bolzano'},sort:'price',litri:40,consumo:6.5,detour:false,brands:[],tipo:'all',maxPrice:'',fresh:0,anomal:true,onlyFav:false,favs:[],mode:'zone',from:null,to:null,corridor:3,noMotorway:false};
+let AN='band',DIARY=[],EVP=[],evBusy=false,evMsg='';
+let ROUTE=null,HIST=null,histN=14,histBusy='';
+let S=JSON.parse(JSON.stringify(DEF)),DB=null,RES=[],ST=null,SEL=null,map=null,layer=null,centerLayer=null,logTxt='';
+
+/* memoria: window.storage nelle anteprime Claude, altrimenti quella del browser */
+const mem={
+  async get(k){try{if(window.storage){const r=await window.storage.get(k,false);return r?JSON.parse(r.value):null;}const v=window['local'+'Storage'].getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}},
+  async set(k,v){try{if(window.storage){await window.storage.set(k,JSON.stringify(v),false);return;}window['local'+'Storage'].setItem(k,JSON.stringify(v));}catch(e){}}
+};
+let saveT; function save(){clearTimeout(saveT);saveT=setTimeout(()=>mem.set('ottano-v3',S),400);}
+
+const fmt=p=>p.toFixed(3).replace('.',',');
+function priceHTML(p){const s=fmt(p);return s.slice(0,-1)+'<sup>'+s.slice(-1)+'</sup>';}
+const eur=v=>'€ '+v.toFixed(2).replace('.',',');
+const fmtL=n=>(Math.round(n*10)/10).toString().replace('.',',');
+const km=d=>d<10?d.toFixed(1).replace('.',','):Math.round(d);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cap=s=>s.toLowerCase().replace(/(^|[\s'\-\/(.])([a-zà-ù])/g,(m,a,b)=>a+b.toUpperCase());
+const fuelDef=()=>FUELS.find(f=>f.k===S.fuel);
+const unit=()=>fuelDef().u||'L';
+const isEV=()=>S.fuel==='elettrico';
+const EVT={casa:'A casa',ac:'Colonnina AC',dc:'Colonnina DC',hpc:'Ultrarapida HPC'},EVW={casa:'a casa',ac:'in colonnina AC',dc:'in colonnina DC',hpc:'in ultrarapida HPC'};
+const evPrice=()=>S.evPrices[S.evTariff];
+const cons=()=>isEV()?S.evKwh:S.consumo;
+function age(dt){const d=Math.floor((DB.dateTs-dt)/864e5);return d<=0?'comunicato il giorno dei dati':d===1?'comunicato il giorno prima':'comunicato '+d+' giorni prima';}
+function log(m){logTxt+=(logTxt?'\n':'')+m;$('log').textContent=logTxt;$('log').scrollTop=1e6;}
+
+/* ---------- dati ---------- */
+function setDB(db){
+  DB=db; HIST=null; histBusy=''; if(ROUTE)indexRoute(); const full=db.stations.length>5000;
+  
+  $('stTitle').textContent='Dati '+db.date.slice(8,10)+'/'+db.date.slice(5,7);
+  const stale=db.date<new Date(Date.now()-2*864e5).toISOString().slice(0,10);
+  $('btnDati').className='status '+(full&&!stale?'ok':''); $('btnDati').title=stale?'Dati non recenti: tocca per aggiornare':'Dati aggiornati';
+  $('stSub').textContent=full?db.stations.length.toLocaleString('it-IT')+' impianti':'Solo Alto Adige e Trentino · tocca per aggiornare';
+  $('dlgState').innerHTML='In uso: <b>'+esc(db.source)+'</b>, estrazione del '+esc(db.date)+', '+db.stations.length.toLocaleString('it-IT')+' impianti.';
+  buildBrands(); refresh(true);
+}
+async function getText(url,gz){
+  const r=await fetch(url,{cache:'no-store'}); if(!r.ok)throw new Error('HTTP '+r.status);
+  if(gz){if(!('DecompressionStream'in window))throw new Error('browser senza decompressione gzip');return await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).text();}
+  return await r.text();
+}
+const MIMIT='https://www.mimit.gov.it/images/exportCSV/',GH='https://raw.githubusercontent.com/LucaDDDD/benzina-data/main/data/';
+const SOURCES=[
+  {n:'sito MIMIT',run:async()=>Promise.all([getText(MIMIT+'anagrafica_impianti_attivi.csv'),getText(MIMIT+'prezzo_alle_8.csv')])},
+  {n:'archivio GitHub benzina-data (copia giornaliera dei file MIMIT)',run:async()=>{
+     const j=JSON.parse(await getText(GH+'last_update.json')),d=j.ultima_estrazione,p=d.split('-'),c=d.replace(/-/g,''),b=GH+p[0]+'/'+p[1]+'/';
+     return Promise.all([getText(b+'anagrafica_impianti_attivi-'+c+'.csv.gz',true),getText(b+'prezzo_alle_8-'+c+'.csv.gz',true)]);}},
+  {n:'sito MIMIT tramite corsproxy.io',run:async()=>{const x='https://corsproxy.io/?url=';
+     return Promise.all([getText(x+encodeURIComponent(MIMIT+'anagrafica_impianti_attivi.csv')),getText(x+encodeURIComponent(MIMIT+'prezzo_alle_8.csv'))]);}}
+];
+let fetching=false;
+async function fetchRemote(){
+  if(fetching)return; fetching=true; $('btnDati').classList.add('load'); $('btnFetch').disabled=true;
+  let best=null;
+  for(const src of SOURCES){
+    try{log('Provo: '+src.n+'…');const [a,p]=await src.run();const db=buildDB(a,p,src.n);
+      if(db.stations.length<1000)throw new Error('file incompleto');
+      log('Riuscito: '+db.stations.length+' impianti, estrazione '+db.date+'.');
+      if(!best||db.date>best.date)best=db;
+      if(db.date>=new Date(Date.now()-864e5).toISOString().slice(0,10))break;
+    }catch(e){log('Non riuscito ('+(e.message||e)+').');}
+  }
+  fetching=false; $('btnDati').classList.remove('load'); $('btnFetch').disabled=false;
+  if(best&&(!DB||best.date>=DB.date||best.stations.length>DB.stations.length)){setDB(best);return true;}
+  if(!best)log('Nessuna fonte raggiungibile da qui: restano i dati incorporati. Puoi caricare i file a mano.');
+  return false;
+}
+async function readFile(f){
+  if(/\.gz$/i.test(f.name))return await new Response(f.stream().pipeThrough(new DecompressionStream('gzip'))).text();
+  return await f.text();
+}
+async function onFiles(files){
+  try{
+    let a=null,p=null;
+    for(const f of files){const t=await readFile(f),k=(splitFile(t)||{}).kind; if(k==='anagrafica')a=t; else if(k==='prezzi')p=t; else log('"'+f.name+'" non è un file MIMIT riconosciuto.');}
+    if(!a||!p){log('Servono tutti e due i file: prezzi e anagrafica. Manca '+(!a?'l\'anagrafica':'il file dei prezzi')+'.');return;}
+    setDB(buildDB(a,p,'file caricati a mano')); log('File caricati.'); $('dlg').close();
+  }catch(e){log('Errore nella lettura: '+(e.message||e));}
+}
+
+/* ---------- interfaccia ---------- */
+function buildFuels(){
+  $('fuels').innerHTML=FUELS.map(f=>'<button type="button" data-k="'+f.k+'">'+f.n+(f.s?'<small>'+f.s+'</small>':'')+'</button>').join('');
+  $('fuels').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.fuel=b.dataset.k;refresh();});
+}
+function buildBrands(){
+  const names=DB.brands.slice(0,7).concat('Altre');
+  S.brands=S.brands.filter(b=>names.includes(b));
+  $('brands').innerHTML=names.map(b=>'<button type="button" data-b="'+esc(b)+'">'+esc(b)+'</button>').join('');
+}
+function syncControls(){
+  document.querySelectorAll('#fuels button').forEach(b=>{const on=b.dataset.k===S.fuel;b.setAttribute('aria-pressed',on);if(on)b.scrollIntoView({block:'nearest',inline:'nearest'});});
+  document.querySelectorAll('#segServ button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S.serv));
+  document.querySelectorAll('#brands button').forEach(b=>b.setAttribute('aria-pressed',S.brands.includes(b.dataset.b)));
+  if(document.activeElement!==$('tKey'))$('tKey').value=S.mapKey||'';
+  $('rRadius').value=S.radius; $('oRadius').textContent=S.radius>0?S.radius+' km':'tutta Italia';
+  $('sTipo').value=S.tipo; $('sFresh').value=S.fresh; $('nMax').value=S.maxPrice; $('cFav').checked=S.onlyFav;
+  $('nLitri').value=S.litri; $('nCons').value=S.consumo; $('cDetour').checked=S.detour;
+  $('nTank').value=S.tank; $('rLevel').value=S.level; $('oLevel').textContent=S.level+'%'; $('nBudget').value=S.budget; $('nKm').value=S.kmAnno;
+  document.querySelectorAll('#segSim button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S.simMode));
+  document.querySelectorAll('.sim [data-sim]').forEach(e=>e.hidden=e.dataset.sim!==S.simMode); $('cAnom').checked=S.anomal; $('sSort').value=S.sort;
+  const rt=S.mode==='route';
+  document.querySelectorAll('#segMode button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S.mode));
+  $('placeZone').hidden=rt; $('routeBox').hidden=!rt; $('fRadius').hidden=rt; $('fCorr').hidden=!rt; $('optAlong').hidden=!rt; $('optAlong').disabled=!rt;
+  $('rCorr').value=S.corridor; $('oCorr').textContent=S.corridor+' km';
+  $('cNoMw').checked=S.noMotorway;
+  if(document.activeElement!==$('qFrom'))$('qFrom').value=S.from?S.from.label:'';
+  if(document.activeElement!==$('qTo'))$('qTo').value=S.to?S.to.label:'';
+  let n=0; if(S.serv!=='best')n++; if(S.tipo!=='all')n++; if(S.fresh>0)n++; if(S.maxPrice)n++; if(S.onlyFav)n++; if(S.brands.length)n++;
+  $('psum').textContent=(rt?'entro '+S.corridor+' km dal percorso':S.radius>0?S.radius+' km':'tutta Italia')+(n?' · '+n+(n===1?' filtro attivo':' filtri attivi'):'');
+}
+function refresh(fit){
+  if(!DB)return; if(S.mode!=='route'&&S.sort==='along')S.sort='price';
+  syncControls(); save();
+  RES=compute(DB,S,ROUTE); ST=stats(RES);
+  renderTotem(); renderCar(); renderSim(); renderHist(); renderAnalisi(); renderBrent(); renderList(); drawCenter(); 
+  if(fit)fitMap(); else drawMarkers();
+  if(SEL&&!RES.find(r=>r.st.id===SEL)&&!EVP.find(e=>e.id===SEL))closeSheet(); else if(SEL)openSheet(SEL,true);
+}
+function renderTotem(){
+  const f=fuelDef(),nm=f.n+(f.s?' '+f.s:'');
+  const ev=isEV(); $('evCells').hidden=!ev;$('evIn').hidden=!ev;$('fCells').hidden=ev;$('histo').hidden=ev;$('hax').hidden=ev;$('hist').hidden=ev;$('btnEv').hidden=!ev;
+  if(ev){
+    $('where').innerHTML='<b>Elettrico</b> · tariffa di ricarica usata nella simulazione · €/kWh';
+    $('evCells').innerHTML=Object.keys(EVT).map(k=>'<button type="button" class="cell" data-t="'+k+'" aria-pressed="'+(S.evTariff===k)+'"><span>'+EVT[k]+'</span><b class="price">'+priceHTML(S.evPrices[k])+'</b></button>').join('');
+    [['evCasa','casa'],['evAc','ac'],['evDc','dc'],['evHpc','hpc']].forEach(x=>{if(document.activeElement!==$(x[0]))$(x[0]).value=S.evPrices[x[1]];});
+    return;
+  }
+  const scope=S.mode==='route'?(ROUTE?'entro <b>'+S.corridor+' km</b> dal percorso <b>'+esc(S.from.label)+' → '+esc(S.to.label)+'</b>':'lungo il percorso: scegli partenza e arrivo')
+    :S.radius>0?'entro <b>'+S.radius+' km</b> da <b>'+esc(S.center.label)+'</b>':'in <b>tutta Italia</b>';
+  if(!ST){$('where').innerHTML='Nessun impianto con <b>'+nm+'</b> '+scope;['tMin','tMed','tMax'].forEach(i=>$(i).textContent='–');$('histo').innerHTML='';$('hax').innerHTML='';return;}
+  $('where').innerHTML='<b>'+ST.n.toLocaleString('it-IT')+'</b> '+(ST.n===1?'impianto':'impianti')+' con <b>'+nm+'</b> '+scope+' · €/'+unit();
+  $('tMin').innerHTML=priceHTML(ST.min);$('tMed').innerHTML=priceHTML(ST.med);$('tMax').innerHTML=priceHTML(ST.max);
+  const B=14,bins=new Array(B).fill(0),w=(ST.max-ST.min)||1; RES.forEach(r=>{bins[Math.min(B-1,Math.floor((r.p-ST.min)/w*B))]++;});
+  const top=Math.max(...bins);
+  $('histo').innerHTML=bins.map((c,i)=>'<i style="height:'+(c?Math.max(6,c/top*100):0)+'%;background:'+COLORS[band(ST.min+(i+.5)*w/B,ST)]+'"></i>').join('');
+  $('hax').innerHTML='<span>'+fmt(ST.min)+'</span><span>distribuzione dei prezzi</span><span>'+fmt(ST.max)+'</span>';
+}
+function renderSim(){
+  const u=unit(),out=$('simOut'),ev=isEV(); document.querySelectorAll('.sim .u').forEach(e=>e.textContent=u);
+  document.querySelectorAll('.sim label').forEach(l=>{if(l.htmlFor==='nTank')l.firstChild.textContent=ev?'Capacità della batteria (':'Capacità del serbatoio (';});
+  if(document.activeElement!==$('nCons'))$('nCons').value=cons();
+  $('quick').innerHTML=(ev?[10,20,30,40,60]:[20,30,40,50,60]).map(v=>'<button type="button" data-l="'+v+'" aria-pressed="'+(S.litri===v)+'">'+v+' '+u+'</button>').join('');
+  $('lDetour').hidden=ev;
+  if(ev){renderSimEV();return;}
+  if(!ST){out.innerHTML='<p class="rinfo">Nessun impianto nella selezione: la simulazione parte appena ce n\'è almeno uno.</p>';return;}
+  const rows=[['Più basso',ST.min,COLORS[0]],['Mediana',ST.med,COLORS[2]],['Più alto',ST.max,COLORS[4]]];
+  const sel=SEL&&RES.find(r=>r.st.id===SEL); if(sel)rows.push(['Impianto scelto: '+sel.st.band+', '+cap(sel.st.com),sel.p,'#0F4C9A']);
+  const bud=S.simMode==='budget',calc=p=>{const lt=litriFor(S,p);return{lt,cost:lt*p,c100:S.consumo*p,aut:lt/S.consumo*100,anno:S.kmAnno*S.consumo/100*p};};
+  const lt0=litriFor(S,1); let head='';
+  if(S.simMode==='tank')head='Serbatoio da '+fmtL(S.tank)+' '+u+' al '+S.level+'%: mancano <b>'+fmtL(lt0)+' '+u+'</b>, circa '+Math.round(lt0/S.consumo*100)+' km di autonomia in più.';
+  else if(!bud)head='<b>'+fmtL(lt0)+' '+u+'</b> bastano per circa '+Math.round(lt0/S.consumo*100)+' km.';
+  else head='Con <b>'+eur(S.budget)+'</b> la quantità cambia da impianto a impianto.';
+  const tb=rows.map(r=>{const c=calc(r[1]);return '<tr><td style="--k:'+r[2]+'"><i></i>'+esc(r[0])+'<small>'+fmt(r[1])+' €/'+u+'</small></td>'+
+    '<td><span class="main">'+(bud?fmtL(c.lt)+' '+u:eur(c.cost))+'</span>'+(bud?'<small>'+Math.round(c.aut)+' km</small>':'')+'</td>'+
+    '<td>'+eur(c.c100)+'</td><td>'+(S.kmAnno>0?'€ '+Math.round(c.anno).toLocaleString('it-IT'):'–')+'</td></tr>';}).join('');
+  const a=calc(ST.min),m=calc(ST.med),z=calc(ST.max); let sum='';
+  if(ST.n>1&&ST.max-ST.min>=0.001){
+    sum=bud?'Al più basso fai <b>'+fmtL(a.lt-m.lt)+' '+u+' in più</b> che alla mediana ('+Math.round(a.aut-m.aut)+' km) e '+fmtL(a.lt-z.lt)+' '+u+' in più che al più caro ('+Math.round(a.aut-z.aut)+' km).'
+      :'Al più basso risparmi <b>'+eur(m.cost-a.cost)+'</b> rispetto alla mediana e <b>'+eur(z.cost-a.cost)+'</b> rispetto al più caro.';
+    if(S.kmAnno>0)sum+=' In un anno, su '+S.kmAnno.toLocaleString('it-IT')+' km: <b>€ '+Math.round(m.anno-a.anno).toLocaleString('it-IT')+'</b> in meno della mediana.';
+  }
+  out.innerHTML='<p class="rinfo" style="margin-top:12px;color:var(--ink)">'+head+'</p><table class="simtab"><thead><tr><th>Prezzo</th><th>'+(bud?'Quantità':'Rifornimento')+'</th><th>Ogni 100 km</th><th>All\'anno</th></tr></thead><tbody>'+tb+'</tbody></table>'+(sum?'<p class="simsum">'+sum+'</p>':'');
+}
+function renderSimEV(){
+  const out=$('simOut'),u='kWh',bud=S.simMode==='budget',calc=p=>{const lt=litriFor(S,p);return{lt,cost:lt*p,c100:S.evKwh*p,aut:lt/S.evKwh*100,anno:S.kmAnno*S.evKwh/100*p};};
+  const lt0=litriFor(S,1);let head='';
+  if(S.simMode==='tank')head='Batteria da '+fmtL(S.tank)+' kWh al '+S.level+'%: mancano <b>'+fmtL(lt0)+' kWh</b>, circa '+Math.round(lt0/S.evKwh*100)+' km di autonomia in più.';
+  else if(!bud)head='<b>'+fmtL(lt0)+' kWh</b> bastano per circa '+Math.round(lt0/S.evKwh*100)+' km.';
+  else head='Con <b>'+eur(S.budget)+'</b> l\'energia cambia con la tariffa.';
+  const rows=Object.keys(EVT).map(k=>[EVT[k],S.evPrices[k],k===S.evTariff]);
+  const tb=rows.map(r=>{const c=calc(r[1]);return '<tr'+(r[2]?' style="font-weight:700"':'')+'><td>'+esc(r[0])+'<small>'+fmt(r[1])+' €/kWh</small></td><td><span class="main">'+(bud?fmtL(c.lt)+' kWh':eur(c.cost))+'</span>'+(bud?'<small>'+Math.round(c.aut)+' km</small>':'')+'</td><td>'+eur(c.c100)+'</td><td>'+(S.kmAnno>0?'€ '+Math.round(c.anno).toLocaleString('it-IT'):'–')+'</td></tr>';}).join('');
+  const a=calc(S.evPrices.casa),h=calc(S.evPrices.hpc);
+  out.innerHTML='<p class="rinfo" style="margin-top:12px;color:var(--ink)">'+head+'</p><table class="simtab"><thead><tr><th>Tariffa</th><th>'+(bud?'Energia':'Ricarica')+'</th><th>Ogni 100 km</th><th>All\'anno</th></tr></thead><tbody>'+tb+'</tbody></table>'+
+    (S.kmAnno>0?'<p class="simsum">Ricaricare a casa invece che in ultrarapida vale <b>€ '+Math.round(h.anno-a.anno).toLocaleString('it-IT')+'</b> all\'anno su '+S.kmAnno.toLocaleString('it-IT')+' km.</p>':'');
+}
+/* ---------- auto ---------- */
+const carKey=c=>c[0]+' '+c[1];
+function renderCar(){
+  const brands=[...new Set(CARS.map(c=>c[0]))].sort((a,b)=>a.localeCompare(b,'it'));
+  const cur=CARS.find(c=>carKey(c)===S.car),brand=cur?cur[0]:($('sBrand').value||'');
+  $('sBrand').innerHTML='<option value="">Scegli…</option>'+brands.map(b=>'<option'+(b===brand?' selected':'')+'>'+esc(b)+'</option>').join('');
+  const models=CARS.filter(c=>c[0]===brand);
+  $('sModel').innerHTML='<option value="">'+(brand?'Scegli…':'Prima la marca')+'</option>'+models.map(c=>'<option value="'+esc(carKey(c))+'"'+(cur&&carKey(cur)===carKey(c)?' selected':'')+'>'+esc(c[1])+' · '+String(c[3]).replace('.',',')+' '+(c[2]==='elettrico'?'kWh':c[2]==='metano'?'kg':'L')+'/100 km</option>').join('');
+  const fk=cur?cur[2]:null,fuelOf=k=>FUELS.find(f=>f.k===k).n.toLowerCase();
+  $('carMsg').innerHTML=cur?'<b>'+esc(carKey(cur))+'</b>: '+String(cur[3]).replace('.',',')+' '+(fk==='elettrico'?'kWh':fk==='metano'?'kg':'L')+'/100 km'+(fk!==S.fuel&&!(fk==='benzina'&&S.fuel==='benzina_plus')&&!(fk==='gasolio'&&S.fuel==='gasolio_plus')?' · va a <b>'+fuelOf(fk)+'</b>, stai guardando '+fuelOf(S.fuel)+': <button type="button" class="link" data-fuel="'+fk+'">passa a '+fuelOf(fk)+'</button>':'')+'.':'';
+  // confronto termico / elettrico ogni 100 km e all'anno
+  const evK=cur&&fk==='elettrico'?cur[3]:S.evKwh,pF=ST?ST.med:0,fuelName=isEV()?'':fuelDef().n.toLowerCase();
+  const lines=[];
+  const same=cur&&(fk===S.fuel||(fk==='benzina'&&S.fuel==='benzina_plus')||(fk==='gasolio'&&S.fuel==='gasolio_plus')),nmF=same?carKey(cur):'Auto a '+fuelName,nmE=cur&&fk==='elettrico'?carKey(cur):'Elettrica media';
+  if(!isEV()&&pF)lines.push([nmF+' ('+String(cons()).replace('.',',')+' '+unit()+'/100 km, prezzo mediano della zona)',cons()*pF,true]);
+  if(isEV())lines.push([nmE+' '+EVW[S.evTariff]+' ('+String(S.evKwh).replace('.',',')+' kWh/100 km)',S.evKwh*evPrice(),true]);
+  else Object.keys(EVT).forEach(k=>lines.push([nmE+' '+EVW[k]+' ('+String(evK).replace('.',',')+' kWh/100 km)',evK*S.evPrices[k],false]));
+  if(isEV()&&DB){['benzina','gasolio'].forEach(k=>{const m=DB.med[k];if(m)lines.push([fuelOf(k).replace(/^./,c=>c.toUpperCase())+' con auto media (6,5 L/100 km, mediana Italia)',6.5*m,false]);});}
+  $('vs').innerHTML=lines.length?'<b>Costo ogni 100 km'+(S.kmAnno>0?' e su '+S.kmAnno.toLocaleString('it-IT')+' km all\'anno':'')+'</b><table>'+lines.map(l=>'<tr'+(l[2]?' class="me"':'')+'><td>'+esc(l[0])+'</td><td>'+eur(l[1])+'</td>'+(S.kmAnno>0?'<td>€ '+Math.round(l[1]*S.kmAnno/100).toLocaleString('it-IT')+'</td>':'')+'</tr>').join('')+'</table>':'';
+}
+function renderList(){
+  const LI=$('list'),top=RES.slice(0,80);
+  if(isEV()){renderListEV();return;}
+  $('lTitle').textContent=RES.length>80?'I primi 80 di '+RES.length.toLocaleString('it-IT'):RES.length?'Impianti trovati':'Impianti';
+  if(!top.length){
+    LI.innerHTML='<li class="empty" style="display:block;border-left-width:1px;cursor:default">Nessun impianto corrisponde ai parametri. Allarga il raggio, togli un filtro, oppure carica i dati di tutta Italia dal pulsante in alto se cerchi fuori da Alto Adige e Trentino.</li>';return;}
+  LI.innerHTML=top.map(r=>{
+    const st=r.st,old=DB.dateTs-r.pr.dt>7*864e5,fav=S.favs.includes(st.id);
+    const costLine=(S.simMode==='budget'?fmtL(r.lt)+' '+unit()+' con '+eur(S.budget):eur(r.cost)+' per '+fmtL(r.lt)+' '+unit())+(S.detour?' (di cui '+eur(r.extra)+' di strada)':'')+' · ';
+    return '<li data-id="'+st.id+'" style="--k:'+COLORS[band(r.p,ST)]+'"'+(SEL===st.id?' class="sel"':'')+'>'+
+      '<b class="price">'+priceHTML(r.p)+'</b>'+
+      '<span class="nm">'+(fav?'★ ':'')+esc(st.band)+' · '+esc(cap(st.com))+'</span>'+
+      '<span class="km">'+(S.mode==='route'?'km '+Math.round(r.along)+'<small>a '+km(r.dist)+' km · '+(r.pr.self?'self':'servito')+'</small>':km(r.dist)+' km<small>'+(r.pr.self?'self':'servito')+'</small>')+'</span>'+
+      '<span class="meta'+(old?' old':'')+'">'+costLine+(r.pr.d.toLowerCase()!==fuelDef().n.toLowerCase()?esc(r.pr.d)+' · ':'')+(old?'prezzo fermo da '+Math.floor((DB.dateTs-r.pr.dt)/864e5)+' giorni · ':'')+esc(cap(st.addr))+'</span></li>';
+  }).join('');
+}
+
+/* ---------- mappa ---------- */
+function initMap(){
+  if(typeof L==='undefined'){ $('mapmsg').textContent='La libreria della mappa (Leaflet) non si è caricata: serve la connessione a internet; se sei in rete, un blocco pubblicitario o aziendale sta fermando cdnjs.cloudflare.com e cdn.jsdelivr.net. Elenco e parametri funzionano lo stesso.';$('mapmsg').classList.add('on');return;}
+  map=L.map('map',{preferCanvas:true,zoomControl:true,attributionControl:true}).setView([S.center.lat,S.center.lon],11);
+  /* sfondi: si prova ogni fornitore con una tessera di test (stato HTTP + tipo immagine) e si usa il primo che risponde.
+     CARTO senza chiave restituisce da settembre 2026 tessere "API KEY REQUIRED" con stato 200: per questo non basta il tileerror. */
+  const OSMA='© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>';
+  /* Carte OpenStreetMap. Aperta come file locale la pagina non invia il Referer e i server volontari di OSM possono rispondere
+     "Access blocked": l'app li prova comunque con una tessera di test e scarta quelli che rifiutano. Con una chiave MapTiler
+     (gratuita) le tessere OSM in stile MapTiler Streets arrivano sempre. Esri resta come riserva. */
+  const web=/^https?:/.test(location.protocol),KEY=(S.mapKey||'').trim();
+  const PROV=[
+    KEY?{n:'OpenStreetMap · MapTiler Streets',u:'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key='+encodeURIComponent(KEY),o:{maxZoom:19,attribution:OSMA+' · <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>'}}:null,
+    KEY?{n:'OpenStreetMap · MapTiler Outdoor',u:'https://api.maptiler.com/maps/outdoor-v2/{z}/{x}/{y}.png?key='+encodeURIComponent(KEY),o:{maxZoom:19,attribution:OSMA+' · <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>'}}:null,
+    {n:'OpenStreetMap',u:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',o:{maxZoom:19,attribution:OSMA}},
+    {n:'OpenStreetMap Germania',u:'https://tile.openstreetmap.de/{z}/{x}/{y}.png',o:{maxZoom:19,attribution:OSMA+' · OSM DE'}},
+    {n:'OpenStreetMap France',u:'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',o:{maxZoom:19,subdomains:'abc',attribution:OSMA+' · OSM France'}},
+    {n:'OpenTopoMap',u:'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',o:{maxZoom:16,subdomains:'abc',attribution:OSMA+' · <a href="https://opentopomap.org" target="_blank">OpenTopoMap</a> (CC-BY-SA)'}},
+    {n:'Esri stradale (riserva)',u:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',o:{maxZoom:18,attribution:'Tiles © Esri, HERE, Garmin, OpenStreetMap contributors'}}
+  ].filter(Boolean);
+  const layers={};PROV.forEach(p=>{layers[p.n]=L.tileLayer(p.u,p.o);});
+  let current=null;
+  function useLayer(name){if(current&&map.hasLayer(current))map.removeLayer(current);current=layers[name];if(current){current.addTo(map);hideVec();}}
+  async function probe(p){
+    const u=p.u.replace('{s}',(p.o.subdomains||'a')[0]).replace('{z}','6').replace('{x}','34').replace('{y}','23').replace('{r}','');
+    const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),5000);
+    try{const r=await fetch(u,{signal:ctl.signal,cache:'no-store'});clearTimeout(to);return r.ok&&/^image\//.test(r.headers.get('content-type')||'');}
+    catch(e){clearTimeout(to);if(e&&e.name==='AbortError')return false;
+      return await new Promise(res=>{const im=new Image(),tm=setTimeout(()=>res(false),5000);im.onload=()=>{clearTimeout(tm);res(im.naturalWidth>0);};im.onerror=()=>{clearTimeout(tm);res(false);};im.src=u;});}
+  }
+  (async()=>{
+    let found=null;const order=S.mapPref&&layers[S.mapPref]?[PROV.find(p=>p.n===S.mapPref)].concat(PROV.filter(p=>p.n!==S.mapPref)):PROV;
+    for(const p of order){if(await probe(p)){found=p.n;break;}}
+    if(found){useLayer(found);$('mapmsg').classList.remove('on');}
+    else{showVec();$('mapmsg').textContent='Nessun server di mappe raggiungibile da questa rete: uso lo sfondo semplificato incorporato (regioni, province, capoluoghi). Puoi provare gli altri sfondi dal pulsante in alto a destra.';$('mapmsg').classList.add('on');setTimeout(()=>$('mapmsg').classList.remove('on'),9000);}
+  })();
+  const ctl=L.control.layers(Object.assign({},layers,{'Sfondo incorporato':L.layerGroup()}),null,{position:'topright',collapsed:true}).addTo(map);
+  map.on('baselayerchange',e=>{if(e.name==='Sfondo incorporato'){if(current&&map.hasLayer(current))map.removeLayer(current);current=null;showVec();}else{current=e.layer;hideVec();S.mapPref=e.name;save();}});
+  /* sfondo di riserva incorporato: confini di regioni e province e capoluoghi, usato quando le tessere non arrivano */
+  let vec=null;function vecLayer(){
+    if(vec)return vec;try{const b=JSON.parse($('basemap').textContent);vec=L.layerGroup();
+      L.geoJSON(b.prov,{style:{color:'#B9C2BC',weight:.7,fill:true,fillColor:'#F4F6F3',fillOpacity:1},interactive:false}).addTo(vec);
+      L.geoJSON(b.reg,{style:{color:'#8E9A94',weight:1.3,fill:false},interactive:false}).addTo(vec);
+      b.cities.forEach((c,i)=>L.marker([c[1],c[2]],{interactive:false,keyboard:false,zIndexOffset:-9500,icon:L.divIcon({className:'pillw',html:'<span class="citylab'+(i<11?' big':'')+'">'+c[0]+'</span>'})}).addTo(vec));
+    }catch(e){vec=L.layerGroup();}return vec;}
+  const showVec=()=>{if(!map.hasLayer(vecLayer()))vecLayer().addTo(map);},hideVec=()=>{if(vec&&map.hasLayer(vec))map.removeLayer(vec);};
+  map.on('zoomend',()=>{if(vec&&map.hasLayer(vec))$('map').classList.toggle('z8',map.getZoom()>=8);});
+  layer=L.layerGroup().addTo(map); centerLayer=L.layerGroup().addTo(map);
+  let t; map.on('moveend',()=>{clearTimeout(t);t=setTimeout(()=>{drawMarkers();checkHere();},120);});
+}
+function drawCenter(){
+  if(!map)return; centerLayer.clearLayers();
+  if(S.mode==='route'){
+    if(!ROUTE)return;
+    L.polyline(ROUTE.pts,{color:'#fff',weight:8,opacity:.9,interactive:false}).addTo(centerLayer);
+    L.polyline(ROUTE.pts,{color:'#0F4C9A',weight:4.5,opacity:.95,dashArray:ROUTE.road?null:'8 8',interactive:false}).addTo(centerLayer);
+    [[S.from,'A'],[S.to,'B']].forEach(x=>L.marker([x[0].lat,x[0].lon],{icon:L.divIcon({className:'pillw',html:'<i class="ab">'+x[1]+'</i>'}),interactive:false,keyboard:false,zIndexOffset:-8000}).addTo(centerLayer));
+    return;
+  }
+  if(S.radius>0)L.circle([S.center.lat,S.center.lon],{radius:S.radius*1000,color:'#0F4C9A',weight:1.5,dashArray:'6 6',fillColor:'#0F4C9A',fillOpacity:.04,interactive:false}).addTo(centerLayer);
+  L.marker([S.center.lat,S.center.lon],{icon:L.divIcon({className:'pillw',html:'<i class="ctr"></i>'}),interactive:false,keyboard:false}).addTo(centerLayer);
+}
+function fitMap(){
+  if(!map){return;}
+  if(S.mode==='route'){if(ROUTE)map.fitBounds(ROUTE.bounds,{animate:false,padding:[24,24]});}
+  else if(S.radius>0){const d=S.radius/111,dl=d/Math.cos(S.center.lat*Math.PI/180);map.fitBounds([[S.center.lat-d,S.center.lon-dl],[S.center.lat+d,S.center.lon+dl]],{animate:false});}
+  else map.fitBounds([[36.6,6.7],[47.1,18.5]],{animate:false});
+  drawMarkers(); $('btnHere').hidden=true;
+}
+function checkHere(){
+  if(!map)return; if(S.mode==='route'){$('btnHere').hidden=true;return;} const c=map.getCenter(),d=hav(S.center.lat,S.center.lon,c.lat,c.lng);
+  $('btnHere').hidden=S.radius>0?!(d>Math.max(2,S.radius*0.5)):map.getZoom()<9;
+}
+const darkText=i=>i===2;
+function drawMarkers(){
+  if(!map||!DB)return; layer.clearLayers();
+  if(isEV()){
+    const b=map.getBounds().pad(0.08);
+    for(const e of EVP){if(!b.contains([e.lat,e.lon]))continue;const sel=SEL===e.id;
+      L.marker([e.lat,e.lon],{zIndexOffset:sel?5000:Math.round(e.kw),title:e.op,icon:L.divIcon({className:'pillw',html:'<i class="evpin '+e.cls+(sel?' sel':'')+'">'+(e.kw?Math.round(e.kw):'?')+'</i>'})}).on('click',()=>openSheetEV(e)).addTo(layer);}
+    return;
+  }
+  const b=map.getBounds().pad(0.08),inV=RES.filter(r=>b.contains([r.st.lat,r.st.lon]));
+  if(inV.length>900){ // griglia di medie
+    const z=map.getZoom(),cell=92,g=new Map();
+    for(const r of inV){const pt=map.project([r.st.lat,r.st.lon],z),k=Math.floor(pt.x/cell)+'_'+Math.floor(pt.y/cell);let o=g.get(k);if(!o){o={la:0,lo:0,s:0,n:0,min:9};g.set(k,o);}o.la+=r.st.lat;o.lo+=r.st.lon;o.s+=r.p;o.n++;if(r.p<o.min)o.min=r.p;}
+    for(const o of g.values()){const avg=o.s/o.n,i=band(avg,ST),sz=Math.round(34+Math.min(22,Math.log10(o.n)*11));
+      const m=L.marker([o.la/o.n,o.lo/o.n],{icon:L.divIcon({className:'pillw',html:'<div class="agg'+(darkText(i)?' dark':'')+'" style="--k:'+COLORS[i]+';width:'+sz+'px;height:'+sz+'px;font-size:'+(sz>44?16:14)+'px">'+avg.toFixed(2).replace('.',',')+'<small>'+o.n+'</small></div>'}),keyboard:false});
+      m.on('click',()=>map.setView(m.getLatLng(),Math.min(map.getZoom()+2,15))); m.addTo(layer);}
+    return;
+  }
+  if(inV.length>70){
+    for(let j=inV.length-1;j>=0;j--){const r=inV[j],sel=r.st.id===SEL;
+      L.circleMarker([r.st.lat,r.st.lon],{radius:sel?10:7,color:sel?'#0F4C9A':'#fff',weight:sel?3:1.5,fillColor:COLORS[band(r.p,ST)],fillOpacity:1})
+       .bindTooltip(fmt(r.p)+' · '+r.st.band,{direction:'top',offset:[0,-6]}).on('click',()=>openSheet(r.st.id)).addTo(layer);}
+    return;
+  }
+  for(let j=inV.length-1;j>=0;j--){const r=inV[j],i=band(r.p,ST),sel=r.st.id===SEL;
+    L.marker([r.st.lat,r.st.lon],{zIndexOffset:(sel?5000:0)+Math.round((ST.max-r.p)*1000),title:r.st.band+' '+fmt(r.p),
+      icon:L.divIcon({className:'pillw',html:'<span class="pill'+(darkText(i)?' dark':'')+(sel?' sel':'')+'" style="--k:'+COLORS[i]+'">'+fmt(r.p)+'</span>'})})
+     .on('click',()=>openSheet(r.st.id)).addTo(layer);}
+}
+
+/* ---------- colonnine elettriche (OpenStreetMap via Overpass) ---------- */
+function evClass(kw){return kw>=150?'hpc':kw>=50?'dc':'ac';}
+async function loadEV(){
+  if(evBusy||!DB)return; const c=S.mode==='route'&&ROUTE?null:S.center,r=Math.min(S.radius||10,25);
+  if(!c){toast('Le colonnine si cercano intorno a un punto: passa a «Intorno a un punto».');return;}
+  evBusy=true;evMsg='Cerco le colonnine entro '+r+' km…';renderListEV();$('btnEv').textContent='⚡ Cerco…';
+  const q='[out:json][timeout:25];(node["amenity"="charging_station"](around:'+(r*1000)+','+c.lat+','+c.lon+');way["amenity"="charging_station"](around:'+(r*1000)+','+c.lat+','+c.lon+'););out center 400;';
+  try{
+    const res=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q)});if(!res.ok)throw new Error('HTTP '+res.status);
+    const j=await res.json();
+    EVP=(j.elements||[]).map(e=>{const t=e.tags||{},lat=e.lat??(e.center&&e.center.lat),lon=e.lon??(e.center&&e.center.lon);if(lat==null)return null;
+      let kw=0;Object.keys(t).forEach(k=>{if(/^(socket:.*:output|maxpower|charging_station:output)$/.test(k)){const m=parseFloat(String(t[k]).replace(',','.'));if(m>kw)kw=m;}});
+      const socks=Object.keys(t).filter(k=>/^socket:[a-z0-9_]+$/.test(k)).map(k=>k.slice(7).replace('type2_combo','CCS').replace('type2','Type 2').replace('chademo','CHAdeMO').replace('tesla_supercharger','Tesla')+(t[k]&&t[k]!=='yes'?' ×'+t[k]:''));
+      return {id:'ev'+e.id,lat,lon,kw,cls:evClass(kw),op:t.operator||t.network||t.brand||'Operatore non indicato',name:t.name||'',cap:t.capacity||'',socks,fee:t.fee,access:t.access,dist:hav(c.lat,c.lon,lat,lon)};}).filter(Boolean).sort((a,b)=>a.dist-b.dist);
+    evMsg=EVP.length?'':'Nessuna colonnina mappata su OpenStreetMap entro '+r+' km.';
+  }catch(e){EVP=[];evMsg='Il servizio delle colonnine (Overpass) non è raggiungibile da qui: riprova tra poco o apri l\'app nel browser.';}
+  evBusy=false;$('btnEv').textContent='⚡ Colonnine nella zona';renderListEV();drawMarkers();
+}
+function renderListEV(){
+  const LI=$('list');
+  $('lTitle').textContent=EVP.length?EVP.length+(EVP.length===1?' colonnina':' colonnine')+' entro '+Math.min(S.radius||10,25)+' km':'Colonnine';
+  if(!EVP.length){LI.innerHTML='<li class="empty" style="display:block;border-left-width:1px;cursor:default">'+(evMsg||'Premi «⚡ Colonnine nella zona» sulla mappa per cercare i punti di ricarica pubblici intorno a '+esc(S.center.label)+' (dati OpenStreetMap, potenza e operatore come mappati dai volontari).')+'</li>';return;}
+  const col={ac:'#0A7A4B',dc:'#0F4C9A',hpc:'#6A1B9A'};
+  LI.innerHTML=EVP.slice(0,80).map(e=>'<li data-id="'+e.id+'" style="--k:'+col[e.cls]+'"'+(SEL===e.id?' class="sel"':'')+'><b class="price" style="font-size:22px">'+(e.kw?Math.round(e.kw)+'<small style="font-family:var(--body);font-size:11px;font-weight:400"> kW</small>':'<small style="font-family:var(--body);font-size:12px;font-weight:400">kW n.d.</small>')+'</b><span class="nm">'+esc(e.op)+(e.name?' · '+esc(e.name):'')+'</span><span class="km">'+km(e.dist)+' km<small>'+(e.cls==='hpc'?'ultrarapida':e.cls==='dc'?'rapida DC':'AC')+'</small></span><span class="meta">'+esc([e.cap?e.cap+' stalli':'',e.socks.join(', '),e.fee==='no'?'gratuita':'',e.access&&e.access!=='yes'?'accesso '+e.access:''].filter(Boolean).join(' · ')||'dettagli non mappati')+'</span></li>').join('');
+}
+function openSheetEV(e){
+  SEL=e.id;const p=S.evPrices[e.cls==='ac'?'ac':e.cls==='dc'?'dc':'hpc'],lt=litriFor(S,p);
+  $('sheet').style.setProperty('--k',{ac:'#0A7A4B',dc:'#0F4C9A',hpc:'#6A1B9A'}[e.cls]);
+  $('sheet').innerHTML='<button class="x" type="button" aria-label="Chiudi la scheda">×</button><h3>⚡ '+esc(e.op)+(e.name?' · '+esc(e.name):'')+'</h3>'+
+    '<div class="addr">'+(e.kw?'fino a '+Math.round(e.kw)+' kW ('+(e.cls==='hpc'?'ultrarapida':e.cls==='dc'?'rapida DC':'AC')+')':'potenza non mappata')+(e.cap?' · '+e.cap+' stalli':'')+(e.socks.length?' · '+esc(e.socks.join(', ')):'')+'<br>'+km(e.dist)+' km da '+esc(S.center.label)+' · dati OpenStreetMap, senza prezzo: verifica sull\'app dell\'operatore</div>'+
+    '<div class="addr" style="margin:8px 0 0">Con la tua tariffa '+EVW[e.cls==='ac'?'ac':e.cls==='dc'?'dc':'hpc']+' ('+fmt(p)+' €/kWh): '+fmtL(lt)+' kWh = <b style="color:var(--ink)">'+eur(lt*p)+'</b> · '+eur(S.evKwh*p)+' ogni 100 km</div>'+
+    '<div class="acts"><a class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+e.lat+','+e.lon+'">Portami qui</a><a class="btn" target="_blank" rel="noopener" href="https://www.openstreetmap.org/'+(e.id.length>9?'node':'node')+'/'+e.id.slice(2)+'">Vedi su OpenStreetMap</a></div>';
+  $('sheet').classList.add('on');document.querySelectorAll('#list li').forEach(li=>li.classList.toggle('sel',li.dataset.id===e.id));
+  if(map){if(!map.getBounds().pad(-0.2).contains([e.lat,e.lon]))map.panTo([e.lat,e.lon]);drawMarkers();}
+}
+
+/* ---------- scheda ---------- */
+function openSheet(id,quiet){
+  const ev=EVP.find(e=>e.id===id); if(ev){openSheetEV(ev);return;}
+  const r=RES.find(x=>x.st.id===id); if(!r)return; const st=r.st; SEL=id;
+  const fav=S.favs.includes(id),rows=st.all.slice().sort((a,b)=>a.d.localeCompare(b.d)||(b.self-a.self));
+  const names=[...new Set(rows.map(x=>x.d))];
+  const tb=names.map(d=>{const s=rows.find(x=>x.d===d&&x.self),v=rows.find(x=>x.d===d&&!x.self),cur=categorize(d)===S.fuel;
+    return '<tr'+(cur?' class="cur"':'')+'><td>'+esc(d)+'</td><td>'+(s?'<span class="price">'+priceHTML(s.p)+'</span>':'–')+'</td><td>'+(v?'<span class="price">'+priceHTML(v.p)+'</span>':'–')+'</td></tr>';}).join('');
+  $('sheet').style.setProperty('--k',COLORS[band(r.p,ST)]);
+  $('sheet').innerHTML='<button class="x" type="button" aria-label="Chiudi la scheda">×</button>'+
+    '<h3>'+esc(st.band)+' · '+esc(cap(st.com))+' ('+esc(st.prov)+')</h3>'+
+    '<div class="addr">'+esc(cap(st.addr))+(st.nome?' · '+esc(cap(st.nome)):'')+'<br>'+(S.mode==='route'?'al km '+Math.round(r.along)+' del percorso, a '+km(r.dist)+' km dalla strada':km(r.dist)+' km da '+esc(S.center.label))+' · '+esc(st.tipo.toLowerCase())+' · '+age(r.pr.dt)+'</div>'+
+    '<table class="ptab"><thead><tr><th>Prodotto</th><th>Self</th><th>Servito</th></tr></thead><tbody>'+tb+'</tbody></table>'+
+    '<div class="addr" style="margin:8px 0 0">'+fmtL(r.lt)+' '+unit()+' qui: <b style="color:var(--ink)">'+eur(r.p*r.lt)+'</b> · '+eur(S.consumo*r.p)+' ogni 100 km'+(ST&&ST.n>1&&Math.abs(r.p-ST.med)>=0.0005?' · '+eur(Math.abs(r.p-ST.med)*r.lt)+(r.p<ST.med?' in meno':' in più')+' della mediana':'')+'</div>'+
+    '<div class="addr" style="margin:6px 0 0">Lo stesso tragitto in elettrico ('+String(S.evKwh).replace('.',',')+' kWh/100 km): '+eur(S.evKwh*S.evPrices.casa)+' ogni 100 km a casa, '+eur(S.evKwh*S.evPrices.hpc)+' in ultrarapida</div>'+
+    sparkHTML(st)+
+    '<div class="acts"><a class="btn primary" target="_blank" rel="noopener" href="'+(S.mode==='route'&&S.from&&S.to?'https://www.google.com/maps/dir/?api=1&origin='+S.from.lat+','+S.from.lon+'&destination='+S.to.lat+','+S.to.lon+'&waypoints='+st.lat+','+st.lon:'https://www.google.com/maps/dir/?api=1&destination='+st.lat+','+st.lon)+'">'+(S.mode==='route'?'Percorso con questa sosta':'Portami qui')+'</a>'+
+    '<button type="button" class="btn" data-fav="'+id+'">'+(fav?'★ Togli dai preferiti':'☆ Aggiungi ai preferiti')+'</button>'+
+    '<button type="button" class="btn" data-log="'+id+'">Registra rifornimento</button><button type="button" class="btn" data-share="'+id+'">Condividi</button></div>';
+  $('sheet').classList.add('on'); renderSim();
+  document.querySelectorAll('#list li').forEach(li=>li.classList.toggle('sel',li.dataset.id===id));
+  if(!quiet&&map){const ll=[st.lat,st.lon];if(!map.getBounds().pad(-0.2).contains(ll))map.panTo(ll);drawMarkers();}
+}
+function closeSheet(){if(!SEL)return;SEL=null;renderSim();$('sheet').classList.remove('on');document.querySelectorAll('#list li.sel').forEach(li=>li.classList.remove('sel'));drawMarkers();}
+
+/* ---------- luogo ---------- */
+function setCenter(lat,lon,label){S.center={lat,lon,label};EVP=[];evMsg='';if(S.radius===0)S.radius=10;refresh(true);}
+const NOMI='https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=it&limit=6&accept-language=it&q=';
+function attachSuggest(inp,box,onPick){
+  let kb=-1,lastQ='';
+  function show(){
+    lastQ=inp.value.trim(); const q=norm(lastQ); kb=-1;
+    if(q.length<2||!DB){box.classList.remove('on');return;}
+    const hit=DB.comuni.filter(c=>c.key.startsWith(q)).concat(DB.comuni.filter(c=>!c.key.startsWith(q)&&c.key.includes(q))).slice(0,6);
+    box.innerHTML=hit.map(c=>'<button type="button" role="option" data-lat="'+c.lat+'" data-lon="'+c.lon+'" data-n="'+esc(cap(c.n))+'">'+esc(cap(c.n))+' ('+esc(c.prov)+')<small>'+c.c+(c.c===1?' impianto':' impianti')+'</small></button>').join('')+
+      (q.length>=3?'<button type="button" class="geo" data-geo="1">Cerca «'+esc(lastQ)+'» tra vie, indirizzi e luoghi</button>':'');
+    box.classList.toggle('on',!!box.innerHTML);
+  }
+  async function geoSearch(){
+    const q=lastQ; box.innerHTML='<button type="button" disabled>Cerco «'+esc(q)+'»…</button>';
+    try{
+      const r=await fetch(NOMI+encodeURIComponent(q),{headers:{Accept:'application/json'}}); if(!r.ok)throw new Error(r.status);
+      const j=await r.json();
+      box.innerHTML=j.length?j.map(x=>{const p=String(x.display_name).split(', '),n=p.slice(0,2).join(', ');
+        return '<button type="button" role="option" data-lat="'+(+x.lat)+'" data-lon="'+(+x.lon)+'" data-n="'+esc(n)+'"><span>'+esc(n)+'</span><small>'+esc(p.slice(2,4).join(', '))+'</small></button>';}).join('')
+        :'<button type="button" disabled>Nessun luogo trovato in Italia per «'+esc(q)+'». Prova ad aggiungere il comune.</button>';
+    }catch(e){box.innerHTML='<button type="button" disabled>La ricerca di indirizzi non è raggiungibile da qui: scegli un comune dall\'elenco, oppure apri l\'app nel browser.</button>';}
+    box.classList.add('on');
+  }
+  inp.addEventListener('input',show);
+  inp.addEventListener('focus',()=>inp.select());
+  inp.addEventListener('keydown',e=>{
+    const bs=[...box.querySelectorAll('button:not([disabled])')];
+    if((e.key==='ArrowDown'||e.key==='ArrowUp')&&bs.length){e.preventDefault();kb=(kb+(e.key==='ArrowDown'?1:-1)+bs.length)%bs.length;bs.forEach((b,i)=>b.classList.toggle('kb',i===kb));}
+    else if(e.key==='Enter'&&bs.length&&box.classList.contains('on')){e.preventDefault();(bs[kb]||bs[0]).click();}
+    else if(e.key==='Escape')box.classList.remove('on');
+  });
+  box.addEventListener('click',e=>{
+    if(e.target.closest('button[data-geo]')){geoSearch();return;}
+    const b=e.target.closest('button[data-lat]');if(!b)return;box.classList.remove('on');inp.blur();onPick(+b.dataset.lat,+b.dataset.lon,b.dataset.n);});
+}
+
+/* ---------- percorso ---------- */
+function indexRoute(){const r=buildRoute(DB,ROUTE.raw,15);ROUTE.pts=r.pts;ROUTE.near=r.near;ROUTE.bounds=r.bounds;if(!ROUTE.road)ROUTE.km=r.total;}
+let routeSeq=0;
+async function calcRoute(){
+  if(!S.from||!S.to){ROUTE=null;$('rInfo').className='rinfo';$('rInfo').textContent=S.from?'Scegli il comune di arrivo.':'Scegli partenza e arrivo.';refresh(true);return;}
+  const seq=++routeSeq; $('rInfo').className='rinfo'; $('rInfo').textContent='Calcolo il percorso…';
+  let raw=null,road=false,kmTot=0,min=0;
+  try{
+    const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),12000);
+    const u='https://router.project-osrm.org/route/v1/driving/'+S.from.lon+','+S.from.lat+';'+S.to.lon+','+S.to.lat+'?overview=full&geometries=geojson'+(S.noMotorway?'&exclude=motorway':'');
+    const j=await (await fetch(u,{signal:ctl.signal})).json(); clearTimeout(to);
+    if(j.code!=='Ok'||!j.routes||!j.routes.length)throw new Error(j.code||'nessun percorso');
+    raw=j.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]); kmTot=j.routes[0].distance/1000; min=j.routes[0].duration/60; road=true;
+  }catch(e){
+    raw=[]; for(let i=0;i<=60;i++)raw.push([S.from.lat+(S.to.lat-S.from.lat)*i/60,S.from.lon+(S.to.lon-S.from.lon)*i/60]);
+  }
+  if(seq!==routeSeq)return;
+  ROUTE={raw,road,km:kmTot,min}; indexRoute();
+  if(road){const h=Math.floor(min/60),m=Math.round(min%60);$('rInfo').className='rinfo';$('rInfo').textContent='Percorso su strada: '+Math.round(ROUTE.km)+' km, circa '+(h?h+' h ':'')+m+' min'+(S.noMotorway?', senza autostrade':'')+'.';}
+  else{$('rInfo').className='rinfo warn';$('rInfo').textContent='Percorso in linea d\'aria ('+Math.round(ROUTE.km)+' km): il servizio che calcola le strade non è raggiungibile da qui. Allarga la distanza dal percorso per compensare, oppure apri l\'app nel browser.';}
+  if(S.sort==='dist')S.sort='price';
+  refresh(true);
+}
+
+/* ---------- storico ---------- */
+const dShort=d=>d.slice(8,10)+'/'+d.slice(5,7);
+function histDates(n){const out=[],t0=Date.parse(DB.date+'T00:00:00Z');for(let i=1;i<n;i++)out.push(new Date(t0-i*864e5).toISOString().slice(0,10));return out;}
+async function loadHist(n){
+  if(histBusy)return; histN=n; const dates=histDates(n),days=[dayFromDB(DB)],db=DB; let done=0,i=0;
+  histBusy='Scarico lo storico: 0 di '+dates.length+'…'; renderHist();
+  async function worker(){
+    while(i<dates.length){
+      const d=dates[i++],p=d.split('-');
+      try{const day=parseDay(await getText(GH+p[0]+'/'+p[1]+'/prezzo_alle_8-'+p.join('')+'.csv.gz',true),db); if(day){day.date=d;days.push(day);}}catch(e){}
+      done++; histBusy='Scarico lo storico: '+done+' di '+dates.length+'…'; if(db===DB)renderHist();
+    }
+  }
+  await Promise.all([worker(),worker(),worker()]);
+  histBusy=''; if(db!==DB)return;
+  days.sort((a,b)=>a.date<b.date?-1:1);
+  HIST=days.length>1?{days,n}:{days:[],n,fail:true};
+  renderHist(); if(SEL)openSheet(SEL,true);
+}
+function lineChart(series,keys,colors,w,h,step){
+  let lo=1e9,hi=-1e9; series.forEach(s=>keys.forEach(k=>{if(s[k]!=null){if(s[k]<lo)lo=s[k];if(s[k]>hi)hi=s[k];}}));
+  if(hi-lo<0.004){hi+=0.002;lo-=0.002;} const t0=Date.parse(series[0].date),t1=Date.parse(series[series.length-1].date)||t0+1;
+  const X=d=>((Date.parse(d)-t0)/((t1-t0)||1))*w,Y=v=>h-((v-lo)/(hi-lo))*h;
+  let svg='';
+  keys.forEach((k,ki)=>{let d='',py=null;series.forEach(s=>{if(s[k]==null)return;const x=X(s.date).toFixed(1),y=Y(s[k]).toFixed(1);d+=d?(step?' H'+x+' V'+y:' L'+x+' '+y):'M'+x+' '+y;py=y;});
+    svg+='<path d="'+d+'" fill="none" stroke="'+colors[ki]+'" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>';});
+  return {svg,lo,hi};
+}
+function renderHist(){
+  const el=$('hist'); if(!DB||isEV()){el.innerHTML='';return;}
+  const btns='<button type="button" data-h="14"'+(HIST&&HIST.n===14?' aria-pressed="true"':'')+(histBusy?' disabled':'')+'>14 giorni</button><button type="button" data-h="30"'+(HIST&&HIST.n===30?' aria-pressed="true"':'')+(histBusy?' disabled':'')+'>30 giorni</button>';
+  if(histBusy){el.innerHTML='<div class="hrow">'+btns+'<span class="hnote">'+histBusy+'</span></div>';return;}
+  if(!HIST){el.innerHTML='<div class="hrow">'+btns+'<span class="hnote">Andamento dei prezzi: scarica lo storico (circa 0,5 MB al giorno).</span></div>';return;}
+  if(HIST.fail){el.innerHTML='<div class="hrow">'+btns+'<span class="hnote">Storico non raggiungibile da qui: serve la rete, apri l\'app nel browser.</span></div>';return;}
+  const ser=zoneSeries(HIST.days,DB,S,RES);
+  if(ser.length<2){el.innerHTML='<div class="hrow">'+btns+'<span class="hnote">Nessuno storico per questa selezione.</span></div>';return;}
+  const a=ser[0],b=ser[ser.length-1],dl=b.med-a.med,c=lineChart(ser,['med','min'],['#FFD23F','#6FE3A1'],320,70,false);
+  const sign=v=>(v>0?'+':v<0?'−':'')+fmt(Math.abs(v));
+  el.innerHTML='<h3>Andamento dal '+dShort(a.date)+' al '+dShort(b.date)+'</h3>'+
+    '<p>Mediana '+(Math.abs(dl)<0.0005?'invariata a '+fmt(b.med):'da '+fmt(a.med)+' a '+fmt(b.med)+' (<b>'+sign(dl)+'</b>)')+', prezzo più basso '+(Math.abs(b.min-a.min)<0.0005?'invariato':sign(b.min-a.min))+'. '+ser.length+' giorni disponibili.</p>'+
+    '<svg viewBox="-4 -6 364 84" role="img" aria-label="Grafico di mediana e minimo nel periodo"><line x1="0" x2="320" y1="70" y2="70" stroke="#414C53"/>'+c.svg+
+    '<text x="326" y="4" fill="#AEB8B3" font-size="10">'+fmt(c.hi)+'</text><text x="326" y="72" fill="#AEB8B3" font-size="10">'+fmt(c.lo)+'</text></svg>'+
+    '<div class="lg"><span><i style="background:#FFD23F"></i>mediana</span><span><i style="background:#6FE3A1"></i>più basso</span></div>'+
+    '<div class="hrow" style="margin-top:8px">'+btns+'</div>';
+}
+function sparkHTML(st){
+  if(!HIST||HIST.fail)return '';
+  const ser=HIST.days.map(d=>({date:d.date,p:dayPrice(d,st.i,S.fuel,S.serv)||null})).filter(x=>x.p);
+  if(ser.length<2)return '';
+  const a=ser[0],b=ser[ser.length-1]; let ch=0; for(let i=1;i<ser.length;i++)if(Math.abs(ser[i].p-ser[i-1].p)>0.0005)ch++;
+  const c=lineChart(ser,['p'],['#0F4C9A'],300,36,true),dl=b.p-a.p;
+  return '<div class="spark">Dal '+dShort(a.date)+': <b>'+(ch?fmt(a.p)+' → '+fmt(b.p)+' ('+(dl>0?'+':dl<0?'−':'')+fmt(Math.abs(dl))+')':'prezzo mai cambiato')+'</b>'+(ch?', '+ch+(ch===1?' variazione':' variazioni'):'')+
+    '<svg viewBox="-3 -5 306 46" preserveAspectRatio="none" role="img" aria-label="Andamento del prezzo in questo impianto">'+c.svg+'</svg></div>';
+}
+function geo(){
+  if(!navigator.geolocation){toast('Questo browser non offre la posizione.');return;}
+  $('btnGeo').textContent='◎ Cerco…';
+  navigator.geolocation.getCurrentPosition(p=>{$('btnGeo').textContent='◎ Vicino a me';if(S.mode==='route'){S.from={lat:p.coords.latitude,lon:p.coords.longitude,label:'La tua posizione'};calcRoute();}else setCenter(p.coords.latitude,p.coords.longitude,'la tua posizione');},
+    e=>{$('btnGeo').textContent='◎ Vicino a me';toast(e.code===1?'Posizione non autorizzata: consenti l\'accesso oppure cerca un comune.':'Posizione non disponibile: cerca un comune o sposta la mappa.');},{enableHighAccuracy:true,timeout:9000,maximumAge:60000});
+}
+let toastT; function toast(m){const e=$('toast');e.textContent=m;e.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('on'),5000);}
+function nearestLabel(lat,lon){let b=null,bd=1e9;for(const c of DB.comuni){const d=hav(lat,lon,c.lat,c.lon);if(d<bd){bd=d;b=c;}}return b&&bd<15?'zona di '+cap(b.n):'punto sulla mappa';}
+
+function exportCsv(){
+  if(!RES.length)return; const f=fuelDef();
+  const rows=[['posizione','prezzo','servizio','prodotto','bandiera','nome','indirizzo','comune','provincia','tipo','distanza_km','km_percorso','quantita','costo_rifornimento','lat','lon','id_impianto']];
+  RES.forEach((r,i)=>rows.push([i+1,fmt(r.p),r.pr.self?'self':'servito',r.pr.d,r.st.band,r.st.nome,r.st.addr,r.st.com,r.st.prov,r.st.tipo,r.dist.toFixed(2).replace('.',','),S.mode==='route'?Math.round(r.along):'',fmtL(r.lt),r.cost.toFixed(2).replace('.',','),r.st.lat,r.st.lon,r.st.id]));
+  const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='ottano-gold_'+f.k+'_'+DB.date+'.csv';document.body.appendChild(a);a.click();a.remove();
+}
+
+/* ---------- analisi ---------- */
+function median(v){v.sort((a,b)=>a-b);const n=v.length;return n?(n%2?v[n>>1]:(v[n/2-1]+v[n/2])/2):0;}
+function renderAnalisi(){
+  if(!$('boxAn').open||!DB)return;
+  if(isEV()){$('anGap').textContent='L\'analisi di bandiere e province vale per i carburanti: per l\'elettrico contano tariffa e operatore.';$('anRows').innerHTML='';return;}
+  document.querySelectorAll('#segAn button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===AN));
+  if(!ST){$('anGap').textContent='Nessun impianto nella selezione.';$('anRows').innerHTML='';return;}
+  const g=[];for(const r of RES){const c=r.st.pr[S.fuel];if(c&&c.s&&c.v&&c.v.p>=c.s.p&&c.v.p-c.s.p<1)g.push(c.v.p-c.s.p);}
+  if(g.length>=3){const m=median(g),lt=litriFor(S,ST.med);$('anGap').innerHTML='Nei '+g.length.toLocaleString('it-IT')+' impianti che offrono entrambi, il servito costa in mediana <b>+'+fmt(m)+' €/'+unit()+'</b> rispetto al self: '+eur(m*lt)+' in più su '+fmtL(lt)+' '+unit()+'.';}
+  else $('anGap').textContent='Troppo pochi impianti con self e servito insieme per confrontarli.';
+  const mp=new Map();for(const r of RES){const k=AN==='band'?r.st.band:r.st.prov;let a=mp.get(k);if(!a)mp.set(k,a=[]);a.push(r.p);}
+  const minN=RES.length>300?5:RES.length>30?2:1;
+  let rows=[...mp].map(e=>({k:e[0],n:e[1].length,med:median(e[1])})).filter(x=>x.n>=minN).sort((a,b)=>a.med-b.med||b.n-a.n);
+  if(AN==='band'&&rows.length>12)rows=rows.sort((a,b)=>b.n-a.n).slice(0,12).sort((a,b)=>a.med-b.med||b.n-a.n);
+  const row=x=>'<tr><td><i style="--k:'+COLORS[band(x.med,ST)]+'"></i>'+esc(AN==='prov'?'Provincia '+x.k:x.k)+'</td><td>'+x.n.toLocaleString('it-IT')+(x.n===1?' impianto':' impianti')+'</td><td><span class="price">'+priceHTML(x.med)+'</span></td></tr>';
+  let html;
+  if(rows.length>14)html=rows.slice(0,9).map(row).join('')+'<tr class="gap"><td colspan="3">… altre '+(rows.length-13)+' …</td></tr>'+rows.slice(-4).map(row).join('');
+  else html=rows.map(row).join('');
+  $('anRows').innerHTML=html||'<tr><td>Nessun gruppo con abbastanza impianti.</td></tr>';
+  if(html)$('anRows').insertAdjacentHTML('beforeend','<tr class="gap"><td colspan="3">'+(AN==='band'?'Prezzo mediano delle reti più presenti nella selezione, dalla meno cara':'Prezzo mediano per provincia'+(minN>1?', solo con almeno '+minN+' impianti':''))+'</td></tr>');
+}
+
+/* ---------- dal Brent alla pompa ---------- */
+const BBL=158.987,IVA=0.22;
+function accisaAuto(){ // gasolio: aliquote temporanee dei decreti di agosto-settembre 2026
+  const d=DB?DB.date:'';return d<'2026-08-27'?0.6729:d<='2026-09-17'?0.5329:d<='2026-09-25'?0.5729:d<='2026-10-05'?0.6229:0.6729;
+}
+function brentFuel(){return S.fuel==='benzina'||S.fuel==='benzina_plus'?'B':S.fuel==='gasolio'||S.fuel==='gasolio_plus'?'D':'';}
+function renderBrent(){
+  if(!$('boxBr').open||!DB)return;
+  const k=brentFuel(),f=fuelDef(),nm=(f.n+(f.s?' '+f.s:'')).toLowerCase();
+  if(!k||!ST){$('brBody').hidden=true;$('brIntro').textContent=!ST?'Nessun impianto nella selezione.':'Il calcolo vale per benzina e gasolio: GPL, metano, GNL e HVO seguono altre quotazioni e un\'altra fiscalità.';return;}
+  $('brBody').hidden=false;
+  const acc=k==='B'?S.accB:(S.accD||accisaAuto()),p=ST.med,netto=p/(1+IVA),crude=S.brent/BBL/S.eurusd,marg=netto-acc-crude,iva=p-netto;
+  $('brIntro').innerHTML='Un litro di '+nm+' alla mediana della selezione (<b>'+fmt(p)+' €</b>) scomposto in greggio, margine lordo e tasse. Il margine è ricavato per differenza.';
+  if(document.activeElement!==$('bBrent'))$('bBrent').value=S.brent;
+  if(document.activeElement!==$('bFx'))$('bFx').value=S.eurusd;
+  if(document.activeElement!==$('bAcc'))$('bAcc').value=acc;
+  const presets=k==='D'?[[0.5329,'fino al 17/9'],[0.5729,'18–25/9'],[0.6229,'26/9–5/10'],[0.6729,'ordinaria']]:[[0.6729,'ordinaria 2026']];
+  $('bAccQuick').innerHTML=presets.map(x=>'<button type="button" data-a="'+x[0]+'" aria-pressed="'+(Math.abs(acc-x[0])<1e-5)+'">'+String(x[0]).replace('.',',')+' · '+x[1]+'</button>').join('');
+  const parts=[['Greggio (Brent)',crude,'#20282D'],['Margine lordo: raffinazione, logistica, distribuzione',marg,'#0F4C9A'],['Accisa',acc,'#E5781E'],['IVA 22%',iva,'#C62F2B']];
+  $('brStack').innerHTML=parts.map(x=>'<span style="background:'+x[2]+';flex:'+Math.max(0.0001,x[1])+'">'+Math.round(x[1]/p*100)+'%</span>').join('');
+  $('brLeg').innerHTML=parts.map(x=>'<li><i style="background:'+x[2]+'"></i><span>'+x[0]+'</span><b>'+fmt(x[1])+' €</b><small>'+Math.round(x[1]/p*100)+'%</small></li>').join('')+
+    '<li><i style="background:transparent"></i><span>Tasse in tutto (accisa e IVA)</span><b>'+fmt(acc+iva)+' €</b><small>'+Math.round((acc+iva)/p*100)+'%</small></li>';
+  $('bSim').value=S.brentSim;$('oSim').textContent=S.brentSim+' $';$('bFxSim').value=S.eurusdSim;$('oFxSim').textContent=S.eurusdSim.toFixed(2).replace('.',',');
+  const crude2=S.brentSim/BBL/S.eurusdSim,p2=(crude2+marg+acc)*(1+IVA),dl=p2-p,lt=litriFor(S,p2),per10=10/BBL/S.eurusd*(1+IVA);
+  $('brOut').innerHTML='<b class="price">'+priceHTML(Math.max(0,p2))+'</b><em class="'+(dl>0.0005?'up':dl<-0.0005?'down':'')+'">'+(Math.abs(dl)<0.0005?'come oggi':(dl>0?'+':'−')+fmt(Math.abs(dl))+' €/L, '+(dl>0?'+':'−')+eur(Math.abs(dl)*lt).slice(2)+' € su '+fmtL(lt)+' L')+'</em>';
+  $('brNote').innerHTML='A questo cambio ogni 10 $ di Brent valgono circa <b style="color:var(--ink)">'+(per10*100).toFixed(1).replace('.',',')+' centesimi</b> al litro alla pompa, IVA compresa. È una stima a margine e accisa costanti: i listini seguono le quotazioni dei prodotti raffinati (Platts Mediterraneo) più che il greggio, e si adeguano con qualche giorno di ritardo.'+(marg<0?' Il margine risulta negativo: controlla Brent, cambio e accisa.':'');
+}
+
+/* ---------- diario ---------- */
+const todayLocal=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const dIt=d=>d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4);
+function renderDiary(){
+  DIARY.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:b.t-a.t);
+  const n=DIARY.length;$('diSum').textContent=n?n+(n===1?' rifornimento':' rifornimenti'):'vuoto';$('dTools').hidden=!n;
+  if(!n){$('dStats').innerHTML='';$('dList').innerHTML='';return;}
+  let sp=0,li=0,lk=0,kk=0,sk=0,s30=0;const lim=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+  for(const e of DIARY){const c=e.l*e.p;sp+=c;li+=e.l;if(e.km>0){lk+=e.l;kk+=e.km;sk+=c;}if(e.d>=lim)s30+=c;}
+  const cons=kk>0?lk/kk*100:0;$('dUse').disabled=!cons;$('dUse').style.opacity=cons?1:.5;
+  $('dStats').innerHTML='<div class="kpis"><div><b>'+eur(sp)+'</b>spesa totale, '+eur(s30)+' negli ultimi 30 giorni</div><div><b>'+fmt(sp/li)+'</b>prezzo medio pagato</div><div><b>'+(cons?cons.toFixed(1).replace('.',',')+' /100 km':'–')+'</b>consumo reale'+(cons?'':' (servono i km)')+'</div><div><b>'+(cons?eur(sk/kk*100):'–')+'</b>costo reale ogni 100 km</div></div>';
+  $('dList').innerHTML=DIARY.slice(0,30).map((e,i)=>'<li><span><b>'+dIt(e.d)+'</b> · '+fmtL(e.l)+' a '+fmt(e.p)+' = <b>'+eur(e.l*e.p)+'</b><small>'+esc([e.n,e.f,e.km>0?e.km+' km, '+(e.l/e.km*100).toFixed(1).replace('.',',')+' ogni 100 km':''].filter(Boolean).join(' · '))+'</small></span><button type="button" data-del="'+i+'" aria-label="Elimina il rifornimento del '+dIt(e.d)+'">×</button></li>').join('');
+}
+function addDiary(){
+  const v=id=>parseFloat(String($(id).value).replace(',','.')),l=v('dLitri'),p=v('dPrezzo'),k=v('dKm'),d=$('dDate').value;
+  if(!(l>0)||!(p>0)||!d){$('dMsg').className='rinfo warn';$('dMsg').textContent='Servono data, quantità e prezzo.';return;}
+  const f=fuelDef();DIARY.push({d,l,p,km:k>0?Math.round(k):0,n:$('dNota').value.trim(),f:f.n+(f.s?' '+f.s:''),t:Date.now()});
+  mem.set('ottano-diario',DIARY);['dLitri','dPrezzo','dKm','dNota'].forEach(i=>$(i).value='');
+  $('dMsg').className='rinfo';$('dMsg').textContent='Registrato: '+eur(l*p)+'.';renderDiary();
+}
+function logFromStation(id){
+  const r=RES.find(x=>x.st.id===id);if(!r)return;
+  $('boxDi').open=true;$('dDate').value=todayLocal();$('dPrezzo').value=r.p.toFixed(3);$('dLitri').value=(Math.round(r.lt*10)/10);$('dNota').value=r.st.band+' · '+cap(r.st.com);
+  $('dMsg').className='rinfo';$('dMsg').textContent='Ho precompilato prezzo e quantità dalla simulazione: correggi con i valori dello scontrino e premi Registra.';
+  closeSheet();$('boxDi').scrollIntoView({block:'start'});
+}
+function diaryCsv(){
+  const rows=[['data','quantita','prezzo','importo','km_dal_pieno_precedente','consumo_100km','carburante','dove']];
+  DIARY.forEach(e=>rows.push([e.d,String(e.l).replace('.',','),fmt(e.p),(e.l*e.p).toFixed(2).replace('.',','),e.km||'',e.km>0?(e.l/e.km*100).toFixed(2).replace('.',','):'',e.f||'',e.n||'']));
+  const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='ottano_diario.csv';document.body.appendChild(a);a.click();a.remove();
+}
+async function shareStation(id){
+  const r=RES.find(x=>x.st.id===id);if(!r)return;const st=r.st,f=fuelDef();
+  const txt=st.band+', '+cap(st.addr)+' ('+cap(st.com)+'): '+(f.n+(f.s?' '+f.s:'')).toLowerCase()+' '+(r.pr.self?'self':'servito')+' a '+fmt(r.p)+' €/'+unit()+'. Dati MIMIT del '+dIt(DB.date)+', trovato con Ottano.';
+  const url='https://www.google.com/maps/search/?api=1&query='+st.lat+','+st.lon;
+  try{if(navigator.share){await navigator.share({title:'Ottano',text:txt,url});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+  try{await navigator.clipboard.writeText(txt+' '+url);toast('Testo copiato: incollalo dove vuoi.');}
+  catch(e){try{window.prompt('Copia il testo:',txt+' '+url);}catch(_){toast('Condivisione non disponibile in questa anteprima: funziona aprendo l\'app nel browser.');}}
+}
+
+/* ---------- eventi ---------- */
+function bind(){
+  $('rRadius').addEventListener('input',e=>{S.radius=+e.target.value;$('oRadius').textContent=S.radius>0?S.radius+' km':'tutta Italia';});
+  $('rRadius').addEventListener('change',()=>refresh(true));
+  $('segServ').addEventListener('click',e=>{const b=e.target.closest('button');if(b){S.serv=b.dataset.v;refresh();}});
+  $('brands').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const v=b.dataset.b,i=S.brands.indexOf(v);i<0?S.brands.push(v):S.brands.splice(i,1);refresh();});
+  $('brandAll').addEventListener('click',()=>{S.brands=[];refresh();});
+  $('sTipo').addEventListener('change',e=>{S.tipo=e.target.value;refresh();});
+  $('sFresh').addEventListener('change',e=>{S.fresh=+e.target.value;refresh();});
+  $('nMax').addEventListener('change',e=>{S.maxPrice=e.target.value;refresh();});
+  $('cFav').addEventListener('change',e=>{S.onlyFav=e.target.checked;refresh();});
+  const num=(id,key,lo,hi)=>$(id).addEventListener('change',e=>{const v=parseFloat(String(e.target.value).replace(',','.'));S[key]=Math.min(hi,Math.max(lo,isFinite(v)?v:DEF[key]));refresh();});
+  num('nLitri','litri',1,500);
+  $('nCons').addEventListener('change',e=>{const v=parseFloat(String(e.target.value).replace(',','.'));const x=Math.min(60,Math.max(1,isFinite(v)?v:(isEV()?DEF.evKwh:DEF.consumo)));if(isEV())S.evKwh=x;else S.consumo=x;refresh();}); num('nTank','tank',5,500); num('nBudget','budget',5,1000); num('nKm','kmAnno',0,200000);
+  $('rLevel').addEventListener('input',e=>{S.level=+e.target.value;$('oLevel').textContent=S.level+'%';});
+  $('rLevel').addEventListener('change',()=>refresh());
+  $('segSim').addEventListener('click',e=>{const b=e.target.closest('button');if(b){S.simMode=b.dataset.v;refresh();}});
+  $('quick').addEventListener('click',e=>{const b=e.target.closest('button');if(b){S.litri=+b.dataset.l;refresh();}});
+  $('cDetour').addEventListener('change',e=>{S.detour=e.target.checked;if(S.detour)S.sort='cost';refresh();});
+  $('cAnom').addEventListener('change',e=>{S.anomal=e.target.checked;refresh();});
+  $('sSort').addEventListener('change',e=>{S.sort=e.target.value;refresh();});
+  $('tKey').addEventListener('change',e=>{S.mapKey=e.target.value.trim();S.mapPref='';save();toast(S.mapKey?'Chiave salvata: ricarica la pagina per usare le carte MapTiler.':'Chiave rimossa: ricarica la pagina.');});
+  $('btnReset').addEventListener('click',()=>{const keep={favs:S.favs,center:S.center,fuel:S.fuel,mode:S.mode,from:S.from,to:S.to,mapKey:S.mapKey};S=Object.assign(JSON.parse(JSON.stringify(DEF)),keep);refresh(true);});
+  $('list').addEventListener('click',e=>{const li=e.target.closest('li[data-id]');if(li)openSheet(li.dataset.id);});
+  $('sheet').addEventListener('click',e=>{
+    if(e.target.closest('.x')){closeSheet();return;}
+    const lg=e.target.closest('[data-log]');if(lg){logFromStation(lg.dataset.log);return;}
+    const sh=e.target.closest('[data-share]');if(sh){shareStation(sh.dataset.share);return;}
+    const f=e.target.closest('[data-fav]');if(f){const id=f.dataset.fav,i=S.favs.indexOf(id);i<0?S.favs.push(id):S.favs.splice(i,1);refresh();}
+  });
+  attachSuggest($('q'),$('sugg'),(la,lo,n)=>{$('q').value='';setCenter(la,lo,n);});
+  attachSuggest($('qFrom'),$('suggFrom'),(la,lo,n)=>{S.from={lat:la,lon:lo,label:n};calcRoute();});
+  attachSuggest($('qTo'),$('suggTo'),(la,lo,n)=>{S.to={lat:la,lon:lo,label:n};calcRoute();});
+  ['qFrom','qTo'].forEach(id=>$(id).addEventListener('blur',()=>setTimeout(()=>{if(document.activeElement!==$(id))syncControls();},250)));
+  $('segMode').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.v===S.mode)return;S.mode=b.dataset.v;closeSheet();
+    if(S.mode==='route'){if(!S.from)S.from={lat:S.center.lat,lon:S.center.lon,label:cap(S.center.label)};if(!ROUTE){calcRoute();return;}}
+    refresh(true);});
+  $('rCorr').addEventListener('input',e=>{S.corridor=+e.target.value;$('oCorr').textContent=S.corridor+' km';});
+  $('rCorr').addEventListener('change',()=>refresh());
+  $('cNoMw').addEventListener('change',e=>{S.noMotorway=e.target.checked;calcRoute();});
+  $('hist').addEventListener('click',e=>{const b=e.target.closest('button[data-h]');if(b&&!b.disabled)loadHist(+b.dataset.h);});
+  document.addEventListener('click',e=>{if(!e.target.closest('.place'))document.querySelectorAll('.sugg.on').forEach(x=>x.classList.remove('on'));});
+  $('btnGeo').addEventListener('click',geo);
+  $('btnEv').addEventListener('click',loadEV);
+  $('evCells').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b){S.evTariff=b.dataset.t;refresh();}});
+  [['evCasa','casa'],['evAc','ac'],['evDc','dc'],['evHpc','hpc']].forEach(x=>$(x[0]).addEventListener('change',e=>{const v=parseFloat(String(e.target.value).replace(',','.'));if(isFinite(v)&&v>0.05&&v<=2)S.evPrices[x[1]]=Math.round(v*1000)/1000;refresh();}));
+  $('sBrand').addEventListener('change',()=>{S.car='';renderCar();});
+  $('sModel').addEventListener('change',e=>{S.car=e.target.value;const c=CARS.find(x=>carKey(x)===S.car);if(c){if(c[2]==='elettrico')S.evKwh=c[3];else S.consumo=c[3];}refresh();});
+  $('carMsg').addEventListener('click',e=>{const b=e.target.closest('[data-fuel]');if(b){S.fuel=b.dataset.fuel;refresh();}});
+  $('btnHere').addEventListener('click',()=>{const c=map.getCenter();setCenter(c.lat,c.lng,nearestLabel(c.lat,c.lng));});
+  $('btnCsv').addEventListener('click',exportCsv);
+  $('boxAn').addEventListener('toggle',renderAnalisi);
+  $('boxBr').addEventListener('toggle',renderBrent);
+  const bnum=(id,key,lo,hi,dflt)=>$(id).addEventListener('change',e=>{const v=parseFloat(String(e.target.value).replace(',','.'));S[key]=isFinite(v)?Math.min(hi,Math.max(lo,v)):dflt;save();renderBrent();});
+  bnum('bBrent','brent',10,300,DEF.brent); bnum('bFx','eurusd',0.5,2,DEF.eurusd);
+  $('bAcc').addEventListener('change',e=>{const v=parseFloat(String(e.target.value).replace(',','.'));if(isFinite(v)&&v>=0&&v<=1.5){if(brentFuel()==='B')S.accB=v;else S.accD=v;}save();renderBrent();});
+  $('bAccQuick').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(brentFuel()==='B')S.accB=+b.dataset.a;else S.accD=+b.dataset.a;save();renderBrent();});
+  $('bSim').addEventListener('input',e=>{S.brentSim=+e.target.value;save();renderBrent();});
+  $('bFxSim').addEventListener('input',e=>{S.eurusdSim=+e.target.value;save();renderBrent();});
+  $('segAn').addEventListener('click',e=>{const b=e.target.closest('button');if(b){AN=b.dataset.v;renderAnalisi();}});
+  $('dDate').value=todayLocal();
+  $('dAdd').addEventListener('click',addDiary);
+  $('dList').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;DIARY.splice(+b.dataset.del,1);mem.set('ottano-diario',DIARY);renderDiary();});
+  $('dCsv').addEventListener('click',diaryCsv);
+  $('dUse').addEventListener('click',()=>{let lk=0,kk=0;DIARY.forEach(e=>{if(e.km>0){lk+=e.l;kk+=e.km;}});if(!kk)return;S.consumo=Math.round(lk/kk*1000)/10;refresh();toast('Consumo della simulazione impostato a '+String(S.consumo).replace('.',',')+' ogni 100 km.');});
+  $('btnDati').addEventListener('click',()=>$('dlg').showModal());
+  $('btnClose').addEventListener('click',()=>$('dlg').close());
+  $('btnFetch').addEventListener('click',async()=>{if(await fetchRemote())$('dlg').close();});
+  $('files').addEventListener('change',e=>onFiles([...e.target.files]));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&SEL&&!$('dlg').open)closeSheet();});
+}
+
+if(/^https?:/.test(location.protocol)&&'serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+(async function start(){
+  buildFuels(); bind();
+  const saved=await mem.get('ottano-v3'); if(saved&&typeof saved==='object'){S=Object.assign(S,saved);if(!S.center||!isFinite(S.center.lat))S.center=DEF.center;if(!FUELS.find(f=>f.k===S.fuel))S.fuel='benzina';if(!S.evPrices||typeof S.evPrices!=='object')S.evPrices=Object.assign({},DEF.evPrices);}
+  const dd=await mem.get('ottano-diario'); if(Array.isArray(dd))DIARY=dd.filter(e=>e&&e.l>0&&e.p>0&&e.d); renderDiary();
+  initMap();
+  let ok=false;
+  try{
+    const unz=async id=>{const b=atob($(id).textContent.trim()),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).text();};
+    const [a,p]=await Promise.all([unz('natA'),unz('natP')]);
+    setDB(buildDB(a,p,'dati incorporati nell\'app (tutta Italia)')); ok=true; $('natA').textContent='';$('natP').textContent='';
+  }catch(e){log('Dati nazionali incorporati non leggibili in questo browser ('+(e.message||e)+'): uso quelli di Alto Adige e Trentino.');}
+  if(!ok)try{setDB(buildDB($('snapA').textContent,$('snapP').textContent,'dati incorporati nell\'app (Alto Adige e Trentino)'));}catch(e){log('Dati incorporati non leggibili: '+e.message);}
+  if(S.mode==='route')calcRoute();
+  fetchRemote();
+})();
+})();
+</script>
+</body>
+</html>
