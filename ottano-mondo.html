@@ -354,7 +354,7 @@ function renderBrent(){
 function initMap(){
   if(typeof L==='undefined')return;
   map=L.map('map',{zoomControl:true,worldCopyJump:true,minZoom:1}).setView([50,12],4);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:8,subdomains:'abcd',attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> © <a href="https://carto.com/attributions" target="_blank">CARTO</a>'}).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:8,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'}).addTo(map);
   layer=L.layerGroup().addTo(map);fit();
 }
 function fit(){if(!map)return;if(S.view==='eu')map.fitBounds([[35,-10],[66,32]],{animate:false});else map.fitBounds([[-40,-125],[66,145]],{animate:false});}
