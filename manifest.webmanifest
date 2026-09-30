@@ -1,0 +1,18 @@
+{
+  "name": "Ottano Gold",
+  "short_name": "Ottano",
+  "description": "Prezzi carburanti sulla mappa d'Italia basati su open data MIMIT.",
+  "start_url": "./ottano.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F1F4F0",
+  "theme_color": "#20282D",
+  "icons": [
+    {
+      "src": "ottano-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
