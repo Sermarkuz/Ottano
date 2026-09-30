@@ -1,0 +1,25 @@
+name: Validate Ottano
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check Python syntax
+        run: python -m py_compile build.py build_mondo.py
+      - name: Rebuild Ottano Mondo
+        run: python build_mondo.py
+      - name: Verify generated file
+        run: test -s ottano-mondo.html
