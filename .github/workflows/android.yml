@@ -32,11 +32,16 @@ jobs:
           gradle-version: "9.6.0"
 
       - name: Prepare release signing
-        if: ${{ secrets.OTTANO_KEYSTORE_BASE64 != '' }}
         working-directory: android
         env:
           OTTANO_KEYSTORE_BASE64: ${{ secrets.OTTANO_KEYSTORE_BASE64 }}
-        run: echo "$OTTANO_KEYSTORE_BASE64" | base64 --decode > ottano-upload.jks
+        run: |
+          if [ -n "$OTTANO_KEYSTORE_BASE64" ]; then
+            echo "$OTTANO_KEYSTORE_BASE64" | base64 --decode > ottano-upload.jks
+            echo "Upload keystore configured."
+          else
+            echo "No upload keystore configured: building an unsigned release bundle."
+          fi
 
       - name: Build Android App Bundle
         working-directory: android
