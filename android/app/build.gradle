@@ -3,10 +3,14 @@ plugins {
 }
 
 def keystorePath = System.getenv("OTTANO_KEYSTORE_FILE")
+def envValue = { String name ->
+    def value = System.getenv(name)
+    return value != null && !value.trim().isEmpty() ? value : null
+}
 def hasReleaseSigning = keystorePath != null &&
-        System.getenv("OTTANO_KEYSTORE_PASSWORD") != null &&
-        System.getenv("OTTANO_KEY_ALIAS") != null &&
-        System.getenv("OTTANO_KEY_PASSWORD") != null &&
+        envValue("OTTANO_KEYSTORE_PASSWORD") != null &&
+        envValue("OTTANO_KEY_ALIAS") != null &&
+        envValue("OTTANO_KEY_PASSWORD") != null &&
         file(keystorePath).exists()
 
 android {
