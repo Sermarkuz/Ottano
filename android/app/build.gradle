@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.application'
+}
+
+def keystorePath = System.getenv("OTTANO_KEYSTORE_FILE")
+def hasReleaseSigning = keystorePath != null &&
+        System.getenv("OTTANO_KEYSTORE_PASSWORD") != null &&
+        System.getenv("OTTANO_KEY_ALIAS") != null &&
+        System.getenv("OTTANO_KEY_PASSWORD") != null &&
+        file(keystorePath).exists()
+
+android {
+    namespace 'it.sermarkuz.ottano'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "it.sermarkuz.ottano"
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    if (hasReleaseSigning) {
+        signingConfigs {
+            release {
+                storeFile file(keystorePath)
+                storePassword System.getenv("OTTANO_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("OTTANO_KEY_ALIAS")
+                keyPassword System.getenv("OTTANO_KEY_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+tasks.register("printSigningStatus") {
+    doLast {
+        println(hasReleaseSigning ? "Release signing: configured" : "Release signing: NOT configured (bundle will be unsigned)")
+    }
+}
