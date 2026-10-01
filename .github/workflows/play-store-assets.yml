@@ -25,7 +25,7 @@ jobs:
           python play-store/generate_assets.py
       - name: Commit generated PNG files
         run: |
-          if git diff --quiet -- play-store/assets; then
+          if [ -z "$(git status --porcelain -- play-store/assets)" ]; then
             echo "Assets already up to date"
             exit 0
           fi
