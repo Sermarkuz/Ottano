@@ -13,13 +13,22 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
       - name: Check Python syntax
         run: python -m py_compile build.py build_mondo.py
+      - name: Validate JSON files
+        run: |
+          python -m json.tool data.json > /dev/null
+          python -m json.tool manifest.webmanifest > /dev/null
       - name: Rebuild Ottano Mondo
         run: python build_mondo.py
-      - name: Verify generated file
-        run: test -s ottano-mondo.html
+      - name: Verify generated files
+        run: |
+          test -s ottano-mondo.html
+          test -s index.html
+          test -s ottano.template.html
+          grep -q "manifest.webmanifest" ottano.template.html
+          grep -q "ottano-logo.png" ottano.template.html
