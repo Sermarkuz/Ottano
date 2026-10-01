@@ -17,9 +17,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
 :root{
-  --asfalto:#20282D; --asfalto2:#2C363C; --carta:#F1F4F0; --foglio:#FFFFFF; --riga:#D5DBD6;
-  --ink:#1B2429; --muto:#5B676D; --statale:#0F4C9A; --statale-t:#E4ECF7;
-  --c0:#0A7A4B; --c1:#6BA53A; --c2:#F2B705; --c3:#E5781E; --c4:#C62F2B; --led:#FFD23F;
+  --asfalto:#111827; --asfalto2:#1F2937; --carta:#F4F6F8; --foglio:#FFFFFF; --riga:#D9E0E7;
+  --ink:#17202A; --muto:#66727D; --statale:#1464D2; --statale-t:#EAF2FF;
+  --c0:#0D8A57; --c1:#65A83B; --c2:#F3B61F; --c3:#EA7A20; --c4:#D3453F; --led:#FFD34E;
   --cond:"Barlow Condensed","Roboto Condensed","Avenir Next Condensed","HelveticaNeue-CondensedBold","Arial Narrow",sans-serif-condensed,system-ui,sans-serif;
   --body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
@@ -33,13 +33,13 @@ button{cursor:pointer}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 /* testata */
-.bar{background:var(--asfalto);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
+.bar{background:linear-gradient(135deg,#101827 0%,#182536 62%,#0D3E66 100%);color:#fff;display:flex;align-items:center;gap:10px;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));box-shadow:0 8px 24px rgba(17,24,39,.18)}
 .brand{display:flex;align-items:center;gap:8px;font-family:var(--cond);font-weight:700;font-size:28px;letter-spacing:.02em;line-height:1}
 .brand .bn{display:flex;flex-direction:column;white-space:nowrap}
 .brand em{font-style:normal;color:#E8B923;background:linear-gradient(90deg,#F7D774,#C9962B);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand small{font-family:var(--body);font-weight:400;font-size:11.5px;letter-spacing:0;color:#C9D1CD;margin-top:3px;white-space:nowrap}
 .brand .logo{width:46px;height:46px;flex:none;margin:-6px -2px -6px -6px}
-.status{margin-left:auto;background:var(--asfalto2);border:1px solid #46525A;color:#E8ECEA;border-radius:6px;padding:6px 10px;font-size:12.5px;text-align:left;max-width:50%;line-height:1.25}
+.status{margin-left:auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#E8ECEA;border-radius:12px;padding:7px 11px;font-size:12.5px;text-align:left;max-width:50%;line-height:1.25;backdrop-filter:blur(10px)}
 .status{white-space:nowrap}
 .status b{display:block;font-weight:600;color:#fff}
 .status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c2);margin-right:6px;vertical-align:1px}
@@ -47,9 +47,9 @@ button{cursor:pointer}
 @keyframes pulse{50%{opacity:.25}}
 
 /* carburanti */
-.fuels{display:flex;gap:6px;overflow-x:auto;padding:8px 14px;background:var(--asfalto);scrollbar-width:none;position:sticky;top:0;z-index:20}
+.fuels{display:flex;gap:7px;overflow-x:auto;padding:9px 14px;background:#111827;scrollbar-width:none;position:sticky;top:0;z-index:20;border-top:1px solid rgba(255,255,255,.05)}
 .fuels::-webkit-scrollbar{display:none}
-.fuels button{flex:none;border:1px solid #4A565D;background:transparent;color:#D9DFDC;border-radius:4px;padding:7px 12px;font-family:var(--cond);font-size:17px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.fuels button{flex:none;border:1px solid #3D4A59;background:#182230;color:#DDE4EA;border-radius:999px;padding:7px 13px;font-family:var(--cond);font-size:17px;font-weight:600;letter-spacing:.02em;white-space:nowrap;transition:.18s ease}
 .fuels button[aria-pressed="true"]{background:var(--led);border-color:var(--led);color:#1d1a05}
 .fuels button small{font-family:var(--body);font-weight:400;font-size:11px;opacity:.75;margin-left:5px}
 
@@ -60,7 +60,7 @@ button{cursor:pointer}
 .leaflet-tile-pane{filter:saturate(.55) contrast(.96)}
 .leaflet-container{font-family:var(--body);background:#DDE3DE}
 .maptools{position:absolute;z-index:500;left:10px;right:10px;bottom:10px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none}
-.maptools button{pointer-events:auto;background:#fff;border:1px solid #B9C2BC;border-radius:6px;padding:8px 12px;font-weight:600;font-size:13.5px;box-shadow:0 2px 0 rgba(32,40,45,.18)}
+.maptools button{pointer-events:auto;background:rgba(255,255,255,.96);border:1px solid #C8D0D8;border-radius:12px;padding:9px 13px;font-weight:650;font-size:13.5px;box-shadow:0 8px 24px rgba(17,24,39,.16);backdrop-filter:blur(8px)}
 .maptools .primary{background:var(--statale);border-color:var(--statale);color:#fff}
 .mapmsg{position:absolute;z-index:400;top:10px;left:54px;right:60px;background:rgba(32,40,45,.88);color:#fff;font-size:12.5px;padding:6px 10px;border-radius:6px;display:none}
 .mapmsg.on{display:block}
@@ -69,10 +69,10 @@ button{cursor:pointer}
 .pad{padding:0 14px}
 
 /* totem */
-.totem{background:var(--asfalto);color:#fff;padding:12px 14px 14px}
+.totem{background:linear-gradient(145deg,#111827,#1B2736);color:#fff;padding:14px 14px 16px;border-bottom:1px solid #273548}
 .totem .where{font-size:13px;color:#C9D1CD;margin-bottom:8px}
 .totem .where b{color:#fff;font-weight:600}
-.cells{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#414C53;border:1px solid #414C53;border-radius:6px;overflow:hidden}
+.cells{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#344151;border:1px solid #344151;border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.12)}
 .cell{background:#151B1F;padding:8px 10px 9px}
 .cell span{display:block;font-size:11.5px;color:#AEB8B3}
 .price{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em;line-height:1;white-space:nowrap}
@@ -87,7 +87,7 @@ button{cursor:pointer}
 
 /* ricerca luogo */
 .place{position:relative;margin:12px 14px 0}
-.place input{width:100%;padding:11px 12px;border:1px solid #AEB8B1;border-radius:6px;background:#fff;font-size:16px}
+.place input{width:100%;padding:12px 13px;border:1px solid #C8D0D8;border-radius:12px;background:#fff;font-size:16px;box-shadow:0 2px 8px rgba(17,24,39,.04)}
 .sugg{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid #AEB8B1;border-top:0;border-radius:0 0 6px 6px;max-height:260px;overflow:auto;display:none}
 .sugg.on{display:block}
 .sugg button{display:flex;justify-content:space-between;width:100%;border:0;background:none;padding:10px 12px;text-align:left;border-top:1px solid #EDF0ED}
@@ -287,16 +287,25 @@ button{cursor:pointer}
 .toast.on{display:block}
 
 /* finestra dati */
-dialog{border:0;border-radius:8px;padding:0;max-width:min(560px,94vw);width:100%;color:var(--ink)}
-dialog::backdrop{background:rgba(32,40,45,.55)}
-.dlg{padding:18px}
-.dlg h2{font-family:var(--cond);font-size:26px;margin:0 0 6px}
+dialog{border:0;border-radius:18px;padding:0;max-width:min(660px,94vw);width:100%;color:var(--ink);box-shadow:0 28px 80px rgba(17,24,39,.32)}
+dialog::backdrop{background:rgba(15,23,42,.62);backdrop-filter:blur(3px)}
+.dlg{padding:22px}
+.dlg h2{font-family:var(--cond);font-size:30px;margin:0 0 6px}
 .dlg p{margin:8px 0;font-size:14px}
 .dlg ol{padding-left:20px;font-size:14px;margin:8px 0}
 .dlg li{margin:4px 0}
 .dlg a{color:var(--statale)}
-.dlg .log{background:#F1F4F0;border-radius:5px;padding:8px 10px;font-size:12.5px;color:var(--muto);white-space:pre-wrap;margin-top:10px;max-height:120px;overflow:auto}
-.drop{border:1.5px dashed #8E9A94;border-radius:6px;padding:14px;text-align:center;margin-top:8px;background:#FAFBFA;font-size:14px}
+.dlg .log{background:#F4F7FA;border:1px solid #E0E6EC;border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--muto);white-space:pre-wrap;margin-top:12px;max-height:140px;overflow:auto}
+.drop{border:2px dashed #91A4B7;border-radius:16px;padding:24px 18px;text-align:center;margin-top:12px;background:linear-gradient(180deg,#FBFCFE,#F3F7FB);font-size:14px;transition:.18s ease}
+.drop.drag{border-color:var(--statale);background:#EAF2FF;transform:translateY(-1px)}
+.drop .uploadIcon{font-size:32px;line-height:1;margin-bottom:8px}
+.drop strong{display:block;font-size:16px;margin-bottom:4px}
+.drop small{display:block;color:var(--muto);margin:4px 0 12px}
+.drop input{max-width:100%}
+.datahint{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.datahint div{background:#F8FAFC;border:1px solid #E1E7ED;border-radius:12px;padding:10px 12px;font-size:13px}
+.headerImport{border:0;background:var(--led);color:#1C2430;border-radius:999px;padding:8px 12px;font-weight:800;font-size:12.5px;white-space:nowrap;box-shadow:0 4px 14px rgba(255,211,78,.22)}
+.headerImport:hover{filter:brightness(1.04)}
 
 @media (max-width:420px){.brand{font-size:26px}.brand small{font-size:11px}.bar{padding-left:12px;padding-right:12px;gap:8px}}
 @media (min-width:900px){
@@ -318,6 +327,7 @@ dialog::backdrop{background:rgba(32,40,45,.55)}
     <span class="bn"><span>Ottano <em>Gold</em></span><small>Sviluppata da Marco Pugliese</small></span>
   </div>
   <button class="status" id="btnDati" type="button" aria-haspopup="dialog"><b><i class="dot"></i><span id="stTitle">Carico i dati…</span></b><span id="stSub"></span></button>
+  <button class="headerImport" id="btnImport" type="button" aria-haspopup="dialog">↑ Carica dati</button>
 </header>
 
 <nav class="fuels" id="fuels" aria-label="Carburante"></nav>
@@ -494,15 +504,21 @@ dialog::backdrop{background:rgba(32,40,45,.55)}
 
 <dialog id="dlg">
   <div class="dlg">
-    <h2>Dati sui prezzi</h2>
+    <h2>Centro dati Ottano</h2>
     <p id="dlgState"></p>
-    <div class="acts"><button type="button" class="btn primary" id="btnFetch">Scarica i dati più recenti</button><button type="button" class="btn" id="btnClose">Chiudi</button></div>
-    <p><b>Se lo scaricamento automatico non riesce</b> (succede nelle anteprime e quando il sito del Ministero blocca le richieste dal browser), carica i file a mano:</p>
-    <ol>
-      <li>Scarica <a href="https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv" target="_blank" rel="noopener">prezzo_alle_8.csv</a> e <a href="https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv" target="_blank" rel="noopener">anagrafica_impianti_attivi.csv</a> dal sito MIMIT.</li>
-      <li>Selezionali entrambi qui sotto.</li>
-    </ol>
-    <div class="drop"><label for="files"><b>Scegli i due file CSV</b></label><br><input type="file" id="files" multiple accept=".csv,.gz,text/csv"></div>
+    <div class="acts"><button type="button" class="btn primary" id="btnFetch">Aggiorna dal MIMIT</button><button type="button" class="btn" id="btnClose">Chiudi</button></div>
+    <div class="datahint">
+      <div><b>Aggiornamento automatico</b><br>Ottano prova a usare le fonti MIMIT più recenti.</div>
+      <div><b>Dataset locale</b><br>I file restano nel browser e non vengono caricati su server esterni.</div>
+    </div>
+    <p><b>Carica un dataset MIMIT dal tuo computer.</b> Servono insieme il file prezzi e il file anagrafica, anche compressi in .gz.</p>
+    <div class="drop" id="dropZone" tabindex="0" role="button" aria-label="Carica i file MIMIT">
+      <div class="uploadIcon" aria-hidden="true">⇧</div>
+      <strong>Trascina qui i due file</strong>
+      <small>oppure selezionali dal computer · CSV o CSV.GZ</small>
+      <input type="file" id="files" multiple accept=".csv,.gz,text/csv,application/gzip">
+    </div>
+    <p style="font-size:12.5px;color:var(--muto)">File attesi: <a href="https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv" target="_blank" rel="noopener">prezzo_alle_8.csv</a> + <a href="https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv" target="_blank" rel="noopener">anagrafica_impianti_attivi.csv</a>.</p>
     <div class="log" id="log"></div>
   </div>
 </dialog>
@@ -1372,10 +1388,18 @@ function bind(){
   $('dList').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;DIARY.splice(+b.dataset.del,1);mem.set('ottano-diario',DIARY);renderDiary();});
   $('dCsv').addEventListener('click',diaryCsv);
   $('dUse').addEventListener('click',()=>{let lk=0,kk=0;DIARY.forEach(e=>{if(e.km>0){lk+=e.l;kk+=e.km;}});if(!kk)return;S.consumo=Math.round(lk/kk*1000)/10;refresh();toast('Consumo della simulazione impostato a '+String(S.consumo).replace('.',',')+' ogni 100 km.');});
-  $('btnDati').addEventListener('click',()=>$('dlg').showModal());
+  const openData=()=>$('dlg').showModal();
+  $('btnDati').addEventListener('click',openData);
+  $('btnImport').addEventListener('click',openData);
   $('btnClose').addEventListener('click',()=>$('dlg').close());
   $('btnFetch').addEventListener('click',async()=>{if(await fetchRemote())$('dlg').close();});
   $('files').addEventListener('change',e=>onFiles([...e.target.files]));
+  const dz=$('dropZone');
+  ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
+  dz.addEventListener('drop',e=>{const fs=[...e.dataTransfer.files];if(fs.length)onFiles(fs);});
+  dz.addEventListener('click',e=>{if(e.target!==$('files'))$('files').click();});
+  dz.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('files').click();}});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&SEL&&!$('dlg').open)closeSheet();});
 }
 
