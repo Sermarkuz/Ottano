@@ -2,6 +2,7 @@ package it.sermarkuz.ottano;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -153,10 +154,23 @@ public class MainActivity extends Activity {
 
                 geoOrigin = origin;
                 geoCallback = callback;
-                requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                }, LOCATION_REQUEST);
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Posizione opzionale")
+                        .setMessage("Ottano usa la posizione solo quando richiedi funzioni come “Vicino a me”. La posizione può essere utilizzata dai servizi cartografici e geografici necessari a fornire la funzione richiesta. Puoi continuare a usare l'app anche senza concederla.")
+                        .setNegativeButton("Non consentire", (dialog, which) -> {
+                            if (geoCallback != null) {
+                                geoCallback.invoke(geoOrigin, false, false);
+                                geoCallback = null;
+                                geoOrigin = null;
+                            }
+                        })
+                        .setPositiveButton("Continua", (dialog, which) ->
+                                requestPermissions(new String[]{
+                                        Manifest.permission.ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                }, LOCATION_REQUEST))
+                        .setCancelable(false)
+                        .show();
             }
         });
     }
