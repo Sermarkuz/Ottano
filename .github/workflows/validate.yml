@@ -17,6 +17,11 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test pricing and consumption calculations
+        run: node --test tests/core.test.cjs
       - name: Check Python syntax
         run: python -m py_compile build.py build_mondo.py
       - name: Validate JSON files

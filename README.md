@@ -1,4 +1,4 @@
-# Ottano Gold
+# Ottano Gold 4.0
 
 Ottano è un'applicazione web autonoma per consultare e confrontare i prezzi dei carburanti. La versione Italia usa gli open data MIMIT; **Ottano Mondo** confronta prezzi e serie per Paese.
 
@@ -65,3 +65,14 @@ Lo stato utente è conservato nel browser. I servizi esterni comprendono Leaflet
 ## Licenza
 
 Codice sotto licenza MIT. Dati, logo e servizi esterni mantengono le rispettive licenze e condizioni indicate in `NOTICE.md`.
+
+## Novità 4.0 — precisione dei dati e delle simulazioni
+
+- Catalogo auto separato dai nove carburanti: ripristinati i modelli Seat, Skoda e gli altri finiti erroneamente nella barra carburanti.
+- Per ogni prodotto e servizio viene prima selezionata la comunicazione più recente, mantenendo i secondi. A parità di timestamp e dati discordanti si conserva il prezzo maggiore, per non promettere risparmi non verificati. Solo dopo si confrontano i prodotti della stessa categoria.
+- Numeri con virgola decimale e BOM supportati; date impossibili, prezzi non finiti, servizi non riconosciuti e carburanti sconosciuti esclusi. Mediana nazionale corretta anche con numero pari di impianti. Storico e prezzi attuali usano la stessa selezione.
+- Calibrazione del consumo con media ponderata sulle distanze, solo per misure pieno-pieno esplicitamente confermate e per la stessa auto/carburante. Le vecchie registrazioni sono conservate, ma non calibrano il modello perché non identificano auto e metodo di misura. Per auto diverse dello stesso modello occorre mantenere un diario distinto.
+- Il catalogo contiene consumi indicativi, non dati certificati per anno e allestimento. Per una stima personale usare il proprio consumo misurato. Distanze dalla mappa e costi di deviazione restano stime geometriche, non distanze stradali certificate.
+- Questa versione corregge errori deterministici; non dichiara una percentuale di aumento dell'accuratezza su strada. Il prezzo effettivo resta quello esposto alla pompa.
+
+Verifica: `node --test tests/core.test.cjs` (template e app generata). I controlli vengono eseguiti anche in GitHub Actions.

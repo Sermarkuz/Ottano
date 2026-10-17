@@ -44,7 +44,7 @@ def compatta_anagrafica(testo, province=None):
         if n < 10:
             continue
         try:
-            lat, lon = float(f[n - 2]), float(f[n - 1])
+            lat, lon = float(f[n - 2].replace(",", ".")), float(f[n - 1].replace(",", "."))
         except ValueError:
             continue
         if province and f[n - 3].strip() not in province:
@@ -66,7 +66,6 @@ def compatta_prezzi(testo, ids=None):
         f = r.split(sep)
         if len(f) < 5 or (ids is not None and f[0] not in ids):
             continue
-        f[4] = f[4][:16]  # via i secondi dalla data di comunicazione
         out.append("|".join(f[:5]))
     return "Estrazione del %s\nidImpianto|descCarburante|prezzo|isSelf|dtComu\n" % data + "\n".join(out)
 
